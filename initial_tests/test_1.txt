@@ -1,0 +1,40 @@
+Input:
+
+The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items.  numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 0.0.
+
+      0     1     2
+0  5.94  6.30  1.66
+1  6.07  1.63  0.00
+
+Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+Output:
+
+To fairly allocate the items between the two agents based on their valuations, we can use a max-min fair allocation method, aiming to maximize the minimum value each agent receives. This approach ensures that each agent’s valuation of their assigned items is as high as possible while keeping the allocation fair. Since each agent must get an integer number of items, we’ll explore allocations that assign one item to one agent and two items to the other.
+
+Here are the total valuations of each agent for every possible allocation:
+
+	1.	Agent 0 gets items {0, 1}, and Agent 1 gets item {2}:
+	•	Agent 0’s total valuation: ￼
+	•	Agent 1’s total valuation: ￼
+	2.	Agent 0 gets items {0, 2}, and Agent 1 gets item {1}:
+	•	Agent 0’s total valuation: ￼
+	•	Agent 1’s total valuation: ￼
+	3.	Agent 0 gets item {1}, and Agent 1 gets items {0, 2}:
+	•	Agent 0’s total valuation: ￼
+	•	Agent 1’s total valuation: ￼
+	4.	Agent 0 gets item {2}, and Agent 1 gets items {0, 1}:
+	•	Agent 0’s total valuation: ￼
+	•	Agent 1’s total valuation: ￼
+
+Now, let’s analyze these allocations for fairness:
+
+	•	The third allocation, where Agent 0 gets item {1} and Agent 1 gets items {0, 2}, provides both agents with a high and nearly equal total valuation (6.30 for Agent 0 and 6.07 for Agent 1).
+	•	This distribution maximizes fairness as both agents receive valuations close to each other.
+
+Final Allocation
+
+	•	Agent 0: Item {1}
+	•	Agent 1: Items {0, 2}
+
+This allocation is fair under the criteria of max-min fairness, as it provides a balanced and fair distribution of value between the two agents.
