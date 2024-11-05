@@ -1,0 +1,49 @@
+Input:
+
+The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items.  numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 9.1.
+
+      0     1    2
+0  9.11  2.66  2.8
+1  5.32  6.08  9.1
+
+Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+
+Output:
+
+To fairly allocate items, we’ll apply an approach that ensures each agent receives an integer number of items, typically aiming to maximize each agent’s valuation while distributing items as fairly as possible.
+
+Here’s the allocation process for your table, given the goal of maximizing fairness:
+
+Step 1: Identify the highest-valued item for each agent to start the allocation fairly.
+
+	Item 0	Item 1	Item 2
+Agent 0	9.11	2.66	2.8
+Agent 1	5.32	6.08	9.1
+
+	•	Agent 0 has the highest valuation for Item 0 (9.11).
+	•	Agent 1 has the highest valuation for Item 2 (9.1).
+
+Step 2: Allocate the highest-valued items to each agent.
+
+	•	Assign Item 0 to Agent 0.
+	•	Assign Item 2 to Agent 1.
+
+Step 3: Allocate the remaining item to balance the distribution.
+
+	•	The remaining item is Item 1. Since each agent now has one item, we can assign Item 1 based on its higher valuation between the two agents.
+	•	Agent 1 values Item 1 more (6.08 vs. Agent 0’s 2.66).
+
+Final Allocation:
+
+	•	Agent 0 receives Item 0.
+	•	Agent 1 receives Items 1 and 2.
+
+Result:
+This allocation maximizes each agent’s preference fairly, giving each one an integer number of items:
+
+	•	Agent 0: Total valuation = 9.11 (Item 0)
+	•	Agent 1: Total valuation = 6.08 + 9.1 = 15.18 (Items 1 and 2)
