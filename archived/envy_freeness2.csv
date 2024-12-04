@@ -1,0 +1,3 @@
+Test_Id,Agent_1_Max,Agent_1_Max_Unclipped,Agent_1_Sum,Agent_1_Sum_Unclipped,Agent_2_Max,Agent_2_Max_Unclipped,Agent_2_Sum,Agent_2_Sum_Unclipped,Max_Envies,Max_Envies_Unclipped,Sum_Envies,Sum_Envies_Unclipped,Envy_Freeness
+1,17.0,17.0,17.0,17.0,0.0,0.0,0.0,-13.0,17.0,17.0,27.0,-2.0,0
+2,0.0,0.0,0.0,-16.0,10.0,10.0,10.0,10.0,17.0,17.0,27.0,-2.0,0
