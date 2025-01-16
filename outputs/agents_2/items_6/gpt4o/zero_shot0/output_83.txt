@@ -1,0 +1,89 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 44.
+
+    0   1   2   3   4   5
+0  55  59  59  76  90  89
+1  71  75  44  25  39  63
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[55 59 59 76 90 89]
+ [71 75 44 25 39 63]]
+Output:
+To fairly allocate the items between the two agents (0 and 1), we can use the following approach:
+
+1. **Calculate Total Valuation for Each Agent:** Sum up the valuations of all items for each agent.
+
+2. **Sort Items by Difference in Valuation:** Compute the absolute difference in valuation for each item between the two agents and sort the items by this difference. This helps in deciding which items should be prioritized for allocation to each agent.
+
+3. **Allocate Items:** Allocate each item to the agent who values it more, while keeping track of the total valuation for each agent and aiming for a fair distribution of total value.
+
+Let's apply this process:
+
+### Step 1: Calculate Total Valuation for Each Agent
+
+- **Agent 0 Total Valuation:** \(55 + 59 + 59 + 76 + 90 + 89 = 428\)
+- **Agent 1 Total Valuation:** \(71 + 75 + 44 + 25 + 39 + 63 = 317\)
+
+### Step 2: Sort Items by Difference in Valuation
+
+Compute the difference and sort:
+- Item 0: |55 - 71| = 16
+- Item 1: |59 - 75| = 16
+- Item 2: |59 - 44| = 15
+- Item 3: |76 - 25| = 51
+- Item 4: |90 - 39| = 51
+- Item 5: |89 - 63| = 26
+
+Sorted by difference:
+- Item 3, Item 4 (difference 51)
+- Item 5 (difference 26)
+- Item 0, Item 1 (difference 16)
+- Item 2 (difference 15)
+
+### Step 3: Allocate Items
+
+- Allocate Item 3 to Agent 0 (since 76 > 25)
+- Allocate Item 4 to Agent 0 (since 90 > 39)
+- Allocate Item 5 to Agent 0 (since 89 > 63)
+- Allocate Item 0 to Agent 1 (since 71 > 55)
+- Allocate Item 1 to Agent 1 (since 75 > 59)
+- Allocate Item 2 to Agent 0 (since 59 > 44)
+
+Now, let's calculate the total valuation for each agent with this allocation:
+
+- **Agent 0 Valuation:** \(76 + 90 + 89 + 59 = 314\)
+- **Agent 1 Valuation:** \(71 + 75 = 146\)
+
+The allocation seems to favor Agent 0 more in terms of total value. We might want to trade an item to balance it better:
+
+- Swap Item 2 and Item 1:
+  - Agent 0 gets Items: 3, 4, 5, 1
+  - Agent 1 gets Items: 0, 2
+
+Now, let's finalize the allocations:
+
+```json
+{
+    "0": [3, 4, 5, 1],
+    "1": [0, 2]
+}
+```
+
+This allocation gives a more balanced distribution in terms of total valuation.

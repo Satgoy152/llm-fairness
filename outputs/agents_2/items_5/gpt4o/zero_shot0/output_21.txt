@@ -1,0 +1,80 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 24.
+
+    0   1   2   3   4
+0  73  42  70  94  29
+1  10  78  24  94  61
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[73 42 70 94 29]
+ [10 78 24 94 61]]
+Output:
+To fairly allocate the items, we need to find an allocation that maximizes the total value for each agent while ensuring each agent gets an integer number of items. Given there are only two agents and five items, one approach is to calculate the total value each agent would receive if they were allocated different combinations of items and select the combination that maximizes the value for both agents.
+
+Let's evaluate the possible allocations:
+
+1. Agent 0 gets 3 items, Agent 1 gets 2 items:
+   - Calculate the total value for Agent 0 getting different sets of 3 items:
+     - Items [0, 1, 2]: Value = 73 + 42 + 70 = 185
+     - Items [0, 1, 3]: Value = 73 + 42 + 94 = 209
+     - Items [0, 1, 4]: Value = 73 + 42 + 29 = 144
+     - Items [0, 2, 3]: Value = 73 + 70 + 94 = 237
+     - Items [0, 2, 4]: Value = 73 + 70 + 29 = 172
+     - Items [0, 3, 4]: Value = 73 + 94 + 29 = 196
+     - Items [1, 2, 3]: Value = 42 + 70 + 94 = 206
+     - Items [1, 2, 4]: Value = 42 + 70 + 29 = 141
+     - Items [1, 3, 4]: Value = 42 + 94 + 29 = 165
+     - Items [2, 3, 4]: Value = 70 + 94 + 29 = 193
+
+   - The best allocation for Agent 0 is [0, 2, 3]: Value = 237
+
+   - Agent 1 gets the remaining items [1, 4]: Value = 78 + 61 = 139
+
+2. Agent 0 gets 2 items, Agent 1 gets 3 items:
+   - Calculate the total value for Agent 1 getting different sets of 3 items:
+     - Items [0, 1, 2]: Value = 10 + 78 + 24 = 112
+     - Items [0, 1, 3]: Value = 10 + 78 + 94 = 182
+     - Items [0, 1, 4]: Value = 10 + 78 + 61 = 149
+     - Items [0, 2, 3]: Value = 10 + 24 + 94 = 128
+     - Items [0, 2, 4]: Value = 10 + 24 + 61 = 95
+     - Items [0, 3, 4]: Value = 10 + 94 + 61 = 165
+     - Items [1, 2, 3]: Value = 78 + 24 + 94 = 196
+     - Items [1, 2, 4]: Value = 78 + 24 + 61 = 163
+     - Items [1, 3, 4]: Value = 78 + 94 + 61 = 233
+     - Items [2, 3, 4]: Value = 24 + 94 + 61 = 179
+
+   - The best allocation for Agent 1 is [1, 3, 4]: Value = 233
+
+   - Agent 0 gets the remaining items [0, 2]: Value = 73 + 70 = 143
+
+Comparing the two scenarios:
+- Scenario 1 (Agent 0: [0, 2, 3], Agent 1: [1, 4]): Agent 0 value = 237, Agent 1 value = 139
+- Scenario 2 (Agent 0: [0, 2], Agent 1: [1, 3, 4]): Agent 0 value = 143, Agent 1 value = 233
+
+Scenario 1 gives higher total value to both agents, so we choose this allocation.
+
+Here is the final allocation in the specified JSON format:
+
+```json
+{
+    "0": [0, 2, 3],
+    "1": [1, 4]
+}
+```

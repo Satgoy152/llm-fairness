@@ -1,0 +1,85 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 35.
+
+    0   1   2   3   4
+0   9  42  75  34  20
+1  80  62  35  82   1
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 9 42 75 34 20]
+ [80 62 35 82  1]]
+Output:
+To achieve a fair allocation of items between the two agents, we need to ensure that each agent receives a bundle of items that maximizes their total valuation, while also ensuring that each agent gets a reasonable share of the total value. Let's break down the problem and make the allocations:
+
+### Step-by-step Allocation:
+
+1. **Valuation Matrix:**
+
+   \[
+   \begin{array}{c|ccccc}
+   \text{Agent/Item} & 0 & 1 & 2 & 3 & 4 \\
+   \hline
+   0 & 9 & 42 & 75 & 34 & 20 \\
+   1 & 80 & 62 & 35 & 82 & 1 \\
+   \end{array}
+   \]
+
+2. **Total Valuation for Each Agent:**
+
+   - Agent 0: \(9 + 42 + 75 + 34 + 20 = 180\)
+   - Agent 1: \(80 + 62 + 35 + 82 + 1 = 260\)
+
+3. **Fair Allocation Goals:**
+
+   Ideally, we want to allocate items such that each agent gets a fair share of the total value. The total value is \(180 + 260 = 440\), so each agent should get around half of this total value in their allocated items.
+
+4. **Greedy Allocation Approach:**
+
+   - **Agent 1** values item 3 highly (82), item 0 very highly (80), and item 1 (62). Allocating item 3 and item 0 to Agent 1 seems beneficial.
+   - **Agent 0** values item 2 the highest (75), so assigning item 2 to Agent 0 is reasonable.
+
+5. **Allocating Remaining Items:**
+
+   - After allocating items 3 and 0 to Agent 1, and item 2 to Agent 0:
+     - Remaining items are 1 and 4.
+
+   - **Item 1:** 
+     - Agent 0 values it at 42, and Agent 1 at 62.
+     - Assign item 1 to Agent 1.
+
+   - **Item 4:**
+     - Agent 0 values it at 20, and Agent 1 at 1.
+     - Assign item 4 to Agent 0.
+
+6. **Final Allocation:**
+
+   - Agent 0: [2, 4]
+   - Agent 1: [3, 0, 1]
+
+### JSON Format:
+
+```json
+{
+    "0": [2, 4],
+    "1": [3, 0, 1]
+}
+```
+
+This allocation gives each agent a fair share of the total value based on their valuations, while ensuring that each agent receives an integer number of items.

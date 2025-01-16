@@ -1,0 +1,80 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 41.
+
+    0   1   2   3   4   5   6
+0  80  21  85   9  75  23  43
+1  66  27  41  26  92  98  47
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[80 21 85  9 75 23 43]
+ [66 27 41 26 92 98 47]]
+Output:
+To fairly allocate the items between the two agents, we can use a method that maximizes the total value for each agent while ensuring an integer number of items is given to each. One possible way is to use a greedy approach, where each agent picks the most valuable item available to them alternately until all items are allocated.
+
+Let's proceed with the allocation:
+
+1. Agent 0 values:
+   - Item 0: 80
+   - Item 1: 21
+   - Item 2: 85
+   - Item 3: 9
+   - Item 4: 75
+   - Item 5: 23
+   - Item 6: 43
+
+2. Agent 1 values:
+   - Item 0: 66
+   - Item 1: 27
+   - Item 2: 41
+   - Item 3: 26
+   - Item 4: 92
+   - Item 5: 98
+   - Item 6: 47
+
+Let's allocate the items:
+
+1. Agent 0 will pick Item 2 (value 85)
+2. Agent 1 will pick Item 5 (value 98)
+3. Agent 0 will pick Item 0 (value 80)
+4. Agent 1 will pick Item 4 (value 92)
+5. Agent 0 will pick Item 4 (value 75) [already picked by Agent 1, so pick the next highest value]
+6. Agent 0 will pick Item 6 (value 43)
+7. Agent 1 will pick Item 6 (value 47) [already picked by Agent 0, so pick the next highest value]
+8. Agent 1 will pick Item 1 (value 27)
+9. Agent 0 will pick Item 5 (value 23) [already picked by Agent 1, so pick the next highest value]
+10. Agent 0 will pick Item 1 (value 21) [already picked by Agent 1, so pick the next highest value]
+11. Agent 0 will pick Item 3 (value 9)
+12. Agent 1 will pick Item 3 (value 26) [already picked by Agent 0]
+
+Let's summarize the allocations:
+
+- Agent 0: Items 2, 0, 6, 3
+- Agent 1: Items 5, 4, 1
+
+In JSON format, the allocation is:
+
+```json
+{
+    "0": [2, 0, 6, 3],
+    "1": [5, 4, 1]
+}
+```
+
+Please note that due to overlapping picks in the greedy approach, each agent might end up with different numbers of items, but this allocation tries to maximize the total value each agent receives.

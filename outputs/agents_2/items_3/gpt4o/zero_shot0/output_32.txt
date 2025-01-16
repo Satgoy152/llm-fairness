@@ -1,0 +1,65 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 65.
+
+    0   1   2
+0   2  92  85
+1  72  84  65
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 2 92 85]
+ [72 84 65]]
+Output:
+To fairly allocate the items between the two agents, we should consider the valuations each agent has for each item and try to maximize the total value for both agents while ensuring that each agent gets an integer number of items.
+
+Given the valuations:
+
+- Agent 0's valuations: Item 0: 2, Item 1: 92, Item 2: 85
+- Agent 1's valuations: Item 0: 72, Item 1: 84, Item 2: 65
+
+Let's analyze and allocate the items:
+
+1. **Item 0**:  
+   - Agent 0 values it at 2.
+   - Agent 1 values it at 72.  
+   Agent 1 values this item significantly higher than Agent 0, so it makes sense to allocate Item 0 to Agent 1.
+
+2. **Item 1**:  
+   - Agent 0 values it at 92.
+   - Agent 1 values it at 84.  
+   Agent 0 values this item slightly higher than Agent 1, so it makes sense to allocate Item 1 to Agent 0.
+
+3. **Item 2**:  
+   - Agent 0 values it at 85.
+   - Agent 1 values it at 65.  
+   Agent 0 values this item higher than Agent 1, so it makes sense to allocate Item 2 to Agent 0.
+
+After this allocation, each agent receives an integer number of items:
+
+- Agent 0 receives Item 1 and Item 2.
+- Agent 1 receives Item 0.
+
+Now, let's present the allocations in the specified JSON format:
+
+```json
+{
+    "0": [1, 2],
+    "1": [0]
+}
+```

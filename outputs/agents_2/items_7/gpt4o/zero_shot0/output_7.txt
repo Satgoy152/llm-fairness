@@ -1,0 +1,58 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 6.
+
+    0   1   2   3   4   5   6
+0   4   3  35  95  39  86  80
+1  96  79   6  44  40   3  11
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 4  3 35 95 39 86 80]
+ [96 79  6 44 40  3 11]]
+Output:
+To fairly allocate the items between the two agents, we can use a method that aims to maximize the total value each agent receives. One approach is to use a greedy algorithm based on the highest individual valuations.
+
+First, let's list the items with their values for each agent:
+
+- Agent 0: [4, 3, 35, 95, 39, 86, 80]
+- Agent 1: [96, 79, 6, 44, 40, 3, 11]
+
+To make a fair allocation, we can look at each item's valuation difference between agents and allocate each item to the agent who values it the most. Let's proceed with this method:
+
+1. Item 0: Agent 1 values it at 96, Agent 0 at 4. Allocate to Agent 1.
+2. Item 1: Agent 1 values it at 79, Agent 0 at 3. Allocate to Agent 1.
+3. Item 2: Agent 0 values it at 35, Agent 1 at 6. Allocate to Agent 0.
+4. Item 3: Agent 0 values it at 95, Agent 1 at 44. Allocate to Agent 0.
+5. Item 4: Agent 0 values it at 39, Agent 1 at 40. Allocate to Agent 1.
+6. Item 5: Agent 0 values it at 86, Agent 1 at 3. Allocate to Agent 0.
+7. Item 6: Agent 0 values it at 80, Agent 1 at 11. Allocate to Agent 0.
+
+This allocation gives us:
+
+- Agent 0: Items 2, 3, 5, 6
+- Agent 1: Items 0, 1, 4
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [2, 3, 5, 6],
+    "1": [0, 1, 4]
+}
+```

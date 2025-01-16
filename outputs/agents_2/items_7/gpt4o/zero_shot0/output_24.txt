@@ -1,0 +1,56 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+
+    0   1   2   3   4   5   6
+0  57  58  17  17  87  61  40
+1  76  69  34  41  67  58  84
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[57 58 17 17 87 61 40]
+ [76 69 34 41 67 58 84]]
+Output:
+To fairly allocate the items to the agents, we can aim for a distribution where each agent receives items that maximize their total valuation while ensuring each agent gets a fair share of the items. Given there are 7 items and 2 agents, one way to approach this is to use a method like maximizing the sum of valuations for each agent's allocated items, ensuring each agent gets either 3 or 4 items.
+
+Let's calculate a fair allocation by maximizing the total value for each agent:
+
+1. List all item values for each agent:
+   - Agent 0 values: [57, 58, 17, 17, 87, 61, 40]
+   - Agent 1 values: [76, 69, 34, 41, 67, 58, 84]
+
+2. Sort items by value for each agent:
+   - Agent 0 sorted: [(4, 87), (1, 58), (5, 61), (0, 57), (6, 40), (2, 17), (3, 17)]
+   - Agent 1 sorted: [(0, 76), (6, 84), (1, 69), (4, 67), (5, 58), (3, 41), (2, 34)]
+
+3. We can start allocating items by alternating between the agents to ensure fairness, taking the highest valued available item for each agent.
+
+4. Let's allocate the items:
+   - Agent 0 gets items: [4, 1, 5] (values: 87, 58, 61)
+   - Agent 1 gets items: [0, 6, 2, 3] (values: 76, 84, 34, 41)
+
+This allocation gives each agent a fair share of the items and maximizes their individual total valuations as much as possible.
+
+Here is the final allocation in JSON format:
+
+```json
+{
+    "0": [4, 1, 5],
+    "1": [0, 6, 2, 3]
+}
+```

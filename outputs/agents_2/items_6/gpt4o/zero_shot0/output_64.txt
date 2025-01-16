@@ -1,0 +1,69 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 46.
+
+    0   1   2   3   4   5
+0  28  42  22   7  87  75
+1  41  76  46  35  83   4
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[28 42 22  7 87 75]
+ [41 76 46 35 83  4]]
+Output:
+To fairly allocate the items to the agents, we want to ensure that the total valuation for each agent is as balanced as possible. We'll use a simple heuristic method to achieve this.
+
+### Step-by-step allocation:
+
+1. **Initial Setup**:
+   - Agents: 0, 1
+   - Items: 0, 1, 2, 3, 4, 5
+   - Valuations:
+     - Agent 0: [28, 42, 22, 7, 87, 75]
+     - Agent 1: [41, 76, 46, 35, 83, 4]
+
+2. **Sort items for each agent based on valuation**:
+   - For Agent 0: Items sorted by valuation = [4 (87), 5 (75), 1 (42), 0 (28), 2 (22), 3 (7)]
+   - For Agent 1: Items sorted by valuation = [1 (76), 4 (83), 2 (46), 0 (41), 3 (35), 5 (4)]
+
+3. **Allocate items**:
+   - Allocate the highest valued item for each agent such that their total valuation remains balanced.
+   - Start with the item that has the highest combined valuation and allocate it to the agent who values it the most, unless it significantly disrupts balance.
+
+4. **Allocation Process**:
+   - Allocate item 4 to Agent 0 (87 vs 83) because it has the highest value for Agent 0.
+   - Allocate item 1 to Agent 1 (76 vs 42) because it has the highest value for Agent 1.
+   - Allocate item 5 to Agent 0 (75 vs 4) because it is much more valuable to Agent 0.
+   - Allocate item 2 to Agent 1 (46 vs 22) because it is more valuable to Agent 1.
+   - Allocate item 0 to Agent 0 (28 vs 41) as it balances the total valuation better.
+   - Allocate the remaining item 3 to Agent 1.
+
+5. **Check balance**:
+   - Total valuation for Agent 0: 87 + 75 + 28 = 190
+   - Total valuation for Agent 1: 76 + 46 + 35 = 157
+
+### Allocation Result:
+
+```json
+{
+    "0": [4, 5, 0],
+    "1": [1, 2, 3]
+}
+```
+
+This allocation attempts to fairly distribute the items based on their valuations while keeping the total valuation for each agent as balanced as possible.

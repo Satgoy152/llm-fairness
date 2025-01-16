@@ -1,0 +1,83 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 19.
+
+    0   1   2   3   4   5
+0  60  75  96  61  51  71
+1  70  93  19   6  91  37
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[60 75 96 61 51 71]
+ [70 93 19  6 91 37]]
+Output:
+To fairly allocate the items between the two agents, we want to consider the total valuations each agent has for all the items and try to distribute the items such that each agent gets a fair share based on their preferences.
+
+The given valuations are:
+
+Agent 0:  
+- Item 0: 60  
+- Item 1: 75  
+- Item 2: 96  
+- Item 3: 61  
+- Item 4: 51  
+- Item 5: 71  
+
+Agent 1:  
+- Item 0: 70  
+- Item 1: 93  
+- Item 2: 19  
+- Item 3: 6  
+- Item 4: 91  
+- Item 5: 37  
+
+First, calculate the total valuations for each agent:
+
+- Agent 0: 60 + 75 + 96 + 61 + 51 + 71 = 414
+- Agent 1: 70 + 93 + 19 + 6 + 91 + 37 = 316
+
+To allocate the items fairly, we aim to balance the total value each agent receives.
+
+### Allocation Strategy
+
+1. **Agent 1's Strong Preferences:**  
+   - Item 1 (93) and Item 4 (91) together give a significant value to Agent 1.
+   - Assign these two high-value items to Agent 1.
+
+2. **Agent 0's Preferences:**  
+   - Agent 0 has generally higher values for most items, so we look to distribute remaining items to balance the total value.
+
+3. **Allocate Remaining Items:**
+   - Agent 0 gets Item 0 (60), Item 2 (96), and Item 5 (71).
+   - Agent 1 gets Item 3 (6) to balance the allocation.
+
+### Final Allocation
+
+Agent 0 receives items 0, 2, and 5.  
+Agent 1 receives items 1, 3, and 4.  
+
+The JSON representation of this allocation is:
+
+```json
+{
+    "0": [0, 2, 5],
+    "1": [1, 3, 4]
+}
+```
+
+This allocation tries to balance the total value received by each agent, giving Agent 0 a sum of 227 and Agent 1 a slightly higher sum of 187, but considering the initial total valuation weights, this is a reasonable and fair allocation.

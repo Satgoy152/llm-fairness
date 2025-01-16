@@ -1,0 +1,70 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 49.
+
+    0   1   2   3   4   5   6
+0  36   2  39  56   4  14  61
+1  63  10  49  80  54  11  91
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[36  2 39 56  4 14 61]
+ [63 10 49 80 54 11 91]]
+Output:
+To fairly allocate the items between the two agents, we should aim to balance the total valuations each agent receives. One approach is to use a method that seeks to equalize the total value of items assigned to each agent as closely as possible.
+
+Let's calculate the total value each agent places on each item:
+
+Agent 0:  
+- Items: 0 (36), 1 (2), 2 (39), 3 (56), 4 (4), 5 (14), 6 (61)  
+- Total value of all items for Agent 0: 36 + 2 + 39 + 56 + 4 + 14 + 61 = 212
+
+Agent 1:  
+- Items: 0 (63), 1 (10), 2 (49), 3 (80), 4 (54), 5 (11), 6 (91)  
+- Total value of all items for Agent 1: 63 + 10 + 49 + 80 + 54 + 11 + 91 = 358
+
+Now, let's try to allocate the items in a way that the total valuation for each agent is as balanced as possible:
+
+1. Assign Item 6 to Agent 1 (highest value for Agent 1).
+2. Assign Item 3 to Agent 1 (second highest value for Agent 1).
+3. Assign Item 0 to Agent 1 (third highest value for Agent 1).
+4. Assign Item 2 to Agent 1 (fourth highest value for Agent 1).
+5. Assign Item 5 to Agent 0 (balance the allocation).
+6. Assign Item 4 to Agent 0 (balance the allocation).
+7. Assign Item 1 to Agent 0 (balance the allocation).
+
+After allocation, the total values are:
+
+- Agent 0:  
+  - Items: 1 (2), 4 (4), 5 (14)  
+  - Total value: 2 + 4 + 14 = 20
+
+- Agent 1:  
+  - Items: 0 (36), 2 (39), 3 (56), 6 (61)  
+  - Total value: 36 + 39 + 56 + 61 = 192
+
+This allocation balances the total valuation between the agents as much as possible given the constraints.
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [1, 4, 5],
+    "1": [0, 2, 3, 6]
+}
+```

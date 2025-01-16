@@ -1,0 +1,63 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 27.
+
+    0   1   2   3   4   5
+0  49  56  30  78  89  15
+1  87  30  27   2  20   9
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[49 56 30 78 89 15]
+ [87 30 27  2 20  9]]
+Output:
+To fairly allocate the items between the two agents based on their valuations, we should try to maximize the total value each agent receives while ensuring that each agent gets an integer number of items. Here's one way to approach this:
+
+1. **Calculate Total Valuation for Each Agent:**
+
+   - Agent 0: 49 + 56 + 30 + 78 + 89 + 15 = 317
+   - Agent 1: 87 + 30 + 27 + 2 + 20 + 9 = 175
+
+2. **Allocate Items Based on Valuations:**
+
+   Since Agent 0 has a higher total valuation, they should ideally receive more items, or at least the higher-value items, to balance the overall satisfaction.
+
+3. **Item-by-Item Allocation:**
+
+   - Start with the items with the highest individual values and allocate them to the agent who values them the most.
+
+   - Item 4 (89) goes to Agent 0 (higher valuation).
+   - Item 0 (87) goes to Agent 1 (higher valuation).
+   - Item 3 (78) goes to Agent 0 (next highest valuation).
+   - Item 1 (56) goes to Agent 0 (higher valuation).
+   - Item 2 (30) goes to Agent 0 (higher valuation).
+   - Item 5 (15) goes to Agent 1 (only remaining item).
+
+4. **Final Allocation:**
+
+   - Agent 0 receives items: 4, 1, 3, 2
+   - Agent 1 receives items: 0, 5
+
+Therefore, the allocation in the specified JSON format is:
+
+```json
+{
+    "0": [4, 1, 3, 2],
+    "1": [0, 5]
+}
+```

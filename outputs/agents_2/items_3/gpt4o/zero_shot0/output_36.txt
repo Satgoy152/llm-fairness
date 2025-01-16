@@ -1,0 +1,62 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2
+0  73  92  61
+1  81  83  50
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[73 92 61]
+ [81 83 50]]
+Output:
+To allocate the items fairly between the two agents, we aim to distribute the items such that the total value each agent receives is as balanced as possible. Here's how we can approach this:
+
+1. **Calculate Total Value for Each Agent for Each Item:**
+   - Agent 0: [73, 92, 61]
+   - Agent 1: [81, 83, 50]
+
+2. **Consider All Possible Allocations:**
+   - Since there are only two agents and three items, we can explore each possible allocation scenario to determine which provides the fairest distribution based on the agents’ valuations.
+
+3. **Evaluate Allocations:**
+   - Calculate the total value each agent would receive from each possible allocation and choose the one where the difference in total value between the two agents is minimized.
+
+4. **Possible Allocations:**
+   - (Agent 0 receives item 0, Agent 1 receives items 1 and 2)
+     - Agent 0 value: 73
+     - Agent 1 value: 83 + 50 = 133
+   - (Agent 0 receives item 1, Agent 1 receives items 0 and 2)
+     - Agent 0 value: 92
+     - Agent 1 value: 81 + 50 = 131
+   - (Agent 0 receives item 2, Agent 1 receives items 0 and 1)
+     - Agent 0 value: 61
+     - Agent 1 value: 81 + 83 = 164
+
+5. **Select the Fairest Allocation:**
+   - The allocation where Agent 0 receives item 1 and Agent 1 receives items 0 and 2 yields the smallest difference in total value between the agents (Agent 0: 92, Agent 1: 131).
+
+Here is the final allocation in JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [0, 2]
+}
+```

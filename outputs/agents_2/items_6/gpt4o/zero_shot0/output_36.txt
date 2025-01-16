@@ -1,0 +1,72 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 55.
+
+    0   1   2   3   4   5
+0  90  72  46  13  21  56
+1  94  37  55  31  41  73
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[90 72 46 13 21 56]
+ [94 37 55 31 41 73]]
+Output:
+To fairly allocate the items to the agents, we aim to maximize the total valuation for each agent while ensuring each one receives an integer number of items. Given we have 2 agents and 6 items, each agent should receive 3 items.
+
+Let's calculate the total valuation for a few possible allocations and choose the one that best distributes the value fairly among the agents.
+
+### Possible Allocations:
+
+**Option 1:**
+- Agent 0: Items [0, 1, 5]
+  - Valuation: 90 + 72 + 56 = 218
+- Agent 1: Items [2, 3, 4]
+  - Valuation: 55 + 31 + 41 = 127
+
+**Option 2:**
+- Agent 0: Items [0, 1, 4]
+  - Valuation: 90 + 72 + 21 = 183
+- Agent 1: Items [2, 3, 5]
+  - Valuation: 55 + 31 + 73 = 159
+
+**Option 3:**
+- Agent 0: Items [0, 3, 5]
+  - Valuation: 90 + 13 + 56 = 159
+- Agent 1: Items [1, 2, 4]
+  - Valuation: 37 + 55 + 41 = 133
+
+**Option 4:**
+- Agent 0: Items [0, 2, 4]
+  - Valuation: 90 + 46 + 21 = 157
+- Agent 1: Items [1, 3, 5]
+  - Valuation: 37 + 31 + 73 = 141
+
+### Chosen Allocation:
+
+From the above options, Option 2 seems to be the most balanced in terms of total valuation, as it provides a fair distribution of value between the two agents.
+
+### Final Allocation:
+
+```json
+{
+    "0": [0, 1, 4],
+    "1": [2, 3, 5]
+}
+```
+
+This allocation provides a relatively balanced distribution of total valuations between the two agents while ensuring each agent receives three items.

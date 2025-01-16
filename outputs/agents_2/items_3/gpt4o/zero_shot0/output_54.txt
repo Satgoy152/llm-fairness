@@ -1,0 +1,56 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 73.
+
+    0   1   2
+0  94  86  94
+1   4  44  73
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[94 86 94]
+ [ 4 44 73]]
+Output:
+To fairly allocate the items to the agents, we want to ensure each agent receives items in a way that maximizes their total value while ensuring that each agent receives an integer number of items. Given the valuations provided in the table:
+
+```
+Agent 0: Item 0 = 94, Item 1 = 86, Item 2 = 94
+Agent 1: Item 0 = 4,  Item 1 = 44, Item 2 = 73
+```
+
+Let's break down a possible fair allocation:
+
+1. **Agent 0** has high valuations for all items, but since Agent 1 has a significantly lower valuation for Item 0, we can allocate Item 0 to Agent 0. Between Items 1 and 2, Agent 0 values both items equally (94), so we can choose either to maximize fairness.
+
+2. **Agent 1** has a significantly higher valuation for Item 2 than for Item 1, and thus should receive Item 2 to maximize their total value.
+
+Based on these observations, a fair allocation can be:
+
+- **Agent 0** receives Item 0 and Item 1.
+- **Agent 1** receives Item 2.
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 1],
+    "1": [2]
+}
+```
+
+This allocation ensures each agent receives an integer number of items, with Agent 0 receiving two items they highly value and Agent 1 receiving the item they value the most.

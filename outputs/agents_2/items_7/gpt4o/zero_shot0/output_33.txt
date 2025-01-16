@@ -1,0 +1,65 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 87.
+
+    0   1   2   3   4   5   6
+0  73  79  33  30  26  13   5
+1  71  85  87  20  10  34  82
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[73 79 33 30 26 13  5]
+ [71 85 87 20 10 34 82]]
+Output:
+To fairly allocate the items between the two agents, we can use a method that tries to maximize the total value for both agents while ensuring each agent receives an integer number of items. One commonly used method for such problems is the "maximal marginal value" or "greedy" algorithm, where we allocate items based on the difference in valuations between the agents, aiming to balance the total value received by each.
+
+1. Calculate the difference in valuations for each item between the two agents.
+2. Allocate each item to the agent for whom the item has the higher valuation.
+3. Ensure that the total number of items allocated to each agent is an integer.
+
+Let's perform this allocation based on the provided valuations:
+
+| Item | Agent 0 Value | Agent 1 Value | Difference (Agent 0 - Agent 1) |
+|------|---------------|---------------|--------------------------------|
+| 0    | 73            | 71            | +2                             |
+| 1    | 79            | 85            | -6                             |
+| 2    | 33            | 87            | -54                            |
+| 3    | 30            | 20            | +10                            |
+| 4    | 26            | 10            | +16                            |
+| 5    | 13            | 34            | -21                            |
+| 6    | 5             | 82            | -77                            |
+
+Based on the differences, we can allocate items as follows:
+- Agent 0 gets items where the difference is positive or zero.
+- Agent 1 gets items where the difference is negative.
+
+Thus, the allocation would be:
+
+- Agent 0: [0, 3, 4]
+- Agent 1: [1, 2, 5, 6]
+
+This allocation ensures both agents get an integer number of items and attempts to balance the total value each agent receives.
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [0, 3, 4],
+    "1": [1, 2, 5, 6]
+}
+```

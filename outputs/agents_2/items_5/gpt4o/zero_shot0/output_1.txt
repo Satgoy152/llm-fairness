@@ -1,0 +1,81 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 11.
+
+    0   1   2   3   4
+0  20  68  50   9  42
+1  81  44  11  46  51
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2],
+        "1": [3,4],
+        "2": [5,6,7]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[20 68 50  9 42]
+ [81 44 11 46 51]]
+Output:
+To fairly allocate the items between the two agents, we want to maximize the total value each agent receives. Let's analyze the given valuation table:
+
+```
+    Items
+       0   1   2   3   4
+Agent
+0     20  68  50   9  42
+1     81  44  11  46  51
+```
+
+We can use a method to maximize the value each agent receives. One approach is to use a greedy algorithm that assigns items to the agent who values them the most, ensuring each agent gets an integer number of items. However, since each agent must receive an equal number of items, we will have to balance the allocation.
+
+### Step-by-step Allocation:
+
+1. **Item 0:** 
+   - Agent 0 values it at 20
+   - Agent 1 values it at 81
+   - Assign item 0 to Agent 1
+
+2. **Item 1:**
+   - Agent 0 values it at 68
+   - Agent 1 values it at 44
+   - Assign item 1 to Agent 0
+
+3. **Item 2:**
+   - Agent 0 values it at 50
+   - Agent 1 values it at 11
+   - Assign item 2 to Agent 0
+
+4. **Item 3:**
+   - Agent 0 values it at 9
+   - Agent 1 values it at 46
+   - Assign item 3 to Agent 1
+
+5. **Item 4:**
+   - Agent 0 values it at 42
+   - Agent 1 values it at 51
+   - Assign item 4 to Agent 1
+
+After these assignments, Agent 0 has items [1, 2] and Agent 1 has items [0, 3, 4]. However, the number of items is not equal. To balance, we can reassign one item from Agent 1 to Agent 0:
+
+- Reassign item 4 from Agent 1 to Agent 0. This keeps the allocation fair in terms of item count and maximizes the valuation for both agents.
+
+### Final Allocation:
+
+```json
+{
+    "0": [1, 2, 4],
+    "1": [0, 3]
+}
+```
+
+This allocation ensures that each agent receives an equal number of items (2 items each) while maximizing their respective valuations.
