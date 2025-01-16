@@ -7,14 +7,15 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 import dotenv
 import google.generativeai as genai
-    
+
+import numpy
+
 import pandas as pd
 import json
 
-
 def model_init(model: str, temperature: float):
 
-    dotenv.load_dotenv('.env')
+    dotenv.load_dotenv('.env', override=True)
     try:
         model4 = ChatOpenAI(model="gpt-4", temperature=temperature)
         model4o = ChatOpenAI(model="gpt-4o-2024-08-06", temperature=temperature)
@@ -53,7 +54,7 @@ def model_init(model: str, temperature: float):
     else:
         return None
 
-def query_model(agents: int, items: int, input:str, model, path: str, type_of_dist: str = "uniform"):
+def query_model(agents: int, items: int, input:str, model, path: str, type_of_dist: str = "uniform", prompt_type: str = "zero-shot0", valuation: numpy.ndarray = None):
 
     agents = agents
     items = items
@@ -69,6 +70,9 @@ def query_model(agents: int, items: int, input:str, model, path: str, type_of_di
         file.write("Model: GPT4o\n")
         file.write(f"Type of distribution: {type_of_dist}\n")
         file.write("Temperature: 0.7\n")
+        file.write(f"Prompt type: {prompt_type}\n")
+        file.write(f"Valuation Table:\n")
+        file.write(str(valuation))
         file.write("\n")
         file.write("Output:\n")
         # print(f"Querying model {model}...")

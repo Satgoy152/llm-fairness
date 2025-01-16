@@ -6,12 +6,21 @@ import numpy as np
 import pandas as pd
 import logging
 
-def generate_outputs(agents: int, items: int, distribution: str='uniform', model: str = 'gpt4om', temperature: float = 0.7, prompt_type: str = 'zero-shot', num_outputs: int = 10):
+def generate_outputs(agents: int, items: int, distribution: str='uniform', model: str = 'gpt4om', temperature: float = 0.7, prompt_type: str = 'zero-shot0', num_outputs: int = 10):
     path = f"outputs/agents_{agents}/items_{items}/{model}/{prompt_type}"
 
     # create log file
-    with open(f"{path}/log.txt", "w") as file:
-        file.write("")
+    try:
+        with open(f"{path}/log.txt", "w") as file:
+            file.write("")
+    except FileNotFoundError:
+        print(f"Path {path} not found")
+        # create new directory
+        import os
+        os.makedirs(path)
+        with open(f"{path}/log.txt", "w") as file:
+            file.write("")
+    
     logging.basicConfig(filename=f"{path}/log.txt", level=logging.INFO)
 
     logging.info(f"Generating outputs for {agents} agents and {items} items with a {distribution} distribution using model {model} with temperature {temperature} and prompt type {prompt_type}...")
@@ -48,7 +57,7 @@ def generate_outputs(agents: int, items: int, distribution: str='uniform', model
         input = generate_prompts(agents, items, table, prompt_type=prompt_type)
 
         # 3 generate the outputs
-        query_model(agents, items, input, model, path = f"{path}/output_{i+1}.txt", type_of_dist=distribution)
+        query_model(agents, items, input, model, path = f"{path}/output_{i+1}.txt", type_of_dist=distribution, prompt_type=prompt_type, valuation=table.values)
 
         # 4 extract the json
         allocation = extract_json(f"{path}/output_{i+1}.txt")
@@ -62,6 +71,27 @@ def generate_outputs(agents: int, items: int, distribution: str='uniform', model
     
     logging.info(f"Outputs generated for {agents} agents and {items} items with a {distribution} distribution using model {model} with temperature {temperature} and prompt type {prompt_type}...")
 
+    # # extracting and evaluating the outputs
+    # logging.info("Extracting and evaluating outputs...")
+    
+    # envy_matrix_clipped, envy_matrix_unclipped = calculate_envy(valuation_tables, allocation_matrices, agents, items)
+    # logging.info("Envy calculated")
+    return valuation_tables, allocation_matrices
+
+    # evaluate_envy(envy_matrix_clipped, envy_matrix_unclipped, agents, items, distribution, f"{path}", num_outputs)
+    # logging.info("Envy evaluated and saved")
+
+
+def evaluate_outputs(agents: int, items: int, distribution: str='uniform', model: str = 'gpt4om', temperature: float = 0.7, prompt_type: str = 'zero-shot0', num_outputs: int = 10, valuation_tables: np.ndarray = None, allocation_matrices: np.ndarray = None):
+    path = f"outputs/agents_{agents}/items_{items}/{model}/{prompt_type}"
+
+    # create log file
+    # with open(f"{path}/log.txt", "w") as file:
+    #     file.write("")
+    logging.basicConfig(filename=f"{path}/log.txt", level=logging.INFO)
+
+    logging.info(f"Evaluating outputs for {agents} agents and {items} items with a {distribution} distribution using model {model} with temperature {temperature} and prompt type {prompt_type}...")
+
     # extracting and evaluating the outputs
     logging.info("Extracting and evaluating outputs...")
     
@@ -70,7 +100,7 @@ def generate_outputs(agents: int, items: int, distribution: str='uniform', model
 
     evaluate_envy(envy_matrix_clipped, envy_matrix_unclipped, agents, items, distribution, f"{path}", num_outputs)
     logging.info("Envy evaluated and saved")
-    
+
 
     
 
