@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import pandas as pd
+import os
 
 def calculate_envy(valuation_tables: np.ndarray, allocation_matrices, num_agents: int, num_items: int):
     # we are using clipped valuations to avoid negative values
@@ -21,11 +22,18 @@ def calculate_envy(valuation_tables: np.ndarray, allocation_matrices, num_agents
 def evaluate_envy(envy_matrix_c, envy_matrix_u, agents, items, type_of_dist, path, num_outputs):
 
     # get the max and sum of every column
+    sum_envy = envy_matrix_c.sum(axis=1)
+    sum_envy_unclipped = envy_matrix_u.sum(axis=1)
+
+    # set the diagonals to infinity for max_envy
+    n, m, _ = envy_matrix_u.shape
+    i, j = np.arange(m), np.arange(m)
+    # Use advanced indexing to set the diagonals
+    envy_matrix_u[:, i, j] = -np.inf
+
     max_envy = envy_matrix_c.max(axis=1)
     max_envy_unclipped = envy_matrix_u.max(axis=1)
 
-    sum_envy = envy_matrix_c.sum(axis=1)
-    sum_envy_unclipped = envy_matrix_u.sum(axis=1)
 
     test_id_max = num_outputs
     distribution = type_of_dist
@@ -47,7 +55,12 @@ def evaluate_envy(envy_matrix_c, envy_matrix_u, agents, items, type_of_dist, pat
     envy_freeness['Max_Envies_Unclipped'] = max_envy_unclipped.max(axis=1)
     envy_freeness['Sum_Envies'] = sum_envy.sum(axis=1)
     envy_freeness['Sum_Envies_Unclipped'] = sum_envy_unclipped.sum(axis=1)
-    print(envy_freeness['Max_Envies'] <= 0)
     envy_freeness['Envy_Freeness'] = envy_freeness['Max_Envies'] <= 0
 
-    envy_freeness.to_csv(path + '/envy_output.csv', index=False)
+    if os.path.exists(path + '/envy_output.csv'):
+        envy_freeness.to_csv(path + '/envy_output.csv', mode='a', index=False, header=False)
+    # check if csv file exists, if so append to it
+    else:
+        print("File not found, creating new file...")
+        print(envy_freeness)
+        envy_freeness.to_csv(path + '/envy_output.csv', index=False)
