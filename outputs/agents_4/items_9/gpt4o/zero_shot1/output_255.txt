@@ -1,0 +1,54 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 33.
+
+    0   1   2   3   4   5   6   7   8
+0  90  20  87  26  29  17  46  99  32
+1   7  33  33  97  99  44  90  75  84
+2  84   0  80   7  66  64  56  96  72
+3  27  73  23  47  70  91  33  43  28
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[90 20 87 26 29 17 46 99 32]
+ [ 7 33 33 97 99 44 90 75 84]
+ [84  0 80  7 66 64 56 96 72]
+ [27 73 23 47 70 91 33 43 28]]
+Output:
+To fairly allocate the items among the agents, we aim to ensure each gets a reasonable value while distributing the items as equitably as possible. Considering the valuations, we can distribute the items based on maximizing total value for each agent while ensuring all items are allocated.
+
+Here's a possible allocation:
+
+1. Agent 0 values item 7 the most (99), followed by item 0 (90). Allocating these two high-value items to Agent 0.
+2. Agent 1 highly values items 4 (99) and 3 (97). Allocating these items to Agent 1.
+3. Agent 2 values item 7 (96), but it's already allocated to Agent 0. The next highest values are items 0 (84) and 6 (56). Allocating these to Agent 2.
+4. Agent 3 values item 5 (91) the most. Allocating item 5 to Agent 3. The next highest value is item 1 (73). Allocating item 1 to Agent 3 as well.
+5. Allocate the remaining item 8 to Agent 1, as it has a relatively high value of 84 for Agent 1.
+
+Thus, each agent gets at least two items, and all items are allocated:
+
+```json
+{
+    "0": [0, 7],
+    "1": [3, 4, 8],
+    "2": [2, 6],
+    "3": [1, 5]
+}
+```

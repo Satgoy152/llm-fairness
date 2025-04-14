@@ -1,0 +1,76 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 18.
+
+    0   1   2   3   4   5   6   7   8
+0  66  63   0  17  40  50  90  14  98
+1  99  12  18   6  43  38  15  28   9
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[66 63  0 17 40 50 90 14 98]
+ [99 12 18  6 43 38 15 28  9]]
+Output:
+To fairly allocate the items between the two agents, we can use a method that considers each agent's valuations to maximize fairness. One way to do this is by ensuring that the total value each agent receives is as balanced as possible.
+
+Let's calculate the total valuations for each item by each agent:
+
+- Agent 0: [66, 63, 0, 17, 40, 50, 90, 14, 98]
+- Agent 1: [99, 12, 18, 6, 43, 38, 15, 28, 9]
+
+Next, we'll iteratively allocate the items, trying to balance the total value each agent receives:
+
+1. Sort items by the difference in value for each agent:
+
+   - Item 0: 99 (Agent 1) - 66 (Agent 0) = 33
+   - Item 1: 12 (Agent 1) - 63 (Agent 0) = -51
+   - Item 2: 18 (Agent 1) - 0 (Agent 0) = 18
+   - Item 3: 6 (Agent 1) - 17 (Agent 0) = -11
+   - Item 4: 43 (Agent 1) - 40 (Agent 0) = 3
+   - Item 5: 38 (Agent 1) - 50 (Agent 0) = -12
+   - Item 6: 15 (Agent 1) - 90 (Agent 0) = -75
+   - Item 7: 28 (Agent 1) - 14 (Agent 0) = 14
+   - Item 8: 9 (Agent 1) - 98 (Agent 0) = -89
+
+   Sorting by the absolute difference (largest impact first):
+
+   - Item 8: 89
+   - Item 6: 75
+   - Item 1: 51
+   - Item 0: 33
+   - Item 2: 18
+   - Item 7: 14
+   - Item 5: 12
+   - Item 3: 11
+   - Item 4: 3
+
+2. Allocate items to balance total valuation:
+
+   - Agent 0: [8, 6, 1] (98 + 90 + 63 = 251)
+   - Agent 1: [0, 2, 3, 4, 5, 7] (99 + 18 + 6 + 43 + 38 + 28 = 232)
+
+Now, let's present the allocations:
+
+```json
+{
+    "0": [8, 6, 1],
+    "1": [0, 2, 3, 4, 5, 7]
+}
+```
+
+This allocation attempts to balance the total value each agent receives while ensuring each agent receives only whole items.

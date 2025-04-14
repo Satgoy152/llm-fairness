@@ -1,0 +1,61 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 87.
+
+    0   1   2   3   4   5   6   7
+0  83  26  38  13  63  20  78  21
+1  44  44  87  12  57  31  84  45
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[83 26 38 13 63 20 78 21]
+ [44 44 87 12 57 31 84 45]]
+Output:
+To fairly allocate the items between the two agents, we can use the concept of maximizing the total value each agent receives. We will aim to ensure that both agents receive a nearly equal total value, if possible.
+
+Let's calculate the total value for each agent if we allocate items one by one based on maximizing their individual valuations:
+
+Agent 0's valuations: [83, 26, 38, 13, 63, 20, 78, 21]
+Agent 1's valuations: [44, 44, 87, 12, 57, 31, 84, 45]
+
+We'll allocate items as follows, trying to balance the value received by each:
+
+1. **Item 2**: Agent 1 values it at 87, which is high, so allocate to Agent 1.
+2. **Item 6**: Agent 1 values it at 84, higher than Agent 0's 78, so allocate to Agent 1.
+3. **Item 0**: Agent 0 values it at 83, higher than Agent 1's 44, so allocate to Agent 0.
+4. **Item 4**: Agent 0 values it at 63, higher than Agent 1's 57, so allocate to Agent 0.
+5. **Item 1**: Both value it equally (44), but Agent 0 needs more value, so allocate to Agent 0.
+6. **Item 7**: Similar reasoning, allocate to Agent 1 since it balances the total value more.
+7. **Item 5**: Allocate to Agent 1 as it balances the total value more.
+8. **Item 3**: Allocate to Agent 0 as it balances the total value more.
+
+Now, let's summarize the allocations:
+
+- Agent 0 receives items: [0, 1, 3, 4]
+- Agent 1 receives items: [2, 5, 6, 7]
+
+Here is the final allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 1, 3, 4],
+    "1": [2, 5, 6, 7]
+}
+```
+
+This allocation aims to balance the total valuation each agent receives as fairly as possible.

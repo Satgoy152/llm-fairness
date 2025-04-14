@@ -1,0 +1,71 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 77.
+
+    0   1   2   3   4
+0  53  78  83  80  67
+1  39  40  77  96  16
+2  63  68  58   1  50
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[53 78 83 80 67]
+ [39 40 77 96 16]
+ [63 68 58  1 50]]
+Output:
+To fairly allocate the items among the agents, we can use a method that tries to maximize the total valuation for each agent while ensuring each agent receives an integer number of items.
+
+Let's proceed with the allocation:
+
+1. **Agent 0**:
+   - Valuations: [53, 78, 83, 80, 67]
+
+2. **Agent 1**:
+   - Valuations: [39, 40, 77, 96, 16]
+
+3. **Agent 2**:
+   - Valuations: [63, 68, 58, 1, 50]
+
+A possible approach is to first assign the highest valued items to the agents who value them the most, while ensuring that each agent gets at least one item.
+
+- Item 2 has the highest valuation by Agent 0: 83
+- Item 3 has the highest valuation by Agent 1: 96
+- Item 1 has the highest valuation by Agent 2: 68
+
+Now we have allocated items 2, 3, and 1. We will allocate the remaining items 0 and 4:
+
+- Item 0 has the highest remaining valuation by Agent 2: 63
+- Item 4 has the highest remaining valuation by Agent 0: 67
+
+The allocations are as follows:
+
+- Agent 0: Items [2, 4]
+- Agent 1: Item [3]
+- Agent 2: Items [0, 1]
+
+The JSON allocation is:
+
+```json
+{
+    "0": [2, 4],
+    "1": [3],
+    "2": [0, 1]
+}
+```

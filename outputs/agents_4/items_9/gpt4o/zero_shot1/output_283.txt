@@ -1,0 +1,60 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 60.
+
+    0   1   2   3   4   5   6   7   8
+0  14  94  68  81  35  38   8  99  74
+1  92   5  60  48  11   9   7  69  73
+2  40  35   6  74  22  89  71  22  46
+3  57  76  14  32  40  79  98  40  38
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[14 94 68 81 35 38  8 99 74]
+ [92  5 60 48 11  9  7 69 73]
+ [40 35  6 74 22 89 71 22 46]
+ [57 76 14 32 40 79 98 40 38]]
+Output:
+To fairly allocate the items among the agents while considering their valuations, we aim to distribute items such that each agent receives a similar total valuation. We'll do this by examining the valuations and trying to balance them as evenly as possible.
+
+Here's one possible allocation:
+
+- Agent 0 has high valuations for items 1 and 3.
+- Agent 1 has high valuations for items 0 and 8.
+- Agent 2 has high valuations for items 5 and 6.
+- Agent 3 has a high valuation for item 7.
+
+Allocations:
+
+- Agent 0: Items 1, 3 (total valuation: 94 + 81 = 175)
+- Agent 1: Items 0, 8 (total valuation: 92 + 73 = 165)
+- Agent 2: Items 5, 6 (total valuation: 89 + 71 = 160)
+- Agent 3: Items 2, 4, 7 (total valuation: 14 + 40 + 40 = 94)
+
+This distribution ensures that each agent gets a roughly equivalent total valuation. Now, let's format this into the required JSON format:
+
+```json
+{
+    "0": [1, 3],
+    "1": [0, 8],
+    "2": [5, 6],
+    "3": [2, 4, 7]
+}
+```

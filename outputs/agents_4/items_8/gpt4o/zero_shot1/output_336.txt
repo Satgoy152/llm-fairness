@@ -1,0 +1,65 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 63.
+
+    0   1   2   3   4   5   6   7
+0  26  97  47  14  48  68  58  19
+1  22   1  63  42  58  85  22  50
+2  25   4  58  14  37  58  48  56
+3  82  82  91  93  82  36  47  21
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[26 97 47 14 48 68 58 19]
+ [22  1 63 42 58 85 22 50]
+ [25  4 58 14 37 58 48 56]
+ [82 82 91 93 82 36 47 21]]
+Output:
+To fairly allocate the items among the agents, we should consider each agent's valuations and try to distribute items to maximize total satisfaction while ensuring each agent receives an integer number of items. Given that there are 4 agents and 8 items, each agent should ideally receive 2 items. Here's a possible allocation:
+
+1. **Agent 0**: 
+   - Items with highest valuations: Item 1 (97), Item 5 (68)
+
+2. **Agent 1**:
+   - Items with highest valuations: Item 5 (85), Item 4 (58)
+
+3. **Agent 2**:
+   - Items with highest valuations: Item 2 (58), Item 6 (48)
+
+4. **Agent 3**:
+   - Items with highest valuations: Item 3 (93), Item 0 (82)
+
+Now, we ensure that each item is only allocated once and adjust if necessary:
+
+- **Agent 0**: Receives Item 1 (97) and Item 6 (58)
+- **Agent 1**: Receives Item 5 (85) and Item 4 (58)
+- **Agent 2**: Receives Item 2 (58) and Item 7 (56)
+- **Agent 3**: Receives Item 3 (93) and Item 0 (82)
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [1, 6],
+    "1": [5, 4],
+    "2": [2, 7],
+    "3": [3, 0]
+}
+```

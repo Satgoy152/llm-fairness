@@ -75,6 +75,8 @@ def query_model(agents: int, items: int, input:str, model, path: str, type_of_di
         file.write(str(valuation))
         file.write("\n")
         file.write("Output:\n")
+
+
         # print(f"Querying model {model}...")
         output = model.invoke({"valuation": input})
         file.write(output)
@@ -102,3 +104,4 @@ def extract_json(file_path: str) -> dict:
     output_dict = {int(k): v for k, v in output_json.items()}
 
     return output_dict
+

@@ -1,0 +1,60 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 42.
+
+    0   1   2   3   4
+0  93  47  22  57  59
+1  52  35  42   7  87
+2   7  98  40  46  52
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[93 47 22 57 59]
+ [52 35 42  7 87]
+ [ 7 98 40 46 52]]
+Output:
+To fairly allocate the items among the agents, we can use a simple method to maximize the total valuation. One approach is to assign items to the agents who value them the most, ensuring that each agent can receive some portion of the items.
+
+Given the table of valuations:
+
+```
+    0   1   2   3   4
+0  93  47  22  57  59
+1  52  35  42   7  87
+2   7  98  40  46  52
+```
+
+We will allocate the items as follows:
+
+1. Item 0: Agent 0 values it the most at 93.
+2. Item 1: Agent 2 values it the most at 98.
+3. Item 2: Agent 1 values it the most at 42.
+4. Item 3: Agent 0 values it the most at 57.
+5. Item 4: Agent 1 values it the most at 87.
+
+Here's the allocation in the required JSON format:
+
+```json
+{
+    "0": [0, 3],
+    "1": [2, 4],
+    "2": [1]
+}
+```

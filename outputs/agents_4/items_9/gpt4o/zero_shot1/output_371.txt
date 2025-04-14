@@ -1,0 +1,63 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 47.
+
+    0   1   2   3   4   5   6   7   8
+0  43  62  71  66  39  67  45  10  78
+1  16  43  47  67  38  42  13   4  55
+2  53  47  67   8  92  84  65  48  85
+3  63  24  66  34  27  56  25  12  27
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[43 62 71 66 39 67 45 10 78]
+ [16 43 47 67 38 42 13  4 55]
+ [53 47 67  8 92 84 65 48 85]
+ [63 24 66 34 27 56 25 12 27]]
+Output:
+To fairly allocate the items among the agents, we aim to maximize the overall satisfaction of the agents based on their valuations. We strive for each agent to receive items they value highly while ensuring that all items are allocated. There are multiple strategies for allocation, but one common approach is to use a greedy algorithm, where we assign items to the agent who values them the most, ensuring each agent gets at least one item if possible.
+
+Here's one possible allocation:
+
+1. Agent 0 values item 8 the highest at 78.
+2. Agent 1 values item 3 the highest at 67.
+3. Agent 2 values item 4 the highest at 92.
+4. Agent 3 values item 0 the highest at 63.
+
+After these initial allocations, we continue by assigning the remaining items to maximize the remaining values:
+
+5. Agent 2 also values item 5 highly at 84.
+6. Agent 0 values item 2 highly at 71.
+7. Agent 0 values item 1 highly at 62.
+8. Agent 2 values item 6 highly at 65.
+9. Agent 1 values item 7 highest among the remaining options at 4.
+
+This allocation attempts to maximize the valuations for each agent while ensuring that all items are distributed.
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [8, 2, 1],
+    "1": [3, 7],
+    "2": [4, 5, 6],
+    "3": [0]
+}
+```

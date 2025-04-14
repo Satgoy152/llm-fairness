@@ -1,0 +1,59 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 79.
+
+    0   1   2   3   4   5   6   7
+0  18  71   2  33  16  26  97  77
+1  79  33  79  78  27  56  60  14
+2  53  45  16  45  11  27  80  73
+3  41  95  62   4  29  78  36  49
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[18 71  2 33 16 26 97 77]
+ [79 33 79 78 27 56 60 14]
+ [53 45 16 45 11 27 80 73]
+ [41 95 62  4 29 78 36 49]]
+Output:
+To fairly allocate the items among the agents, we can use a simple heuristic approach, such as maximizing the overall satisfaction by assigning each item to the agent who values it the most. This approach aims to ensure that items go to the agents who value them the most, thus maximizing the overall utility.
+
+Let's evaluate each item and assign it to the agent with the highest valuation for that item:
+
+- Item 0: Agent 1 has the highest valuation (79).
+- Item 1: Agent 3 has the highest valuation (95).
+- Item 2: Agent 0 has the highest valuation (2).
+- Item 3: Agent 1 has the highest valuation (78).
+- Item 4: Agent 1 has the highest valuation (27).
+- Item 5: Agent 3 has the highest valuation (78).
+- Item 6: Agent 0 has the highest valuation (97).
+- Item 7: Agent 0 has the highest valuation (77).
+
+Now, let's present these allocations in the required JSON format:
+
+```json
+{
+    "0": [2, 6, 7],
+    "1": [0, 3, 4],
+    "2": [],
+    "3": [1, 5]
+}
+```
+
+This allocation ensures that all items are fairly distributed based on the agents' valuations, with each agent receiving an integer number of items.

@@ -1,0 +1,82 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+
+    0   1   2   3   4   5   6   7   8
+0   1  76  71  35   7  92  33  15  75
+1  60  71  34  75  10  42  24  81  59
+2  44  12  44  73  83  43  79  48   5
+3  44  81  96  74  36  49  43  95  66
+4  68  11  41  89  51  57  96  18  40
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[ 1 76 71 35  7 92 33 15 75]
+ [60 71 34 75 10 42 24 81 59]
+ [44 12 44 73 83 43 79 48  5]
+ [44 81 96 74 36 49 43 95 66]
+ [68 11 41 89 51 57 96 18 40]]
+Output:
+To fairly allocate items to agents based on their valuations, we can try to ensure that each agent gets items that maximize their total value while also distributing the items fairly among the agents. One approach is to allocate items to the agent who values them the most, while ensuring that each agent gets at least one item if possible.
+
+Starting the allocation process:
+
+1. **Assign Item 5 to Agent 0**: 
+   - Highest value in the column is 92 by Agent 0.
+
+2. **Assign Item 1 to Agent 3**: 
+   - Highest value in the column is 81 by Agent 3.
+
+3. **Assign Item 2 to Agent 3**: 
+   - Highest value in the column is 96 by Agent 3.
+
+4. **Assign Item 7 to Agent 3**: 
+   - Highest value in the column is 95 by Agent 3.
+
+5. **Assign Item 3 to Agent 4**: 
+   - Highest value in the column is 89 by Agent 4.
+
+6. **Assign Item 4 to Agent 2**: 
+   - Highest value in the column is 83 by Agent 2.
+
+7. **Assign Item 6 to Agent 4**: 
+   - Highest value in the column is 96 by Agent 4.
+
+8. **Assign Item 8 to Agent 0**: 
+   - Highest value in the column is 75 by Agent 0.
+
+9. **Assign Item 0 to Agent 1**: 
+   - Highest value in the column is 60 by Agent 1.
+
+Now, checking if all items are allocated and each agent has at least one item, we have the following allocation:
+
+```json
+{
+    "0": [5, 8],
+    "1": [0],
+    "2": [4],
+    "3": [1, 2, 7],
+    "4": [3, 6]
+}
+```
+
+This allocation ensures that all 9 items are allocated and each agent has at least one item.

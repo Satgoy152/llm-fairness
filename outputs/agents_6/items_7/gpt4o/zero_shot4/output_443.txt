@@ -1,0 +1,64 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 39.
+
+    0   1   2   3   4   5   6
+0   9  19  96  98  13  56  99
+1  69  27  39  77  36   1  40
+2  96  52  48  14  12  98  12
+3   3  91  69   0  72  33  24
+4  73   7   7  77  62  49  82
+5  33  95  91  38  26  20  86
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[ 9 19 96 98 13 56 99]
+ [69 27 39 77 36  1 40]
+ [96 52 48 14 12 98 12]
+ [ 3 91 69  0 72 33 24]
+ [73  7  7 77 62 49 82]
+ [33 95 91 38 26 20 86]]
+Output:
+To fairly allocate the items among the agents, we can aim to distribute the items such that each agent receives items they value highly, while ensuring that every item is allocated and each agent gets at least one item. Here's a potential allocation based on maximizing the value for each agent:
+
+- Agent 0 seems to value item 6 the most.
+- Agent 1 values item 0 highly.
+- Agent 2 values item 0 most but since it's already taken, item 5 is the next best.
+- Agent 3 values item 1 the most.
+- Agent 4 values item 6 significantly, but since it's taken, item 3 is the next best.
+- Agent 5 values item 1 the most, but since it’s taken, item 2 is the next highest value.
+
+Using this strategy, the allocation can be:
+
+```json
+{
+    "0": [6],
+    "1": [0],
+    "2": [5],
+    "3": [1],
+    "4": [3],
+    "5": [2, 4]
+}
+```
+
+This allocation ensures that each agent gets at least one item, every item is assigned, and we try to give each agent their most valued available item.

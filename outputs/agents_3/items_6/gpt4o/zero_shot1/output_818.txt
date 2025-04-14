@@ -1,0 +1,71 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 84.
+
+    0   1   2   3   4   5
+0  36  68  18  52   8  83
+1  35  15  84  26  62  78
+2  86  45  34  52  18  62
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[36 68 18 52  8 83]
+ [35 15 84 26 62 78]
+ [86 45 34 52 18 62]]
+Output:
+To fairly allocate the items among the agents, we can use a strategy that maximizes the total valuation each agent receives while ensuring each agent gets at least one item. We will consider the valuations and try to distribute the items in a way that balances the total valuation for each agent.
+
+Let's consider the following allocation strategy:
+
+- Agent 0 will receive items that have relatively high valuations compared to other agents.
+- Agent 1 will receive items that maximize their benefit from the leftover items.
+- Agent 2 will get items that they value highly but are not preferred by other agents.
+
+Given the table of valuations:
+
+| Items \ Agents | 0  | 1  | 2  |
+|----------------|----|----|----|
+| 0              | 36 | 35 | 86 |
+| 1              | 68 | 15 | 45 |
+| 2              | 18 | 84 | 34 |
+| 3              | 52 | 26 | 52 |
+| 4              | 8  | 62 | 18 |
+| 5              | 83 | 78 | 62 |
+
+### Allocation Process:
+
+1. **Assign item 0 to Agent 2**: Agent 2 values this item the most at 86.
+2. **Assign item 1 to Agent 0**: Agent 0 values this item the most at 68.
+3. **Assign item 2 to Agent 1**: Agent 1 values this item the most at 84.
+4. **Assign item 3 to Agent 0**: Agent 0 and Agent 2 both value this item equally at 52, but Agent 0 has fewer items so far.
+5. **Assign item 4 to Agent 1**: Agent 1 values this item the most at 62.
+6. **Assign item 5 to Agent 2**: Agent 0 values this item the most at 83, but Agent 2 has fewer items so far.
+
+### Final Allocations:
+
+```json
+{
+    "0": [1, 3],
+    "1": [2, 4],
+    "2": [0, 5]
+}
+```
+
+This allocation ensures that all items are distributed among the agents while trying to maximize the total valuation for each agent.

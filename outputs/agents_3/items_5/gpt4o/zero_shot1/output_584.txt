@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 52.
+
+    0   1   2   3   4
+0   6  97  12  29  45
+1  33  92  52  37  78
+2  32  74  31  71   1
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[ 6 97 12 29 45]
+ [33 92 52 37 78]
+ [32 74 31 71  1]]
+Output:
+To fairly allocate the items to the agents based on their valuations, we need to consider the values each agent places on the items and try to maximize overall satisfaction. The goal is to distribute the items such that each agent receives an integer number of items, and all items are allocated.
+
+Let's examine the table of valuations:
+
+```
+    0   1   2   3   4
+0   6  97  12  29  45
+1  33  92  52  37  78
+2  32  74  31  71   1
+```
+
+We can use a method that maximizes each agent's value by considering the highest valuation first and assigning items accordingly, while ensuring all items are allocated and agents receive an integer number of items.
+
+One possible allocation strategy could be:
+
+1. Assign item 1 to agent 0, because agent 0 values it the most (97).
+2. Assign item 4 to agent 1, because agent 1 values it highly (78).
+3. Assign item 3 to agent 2, because agent 2 values it highly (71).
+4. Assign item 2 to agent 1, because agent 1 values it the most after item 4 (52).
+5. Assign item 0 to agent 2, since agent 2 values it more than agent 0 (32 vs 6).
+
+This allocation distributes the items as follows:
+
+- Agent 0 receives item 1.
+- Agent 1 receives items 2 and 4.
+- Agent 2 receives items 0 and 3.
+
+Now, presenting the allocations in the required JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [2, 4],
+    "2": [0, 3]
+}
+```

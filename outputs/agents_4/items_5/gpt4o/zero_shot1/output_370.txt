@@ -1,0 +1,57 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 37.
+
+    0   1   2   3   4
+0  44  91  38  36   4
+1   1  59  37  77   7
+2  54  59  35  75  58
+3  80   0  69  50  97
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[44 91 38 36  4]
+ [ 1 59 37 77  7]
+ [54 59 35 75 58]
+ [80  0 69 50 97]]
+Output:
+To fairly allocate the 5 items among the 4 agents, we will aim to maximize each agent's total valuation based on their individual preferences, while ensuring that each agent receives an integer number of items and that all items are allocated.
+
+Here is one possible allocation:
+
+- Agent 0: Value is highest for item 1 (91).
+- Agent 1: Value is highest for item 3 (77).
+- Agent 2: Value is highest for item 0 (54).
+- Agent 3: Value is highest for item 4 (97).
+
+Each of these agents receives one item, and one item remains: item 2. We can allocate item 2 to the agent with the next highest preference for it, which is agent 3 with a value of 69.
+
+Now, let's present the allocations in the requested JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [3],
+    "2": [0],
+    "3": [4, 2]
+}
+``` 
+
+This allocation ensures all items are distributed, and each agent receives items according to their valuations as much as possible.

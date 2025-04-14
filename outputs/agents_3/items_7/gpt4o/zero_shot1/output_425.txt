@@ -1,0 +1,59 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 7.
+
+    0   1   2   3   4   5   6
+0  33  17   6  32   1  93  51
+1  13  56   7  32  83  24   2
+2   8  38  52  20  19  48  64
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[33 17  6 32  1 93 51]
+ [13 56  7 32 83 24  2]
+ [ 8 38 52 20 19 48 64]]
+Output:
+To fairly allocate the items among the agents, we need to find a way to distribute the items such that the total value each agent receives is as balanced as possible. This often involves assigning items based on the agents' valuations in a way that attempts to maximize the minimum satisfaction (or minimize the maximum dissatisfaction).
+
+Here's a possible allocation:
+
+- Agent 0 values item 5 the highest (93), so assign item 5 to agent 0.
+- Agent 1 values item 4 the highest (83), so assign item 4 to agent 1.
+- Agent 2 values item 6 the highest (64), so assign item 6 to agent 2.
+- Next, assign the remaining items by considering each agent's next highest valued item.
+
+Allocating the remaining items:
+
+- Agent 0's next highest value is item 3 (32), assign item 3 to agent 0.
+- Agent 1's next highest value is item 1 (56), assign item 1 to agent 1.
+- Agent 2's next highest value is item 2 (52), assign item 2 to agent 2.
+- The only remaining item is item 0, which agent 0 values the highest among the remaining options, so assign item 0 to agent 0.
+
+This allocation attempts to balance the total value each agent receives as best as possible given the constraints.
+
+The final allocation in JSON format is:
+
+```json
+{
+    "0": [0, 3, 5],
+    "1": [1, 4],
+    "2": [2, 6]
+}
+```

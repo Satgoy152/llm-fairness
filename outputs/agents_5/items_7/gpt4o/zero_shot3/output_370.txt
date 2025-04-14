@@ -1,0 +1,83 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 13.
+
+    0   1   2   3   4   5   6
+0  96  97  64  19  78  24  79
+1  93  27  13  84  87  81  55
+2  52  78  66  86  89  70  98
+3  91  13  78  78  28  32  82
+4  34   2  35  39  98  95  80
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[96 97 64 19 78 24 79]
+ [93 27 13 84 87 81 55]
+ [52 78 66 86 89 70 98]
+ [91 13 78 78 28 32 82]
+ [34  2 35 39 98 95 80]]
+Output:
+To fairly allocate the items among the agents, we should aim to maximize the total value each agent receives while ensuring each agent receives a fair distribution of items. This often involves trying to assign each item to the agent who values it the most while ensuring each agent ends up with a relatively balanced number of items.
+
+Let's evaluate the best allocation based on the given table:
+
+1. Item 0:
+   - Best value is for Agent 0 with 96.
+   
+2. Item 1:
+   - Best value is for Agent 0 with 97.
+
+3. Item 2:
+   - Best value is for Agent 3 with 78.
+
+4. Item 3:
+   - Best value is for Agent 2 with 86.
+
+5. Item 4:
+   - Best value is for Agent 4 with 98.
+
+6. Item 5:
+   - Best value is for Agent 1 with 81.
+
+7. Item 6:
+   - Best value is for Agent 2 with 98.
+
+Allocate items to agents:
+- Agent 0: Items [0, 1]
+- Agent 1: Item [5]
+- Agent 2: Items [3, 6]
+- Agent 3: Item [2]
+- Agent 4: Item [4]
+
+This allocation ensures each item is allocated to the agent who values it the highest, while also distributing the items fairly across all agents.
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 1],
+    "1": [5],
+    "2": [3, 6],
+    "3": [2],
+    "4": [4]
+}
+```

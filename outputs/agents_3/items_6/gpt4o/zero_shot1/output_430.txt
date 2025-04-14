@@ -1,0 +1,66 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 88.
+
+    0   1   2   3   4   5
+0  98  73  34  45  84  65
+1  79  80  88  84  44  39
+2  84  81  48  86  25  88
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[98 73 34 45 84 65]
+ [79 80 88 84 44 39]
+ [84 81 48 86 25 88]]
+Output:
+To fairly allocate the items among the agents, we can maximize the total valuation by assigning items to the agents who value them the most. This process involves examining the valuation table and ensuring each agent receives an integer number of items with a total of 6 items allocated. 
+
+Here's the approach:
+
+1. Identify the highest value for each item across all agents.
+2. Assign each item to the agent who values it the most.
+3. Ensure no agent receives more than 6 items in total.
+
+Let's allocate the items:
+
+- Item 0: Agent 0 values it the highest at 98.
+- Item 1: Agent 2 values it the highest at 81.
+- Item 2: Agent 1 values it the highest at 88.
+- Item 3: Agent 2 values it the highest at 86.
+- Item 4: Agent 0 values it the highest at 84.
+- Item 5: Agent 2 values it the highest at 88.
+
+Now, let's check the allocations:
+
+- Agent 0: Items 0 and 4
+- Agent 1: Item 2
+- Agent 2: Items 1, 3, and 5
+
+The allocations can be represented as follows:
+
+```json
+{
+    "0": [0, 4],
+    "1": [2],
+    "2": [1, 3, 5]
+}
+```
+
+This allocation ensures all items are fairly distributed and maximizes the valuation for each agent.

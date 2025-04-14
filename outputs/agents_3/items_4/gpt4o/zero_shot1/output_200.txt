@@ -1,0 +1,50 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 8.
+
+    0   1   2   3
+0  20  74  21  40
+1  74  48   8  40
+2  57  49  16  74
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 4 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[20 74 21 40]
+ [74 48  8 40]
+ [57 49 16 74]]
+Output:
+To fairly allocate the items among the agents based on their valuations, we'll aim to distribute the items such that each agent receives items they value highly, while ensuring all items are allocated. Here's one possible allocation strategy:
+
+1. **Agent 0** values item 1 the highest at 74, which is also the highest valuation for item 1 across all agents. Assign item 1 to Agent 0.
+2. **Agent 1** values item 0 the highest at 74, which is also the highest valuation for item 0 across all agents. Assign item 0 to Agent 1.
+3. **Agent 2** values item 3 the highest at 74, which is also the highest valuation for item 3 across all agents. Assign item 3 to Agent 2.
+4. The remaining item, item 2, has the highest valuation by Agent 0 (21), followed by Agent 2 (16), and lastly Agent 1 (8). Assign item 2 to Agent 0 as they value it the most among the remaining unallocated agents.
+
+Given these considerations, the allocations can be structured as follows:
+
+```json
+{
+    "0": [1, 2],
+    "1": [0],
+    "2": [3]
+}
+```
+
+This allocation ensures each agent receives items based on their highest preferences while all items are assigned.

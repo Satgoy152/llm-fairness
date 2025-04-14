@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 88.
+
+    0   1   2   3   4   5   6
+0  60  82  98   8  48  11  16
+1  89  12  88  39  50  82  59
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[60 82 98  8 48 11 16]
+ [89 12 88 39 50 82 59]]
+Output:
+To fairly allocate the items between the two agents while aiming for envy-freeness, we need to consider the valuations each agent has for each item. Our goal is to allocate the items in a way that maximizes each agent's satisfaction based on their valuations, while ensuring that all items are allocated.
+
+Let's analyze the total valuation each agent has across all items:
+
+- Agent 0's total valuation: 60 + 82 + 98 + 8 + 48 + 11 + 16 = 323
+- Agent 1's total valuation: 89 + 12 + 88 + 39 + 50 + 82 + 59 = 419
+
+Next, we can aim to allocate items such that each agent gets a fair share based on their preferences. To achieve this, we look for a division that balances high-value items for each agent.
+
+Here is a possible allocation that aims to be fair and envy-free:
+
+- Agent 0 highly values items 2, 1, and 0. 
+- Agent 1 highly values items 0, 5, and 2.
+
+We proceed to allocate by comparing the combined values for each agent:
+
+1. Allocate item 2 to Agent 0 (value 98 for Agent 0, 88 for Agent 1).
+2. Allocate item 5 to Agent 1 (value 82 for Agent 1, 11 for Agent 0).
+3. Allocate item 0 to Agent 1 (value 89 for Agent 1, 60 for Agent 0).
+4. Allocate item 1 to Agent 0 (value 82 for Agent 0, 12 for Agent 1).
+5. Allocate item 6 to Agent 1 (value 59 for Agent 1, 16 for Agent 0).
+6. Allocate item 4 to Agent 0 (value 48 for Agent 0, 50 for Agent 1).
+7. Allocate item 3 to Agent 1 (value 39 for Agent 1, 8 for Agent 0).
+
+This allocation results in:
+
+- Agent 0 receives items 2, 1, and 4.
+- Agent 1 receives items 5, 0, 6, and 3.
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [2, 1, 4],
+    "1": [5, 0, 6, 3]
+}
+```

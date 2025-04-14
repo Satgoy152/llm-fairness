@@ -1,0 +1,69 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 17.
+
+    0   1   2   3   4   5   6
+0  62  89  72   8  25  95  75
+1  66  19  17  73  37  81   0
+2  48  47  15  42  59  87  45
+3  94  83   4  79  21  53  79
+4  44  85  20  30  28  80  93
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[62 89 72  8 25 95 75]
+ [66 19 17 73 37 81  0]
+ [48 47 15 42 59 87 45]
+ [94 83  4 79 21 53 79]
+ [44 85 20 30 28 80 93]]
+Output:
+To fairly allocate the items among the agents, we can use a method that tries to maximize the total value each agent receives and ensures that each item is allocated exactly once. One possible approach is to evaluate the matrix and allocate items based on maximizing the individual agent's total value.
+
+First, let's analyze the valuations:
+
+- Agent 0: [62, 89, 72, 8, 25, 95, 75]
+- Agent 1: [66, 19, 17, 73, 37, 81, 0]
+- Agent 2: [48, 47, 15, 42, 59, 87, 45]
+- Agent 3: [94, 83, 4, 79, 21, 53, 79]
+- Agent 4: [44, 85, 20, 30, 28, 80, 93]
+
+Here is a possible allocation based on maximizing each agent's total value:
+
+- **Agent 0**: Item 5 (value 95)
+- **Agent 1**: Item 3 (value 73)
+- **Agent 2**: Item 4 (value 59)
+- **Agent 3**: Item 0 (value 94) and Item 6 (value 79)
+- **Agent 4**: Item 1 (value 85) and Item 2 (value 20)
+
+This allocation ensures that each item is allocated to exactly one agent, and no item is left unallocated. The allocation is designed to give each agent at least one item while trying to maximize their total value.
+
+Here is the allocation in the requested JSON format:
+
+```json
+{
+    "0": [5],
+    "1": [3],
+    "2": [4],
+    "3": [0, 6],
+    "4": [1, 2]
+}
+```

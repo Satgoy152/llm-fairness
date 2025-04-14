@@ -1,0 +1,56 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 78.
+
+    0   1   2   3   4   5   6   7
+0   7  43   7  66  78  31  36  51
+1  66   0  78  38  17  41  56  35
+2  74  48  91  22  27  64   3  61
+3  59  48  95  67  79  10  38  89
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[ 7 43  7 66 78 31 36 51]
+ [66  0 78 38 17 41 56 35]
+ [74 48 91 22 27 64  3 61]
+ [59 48 95 67 79 10 38 89]]
+Output:
+To fairly allocate the items among the agents, we should try to maximize the total valuation each agent receives, while ensuring all items are allocated. Here’s one way to do it:
+
+1. **Agent 0**: The highest valuations are for items 4 (78) and 3 (66). However, since the goal is to distribute evenly and fairly, we will assign items 4, 3.
+
+2. **Agent 1**: The highest valuations are for items 2 (78) and 0 (66). Assign items 2, 0.
+
+3. **Agent 2**: The highest valuations are for items 2 (91) and 0 (74), but item 2 is already taken. Next, we choose items 5 (64) and 7 (61).
+
+4. **Agent 3**: The highest valuations are for items 2 (95) and 4 (79), but these are taken. Next, take items 6 (38) and 1 (48).
+
+Each agent gets two items, and all items are allocated. Here’s the allocation in the specified JSON format:
+
+```json
+{
+    "0": [3, 4],
+    "1": [0, 2],
+    "2": [5, 7],
+    "3": [1, 6]
+}
+```
+
+This allocation attempts to maximize the total value for each agent while ensuring all items are distributed.

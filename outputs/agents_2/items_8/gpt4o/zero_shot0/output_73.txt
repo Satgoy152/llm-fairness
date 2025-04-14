@@ -1,0 +1,73 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 73.
+
+    0   1   2   3   4   5   6  7
+0  30  71  50  80  25  25  64  7
+1  16  71  73   4  49  17   1  0
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[30 71 50 80 25 25 64  7]
+ [16 71 73  4 49 17  1  0]]
+Output:
+To fairly allocate the items to the agents, we need to consider the valuations each agent has for each item and try to ensure that the overall value each agent receives is as balanced as possible. Since there are only two agents and eight items, each agent should get four items. Let's try to maximize fairness based on the given valuations.
+
+First, let's calculate the total value each agent has for all items:
+
+- Agent 0: 30 + 71 + 50 + 80 + 25 + 25 + 64 + 7 = 352
+- Agent 1: 16 + 71 + 73 + 4 + 49 + 17 + 1 + 0 = 231
+
+To achieve a fair allocation, we can use the following strategy:
+
+1. Calculate the value each agent would ideally receive if the items could be split perfectly:
+   - Agent 0 should aim for half of 352, which is 176.
+   - Agent 1 should aim for half of 231, which is 115.5.
+
+2. Try to allocate items to each agent so that the total value is as close as possible to these ideal target values. 
+
+Let's proceed with the allocation:
+
+1. Sort the items for each agent based on their valuations:
+   - Agent 0 (sorted by value): [3, 1, 6, 2, 0, 4, 5, 7]
+   - Agent 1 (sorted by value): [2, 1, 4, 5, 0, 3, 6, 7]
+
+2. Allocate the highest-valued items to each agent, ensuring each receives four items:
+
+Allocation:
+- Agent 0: items [3, 1, 6, 2] (values: 80, 71, 64, 50)
+- Agent 1: items [0, 4, 5, 7] (values: 16, 49, 17, 0)
+
+Let's check the total values:
+- Agent 0: 80 + 71 + 64 + 50 = 265
+- Agent 1: 16 + 49 + 17 + 0 = 82
+
+Adjust the allocations to balance the values better. After adjustment:
+
+Allocation:
+- Agent 0: items [3, 1, 6, 7] (values: 80, 71, 64, 7) = 222
+- Agent 1: items [0, 2, 4, 5] (values: 30, 73, 49, 17) = 149
+
+The final allocation is fairly balanced:
+
+```json
+{
+    "0": [3, 1, 6, 7],
+    "1": [0, 2, 4, 5]
+}
+```

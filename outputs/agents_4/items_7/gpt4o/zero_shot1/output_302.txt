@@ -1,0 +1,78 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 91.
+
+    0   1   2   3   4   5   6
+0  51  44  66  70  59  49  27
+1  16  77  91  91  63  12  58
+2  41  38  47  81   3  12  26
+3  37  99  76  28  57  33  33
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[51 44 66 70 59 49 27]
+ [16 77 91 91 63 12 58]
+ [41 38 47 81  3 12 26]
+ [37 99 76 28 57 33 33]]
+Output:
+To fairly allocate the items to the agents, we want to consider the valuations each agent has for the items. A common approach is to maximize the total valuation across all agents while ensuring each agent gets an integer number of items.
+
+Let's examine the valuations and make allocations:
+
+1. Agent 0: 
+   - Values: [51, 44, 66, 70, 59, 49, 27]
+
+2. Agent 1: 
+   - Values: [16, 77, 91, 91, 63, 12, 58]
+
+3. Agent 2: 
+   - Values: [41, 38, 47, 81, 3, 12, 26]
+
+4. Agent 3: 
+   - Values: [37, 99, 76, 28, 57, 33, 33]
+
+Using a greedy approach, let's assign items based on the highest available value to an agent that hasn't received the maximum number of items yet.
+
+Assignment step-by-step:
+
+- Item 1 is most valued by Agent 3 (99).
+- Item 2 is most valued by Agent 1 (91).
+- Item 3 is most valued by Agent 1 (91).
+- Item 0 is most valued by Agent 0 (51).
+- Item 4 is most valued by Agent 1 (63), but Agent 1 has 2 items already, so it goes to Agent 0 (59).
+- Item 5 is most valued by Agent 0 (49).
+- Item 6 is most valued by Agent 1 (58), but Agent 1 has 2 items already, so it goes to Agent 0 (27).
+
+Now each agent has received:
+- Agent 0: 4 items
+- Agent 1: 2 items
+- Agent 2: 0 items
+- Agent 3: 1 item
+
+Let's present this allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 4, 5, 6],
+    "1": [2, 3],
+    "2": [],
+    "3": [1]
+}
+```

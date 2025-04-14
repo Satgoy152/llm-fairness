@@ -1,0 +1,60 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 46.
+
+    0   1   2   3   4   5
+0  95  31  76  99  40  27
+1  92  38  46  19  87  70
+2  83  41  34  85  19  81
+3  66  86  89  55   2  39
+4  74  15   7  41   6   5
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[95 31 76 99 40 27]
+ [92 38 46 19 87 70]
+ [83 41 34 85 19 81]
+ [66 86 89 55  2 39]
+ [74 15  7 41  6  5]]
+Output:
+To fairly allocate the items among the agents, we can use a strategy to maximize the total valuation for each agent. One possible approach is to assign each item to the agent who values it the most, ensuring that each agent gets at least one item. Below is a possible allocation:
+
+1. Item 0: Assign to agent 0 (value 95).
+2. Item 1: Assign to agent 3 (value 86).
+3. Item 2: Assign to agent 3 (value 89).
+4. Item 3: Assign to agent 0 (value 99).
+5. Item 4: Assign to agent 1 (value 87).
+6. Item 5: Assign to agent 2 (value 81).
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [0, 3],
+    "1": [4],
+    "2": [5],
+    "3": [1, 2],
+    "4": []
+}
+```
+
+This allocation ensures that all 6 items are distributed and each agent receives their most valued items where possible.

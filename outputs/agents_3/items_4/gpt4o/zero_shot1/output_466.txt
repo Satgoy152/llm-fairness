@@ -1,0 +1,73 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 95.
+
+    0   1   2   3
+0  56  96  14  11
+1  60  46  95   0
+2   1  83  68  82
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 4 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[56 96 14 11]
+ [60 46 95  0]
+ [ 1 83 68 82]]
+Output:
+To fairly allocate the items among the agents, we should aim to maximize the total valuation while ensuring that each agent receives at least one item, and all items are allocated. This can be solved using methods similar to the assignment problem in combinatorial optimization.
+
+### Step-by-Step Allocation:
+
+1. **List Valuations:**
+
+   - Agent 0: [56, 96, 14, 11]
+   - Agent 1: [60, 46, 95, 0]
+   - Agent 2: [1, 83, 68, 82]
+
+2. **Assign Each Item:**
+
+   - Item 0:
+     - Highest valuation by Agent 1 (60).
+   
+   - Item 1:
+     - Highest valuation by Agent 0 (96).
+
+   - Item 2:
+     - Highest valuation by Agent 1 (95).
+
+   - Item 3:
+     - Highest valuation by Agent 2 (82).
+
+3. **Allocations:**
+
+   - Agent 0: Item 1
+   - Agent 1: Items 0, 2
+   - Agent 2: Item 3
+
+This allocation ensures that each agent receives at least one item, and all items are distributed according to the highest valuation principle.
+
+### Allocations in JSON Format:
+
+```json
+{
+    "0": [1],
+    "1": [0, 2],
+    "2": [3]
+}
+```

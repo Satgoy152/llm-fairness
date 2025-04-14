@@ -1,0 +1,66 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 48.
+
+    0   1   2   3   4   5   6   7   8
+0  45  21  64  90  72  65  33  92  18
+1  24  24  48   1  24  89  83  88  85
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[45 21 64 90 72 65 33 92 18]
+ [24 24 48  1 24 89 83 88 85]]
+Output:
+To fairly allocate the items between the two agents, we can try to maximize the total value each agent receives, while ensuring each agent gets an integer number of items. One approach is to use a greedy algorithm that prioritizes assigning items based on the difference in valuation between the two agents.
+
+Let's calculate the difference in valuation for each item, which is the absolute difference between the two agents' valuations for that item:
+
+- Item 0: |45 - 24| = 21
+- Item 1: |21 - 24| = 3
+- Item 2: |64 - 48| = 16
+- Item 3: |90 - 1| = 89
+- Item 4: |72 - 24| = 48
+- Item 5: |65 - 89| = 24
+- Item 6: |33 - 83| = 50
+- Item 7: |92 - 88| = 4
+- Item 8: |18 - 85| = 67
+
+Now, we can prioritize assigning items based on the largest difference in valuation, ensuring that each agent receives an equal number of items (4 items each, since there are 9 items, one agent will get 5 items).
+
+Starting with the item with the largest difference:
+1. Item 3 (difference 89): Assign to Agent 0 (90 vs 1)
+2. Item 8 (difference 67): Assign to Agent 1 (18 vs 85)
+3. Item 6 (difference 50): Assign to Agent 1 (33 vs 83)
+4. Item 4 (difference 48): Assign to Agent 0 (72 vs 24)
+5. Item 5 (difference 24): Assign to Agent 1 (65 vs 89)
+6. Item 2 (difference 16): Assign to Agent 0 (64 vs 48)
+7. Item 7 (difference 4): Assign to Agent 0 (92 vs 88)
+8. Item 0 (difference 21): Assign to Agent 0 (45 vs 24)
+9. Item 1 (difference 3): Assign to Agent 1 (21 vs 24)
+
+Final allocation:
+- Agent 0: Items 3, 4, 2, 7, 0
+- Agent 1: Items 8, 6, 5, 1
+
+JSON format allocation:
+```json
+{
+    "0": [3, 4, 2, 7, 0],
+    "1": [8, 6, 5, 1]
+}
+```

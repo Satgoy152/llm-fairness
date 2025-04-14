@@ -1,0 +1,72 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 86.
+
+    0   1   2   3   4
+0  77   3  85  45  57
+1  47  57  86  72  89
+2  79  35  42  93  74
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[77  3 85 45 57]
+ [47 57 86 72 89]
+ [79 35 42 93 74]]
+Output:
+To fairly allocate the items to the agents while considering their valuations, we can aim to maximize the total value each agent receives. Here's a potential allocation strategy:
+
+1. Agent 0 values:
+   - Item 0: 77
+   - Item 2: 85 (highest value for agent 0)
+   - Item 3: 45
+   - Item 4: 57
+
+2. Agent 1 values:
+   - Item 2: 86 (highest value for agent 1)
+   - Item 4: 89 (highest value for agent 1)
+   - Item 3: 72
+
+3. Agent 2 values:
+   - Item 3: 93 (highest value for agent 2)
+   - Item 0: 79
+   - Item 4: 74
+
+To maximize the satisfaction of each agent, we can allocate items based on the highest values they assign to the items, ensuring each item is allocated only once:
+
+- Agent 0 gets Item 2, which they value highly.
+- Agent 1 gets Item 4, as it is their highest-valued item.
+- Agent 2 gets Item 3, which has the highest value for them.
+
+For the remaining items (0 and 1), we consider the next highest available values:
+
+- Agent 2 can take Item 0 (valuing it at 79), as Agent 0 and Agent 1 have already received items.
+- Agent 0 can take Item 1 (valuing it at 3, which is low but it's the only remaining option).
+
+Final allocation:
+
+```json
+{
+    "0": [2, 1],
+    "1": [4],
+    "2": [3, 0]
+}
+```
+
+This allocation ensures each agent receives an integer number of items and maximizes their satisfaction based on the given valuations.

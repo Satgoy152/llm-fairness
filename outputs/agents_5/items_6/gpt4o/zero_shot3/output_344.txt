@@ -1,0 +1,67 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 11.
+
+    0   1   2   3   4   5
+0  97  22  39  28  32  90
+1  29  85  11  92  84  44
+2   6  25  60  36  67  62
+3  82  63  16  73   0  25
+4  78  58  25  14  31  49
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[97 22 39 28 32 90]
+ [29 85 11 92 84 44]
+ [ 6 25 60 36 67 62]
+ [82 63 16 73  0 25]
+ [78 58 25 14 31 49]]
+Output:
+To fairly allocate the items among the agents, we aim to maximize the value each agent receives based on their preferences. We'll ensure that each agent receives at least one item if possible, and that all items are allocated.
+
+Here's a possible allocation that considers the values:
+
+1. Agent 0 highly values item 0 and item 5.
+2. Agent 1 highly values item 3 and item 1.
+3. Agent 2 has moderate valuations across items.
+4. Agent 3 highly values item 0 but it is already chosen for Agent 0.
+5. Agent 4 has moderate valuations and can pick remaining items.
+
+Based on these observations, a reasonable allocation could be:
+
+- Agent 0: Item 0
+- Agent 1: Item 3
+- Agent 2: Item 5
+- Agent 3: Item 2
+- Agent 4: Item 1, Item 4
+
+This allocation covers all items and tries to align with the highest preferences of agents where possible. Here's the JSON format of this allocation:
+
+```json
+{
+    "0": [0],
+    "1": [3],
+    "2": [5],
+    "3": [2],
+    "4": [1, 4]
+}
+```

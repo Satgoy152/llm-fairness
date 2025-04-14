@@ -1,0 +1,84 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 83.
+
+    0   1   2   3   4   5
+0  35  50  93  51  32  49
+1   4   1  83   3  82  78
+2  63  15  20  25  28  26
+3   8  42  50  93  91  62
+4  16  22  23  13  81  18
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[35 50 93 51 32 49]
+ [ 4  1 83  3 82 78]
+ [63 15 20 25 28 26]
+ [ 8 42 50 93 91 62]
+ [16 22 23 13 81 18]]
+Output:
+To fairly allocate the items among the agents, we can use a method such as maximizing the total valuation or ensuring that each agent gets at least one item they value highly, depending on the fairness criteria we choose. Here, I'll try to allocate based on maximizing each agent's total valuation while ensuring all items are allocated.
+
+Let's consider the valuations given:
+
+```
+Agent 0: [35, 50, 93, 51, 32, 49]
+Agent 1: [4, 1, 83, 3, 82, 78]
+Agent 2: [63, 15, 20, 25, 28, 26]
+Agent 3: [8, 42, 50, 93, 91, 62]
+Agent 4: [16, 22, 23, 13, 81, 18]
+```
+
+The goal is to allocate all 6 items to the 5 agents.
+
+1. **Agent 0**: Value item 2 the most (93).
+2. **Agent 1**: Value item 2 (83) and item 4 (82) highly.
+3. **Agent 2**: Value item 0 the most (63).
+4. **Agent 3**: Value item 3 (93) and item 4 (91) highly.
+5. **Agent 4**: Value item 4 the most (81).
+
+A possible allocation can be:
+- Assign item 2 to Agent 0 (93 is the highest valuation).
+- Assign item 4 to Agent 1 (82 is the highest remaining valuation).
+- Assign item 0 to Agent 2 (63 is the highest remaining valuation).
+- Assign item 3 to Agent 3 (93 is the highest remaining valuation).
+- Assign item 5 to Agent 1 (78 is a high valuation for them).
+- Assign item 1 to Agent 0 (50 is a reasonable valuation for them).
+
+So, the allocations are:
+- Agent 0: Items [2, 1]
+- Agent 1: Items [4, 5]
+- Agent 2: Items [0]
+- Agent 3: Items [3]
+- Agent 4: No items
+
+Here is the JSON representation of the allocation:
+
+```json
+{
+    "0": [2, 1],
+    "1": [4, 5],
+    "2": [0],
+    "3": [3],
+    "4": []
+}
+```

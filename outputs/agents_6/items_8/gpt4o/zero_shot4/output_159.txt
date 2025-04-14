@@ -1,0 +1,70 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 93.
+
+    0   1   2   3   4   5   6   7
+0  64  52  13  23  48  10  28  17
+1  68  35  93  83  24  24  96  66
+2  36   0  85  78  69  26  44  84
+3  26  63  10  29  28  64  80   3
+4  39  28  94  52   3  21   0  82
+5  20  28  63  81  69  71  79  77
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[64 52 13 23 48 10 28 17]
+ [68 35 93 83 24 24 96 66]
+ [36  0 85 78 69 26 44 84]
+ [26 63 10 29 28 64 80  3]
+ [39 28 94 52  3 21  0 82]
+ [20 28 63 81 69 71 79 77]]
+Output:
+To fairly allocate the items among the 6 agents, we aim to maximize the total value for each agent while ensuring each agent gets an integer number of items and all items are allocated.
+
+We can use a greedy approach where each item is allocated to the agent who values it the most, ensuring that each agent gets at least one item, if possible.
+
+### Step-by-step allocation:
+
+1. **Item 0**: The highest value is 68 by Agent 1.
+2. **Item 1**: The highest value is 63 by Agent 3.
+3. **Item 2**: The highest value is 94 by Agent 4.
+4. **Item 3**: The highest value is 83 by Agent 1.
+5. **Item 4**: The highest value is 69, shared by Agents 2 and 5. Allocate to Agent 2 (arbitrary choice).
+6. **Item 5**: The highest value is 71 by Agent 5.
+7. **Item 6**: The highest value is 96 by Agent 1.
+8. **Item 7**: The highest value is 84 by Agent 2.
+
+### Final Allocation:
+
+```json
+{
+    "0": [],
+    "1": [0, 3, 6],
+    "2": [4, 7],
+    "3": [1],
+    "4": [2],
+    "5": [5]
+}
+```
+
+This allocation ensures that each item is given to the agent who values it the most and all items are distributed.

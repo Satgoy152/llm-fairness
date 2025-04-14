@@ -1,0 +1,58 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 0.
+
+    0   1   2   3   4   5
+0  83  93  82   9  82  96
+1  96  16   0  72  68  58
+2  60  84  63  16  64  92
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[83 93 82  9 82 96]
+ [96 16  0 72 68 58]
+ [60 84 63 16 64 92]]
+Output:
+To fairly allocate the 6 items among the 3 agents, we aim to maximize the total valuation for each agent while ensuring that each agent receives at least one item. We will analyze the valuations and assign the items accordingly:
+
+1. **Agent 0** has high valuations for items 0, 1, 2, and 5.
+2. **Agent 1** has the highest valuation for item 0, but since agent 0 also values item 0 highly and has more overall high valuations, we'll prioritize agent 0 for item 0. Agent 1's next highest valuations are for items 3 and 4.
+3. **Agent 2** has a high valuation for item 5, which is not as highly valued by the other agents. 
+
+Let's proceed with the allocation:
+
+- Assign item 0 to Agent 0 (as it is valued highly by both agents 0 and 1, but agent 0 has more overall high valuations).
+- Assign item 1 to Agent 0 (highest valuation for this item).
+- Assign item 2 to Agent 0 (highest valuation for this item).
+- Assign item 3 to Agent 1 (highest valuation for this item among the remaining items).
+- Assign item 4 to Agent 1 (next highest valuation for this item).
+- Assign item 5 to Agent 2 (highest valuation for this item).
+
+This allocation ensures that each agent gets at least one item and maximizes the total valuation for each agent based on their preferences.
+
+The final allocation in JSON format is:
+
+```json
+{
+    "0": [0, 1, 2],
+    "1": [3, 4],
+    "2": [5]
+}
+```

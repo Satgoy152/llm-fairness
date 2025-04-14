@@ -1,0 +1,62 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 21.
+
+    0   1   2   3   4   5   6   7
+0  79  26  90  58  19  10  87  57
+1  20   5  21  16  21   6  46  43
+2  93  27   3  88  92  91  17   9
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[79 26 90 58 19 10 87 57]
+ [20  5 21 16 21  6 46 43]
+ [93 27  3 88 92 91 17  9]]
+Output:
+To fairly allocate the items to the agents, we should aim to maximize the total value each agent receives while ensuring each agent gets an integer number of items and all 8 items are allocated.
+
+Let's evaluate the total values for each agent if they receive various items and aim for a fair distribution:
+
+1. **Agent 0:**
+   - High-value items: 0, 2, 6 (values: 79, 90, 87)
+
+2. **Agent 1:**
+   - High-value items: 6, 7 (values: 46, 43)
+
+3. **Agent 2:**
+   - High-value items: 0, 3, 4, 5 (values: 93, 88, 92, 91)
+
+Considering these high-value items for each agent, we can allocate the items as follows to ensure a fair distribution:
+
+- Agent 0 gets items 0, 2, 6 (total value: 79 + 90 + 87 = 256)
+- Agent 1 gets items 1, 7 (total value: 5 + 43 = 48)
+- Agent 2 gets items 3, 4, 5 (total value: 88 + 92 + 91 = 271)
+
+This allocation does not leave any agent without items and provides a reasonable distribution of total value among the agents.
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [0, 2, 6],
+    "1": [1, 7],
+    "2": [3, 4, 5]
+}
+```

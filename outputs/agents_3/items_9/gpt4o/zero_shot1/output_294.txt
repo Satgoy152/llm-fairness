@@ -1,0 +1,65 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 72.
+
+    0   1   2   3   4   5   6   7   8
+0  13  97  41  62  44  13   1  34  25
+1  30  19  72  29  96  73  46  83  51
+2  47  48   5  17  96  30  43  80  24
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[13 97 41 62 44 13  1 34 25]
+ [30 19 72 29 96 73 46 83 51]
+ [47 48  5 17 96 30 43 80 24]]
+Output:
+To fairly allocate the items among the agents, we should aim to maximize the satisfaction or value each agent receives from the items they are assigned while ensuring each agent receives at least a portion of the items.
+
+Let's break down the problem and assign items to agents:
+
+1. **Agent 0:**
+   - Highest valuation for items: 1 (97), 3 (62), 2 (41)
+   - Assign items: 1, 3, 2
+
+2. **Agent 1:**
+   - Highest valuation for items: 4 (96), 5 (73), 7 (83)
+   - Assign items: 4, 5, 7
+
+3. **Agent 2:**
+   - Highest valuation for items: 4 (96), 7 (80), 1 (48), 0 (47)
+   - Assign remaining items: 0, 6, 8
+
+Now let’s allocate these items:
+
+- Agent 0 gets items: 1, 3, 2
+- Agent 1 gets items: 4, 5, 7
+- Agent 2 gets items: 0, 6, 8
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [1, 3, 2],
+    "1": [4, 5, 7],
+    "2": [0, 6, 8]
+}
+```
+
+This allocation ensures each agent receives items and tries to maximize the total valuation each agent receives.

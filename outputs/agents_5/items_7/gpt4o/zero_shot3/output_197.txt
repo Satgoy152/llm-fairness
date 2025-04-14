@@ -1,0 +1,85 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 43.
+
+    0   1   2   3   4   5   6
+0   0  91  93  41  20   7  65
+1  31   3  43  57  23  67  65
+2  30  64  94  21  26  51  65
+3  65  25  79   9  11  96  86
+4  90  61  87  75  95  10  51
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[ 0 91 93 41 20  7 65]
+ [31  3 43 57 23 67 65]
+ [30 64 94 21 26 51 65]
+ [65 25 79  9 11 96 86]
+ [90 61 87 75 95 10 51]]
+Output:
+To fairly allocate the items among the agents while maximizing their satisfaction, we can use the concept of maximizing the total value each agent receives based on their preferences. Here’s a possible allocation strategy based on the given valuations:
+
+1. **Agent 0**: 
+   - Highest valuation for item 2 (93)
+   - Allocation: [2]
+
+2. **Agent 1**: 
+   - Highest valuation for item 5 (67)
+   - Allocation: [5]
+
+3. **Agent 2**: 
+   - Highest valuation for item 2 (94), but already taken by Agent 0
+   - Next highest valuation for item 1 (64)
+   - Allocation: [1]
+
+4. **Agent 3**: 
+   - Highest valuation for item 5 (96), but already taken by Agent 1
+   - Next highest valuation for item 6 (86)
+   - Allocation: [6]
+
+5. **Agent 4**: 
+   - Highest valuation for item 4 (95)
+   - Allocation: [4]
+
+Now, we still need to allocate the remaining items 0 and 3:
+
+- **Agent 0** has a remaining preference for item 1 (91), but already taken; next is item 0 (0), which is the least valuable. We'll pass for now.
+- **Agent 1**, **Agent 2**, **Agent 3**, and **Agent 4** have already received one item each, so we aim to distribute the remaining items to maintain fairness.
+
+Let's allocate based on remaining preferences:
+
+- **Agent 0** gets item 0 (value 0), as it has the least contention and was not highly valued elsewhere.
+- **Agent 4** gets item 3 (value 75), their next highest remaining valued item.
+
+Final allocations:
+
+```json
+{
+    "0": [2, 0],
+    "1": [5],
+    "2": [1],
+    "3": [6],
+    "4": [4, 3]
+}
+```
+
+This allocation ensures each agent receives an integer number of items, and all items are distributed based on the valuations given.

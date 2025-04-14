@@ -1,0 +1,61 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 77.
+
+    0   1   2   3   4   5
+0  35  52  85  15   4  83
+1  17  48  77  84  24  61
+2  34  45  18  68  66  56
+3  32  42  90  81   3  21
+4  60  86   5  46  62  74
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[35 52 85 15  4 83]
+ [17 48 77 84 24 61]
+ [34 45 18 68 66 56]
+ [32 42 90 81  3 21]
+ [60 86  5 46 62 74]]
+Output:
+To fairly allocate the items among the agents, we aim to maximize the total valuation each agent receives from their allocated items while ensuring each agent gets at least one item, given the constraints. We need to allocate all 6 items fairly among the 5 agents.
+
+Let's evaluate an allocation strategy:
+
+1. **Agent 0**: Allocate item 2 (value 85) - Highest value for Agent 0.
+2. **Agent 1**: Allocate item 3 (value 84) - Highest value for Agent 1.
+3. **Agent 2**: Allocate item 4 (value 66) - Highest value for Agent 2.
+4. **Agent 3**: Allocate item 1 (value 42) - Highest value for Agent 3.
+5. **Agent 4**: Allocate items 0 (value 60) and 5 (value 74) - Highest available values for Agent 4.
+
+This allocation ensures each agent receives at least one item and all items are allocated.
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [2],
+    "1": [3],
+    "2": [4],
+    "3": [1],
+    "4": [0, 5]
+}
+```

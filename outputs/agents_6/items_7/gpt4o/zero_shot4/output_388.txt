@@ -1,0 +1,64 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 2.
+
+    0   1   2   3   4   5   6
+0  10  33   8  54  55   7  93
+1  76  98   2  93  71  46  62
+2  97  42  38  19  61  67  13
+3  34  63  14  83  12  41  15
+4  86  68  53  39  93  97  41
+5  77  69  96  42  61  30  28
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[10 33  8 54 55  7 93]
+ [76 98  2 93 71 46 62]
+ [97 42 38 19 61 67 13]
+ [34 63 14 83 12 41 15]
+ [86 68 53 39 93 97 41]
+ [77 69 96 42 61 30 28]]
+Output:
+To fairly allocate the items among the agents, we need to consider the preferences and valuations each agent has for the items. One approach is to ensure that each agent receives items that maximize their total valuation, ensuring a fair distribution of the overall value.
+
+Here's one possible allocation:
+
+1. Agent 0 receives item 6.
+2. Agent 1 receives item 3.
+3. Agent 2 receives items 0 and 5.
+4. Agent 3 receives item 1.
+5. Agent 4 receives item 4.
+6. Agent 5 receives item 2.
+
+This allocation ensures each agent receives items they value highly, and all items are distributed.
+
+```json
+{
+    "0": [6],
+    "1": [3],
+    "2": [0, 5],
+    "3": [1],
+    "4": [4],
+    "5": [2]
+}
+```

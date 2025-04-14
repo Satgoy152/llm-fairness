@@ -1,0 +1,80 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 31.
+
+    0   1   2   3   4   5   6
+0  77  21  24  65  62  33  25
+1  88  59  31  55  49   1  92
+2  46  30  95  49  98  37  53
+3  79  37  23  75  63  88  39
+4  30  81  34  51  11   0   2
+5  59  47  87  68  27  60  24
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[77 21 24 65 62 33 25]
+ [88 59 31 55 49  1 92]
+ [46 30 95 49 98 37 53]
+ [79 37 23 75 63 88 39]
+ [30 81 34 51 11  0  2]
+ [59 47 87 68 27 60 24]]
+Output:
+To fairly allocate the items to the agents, we need to consider the valuations each agent has for the items and distribute the items such that the allocation seems equitable. One possible approach is to assign each item to the agent that values it the most, ensuring that the total number of items allocated is exactly seven.
+
+Let's allocate the items:
+
+1. Item 0:
+   - Highest value is 88 by Agent 1.
+   
+2. Item 1:
+   - Highest value is 81 by Agent 4.
+   
+3. Item 2:
+   - Highest value is 95 by Agent 2.
+   
+4. Item 3:
+   - Highest value is 75 by Agent 3.
+   
+5. Item 4:
+   - Highest value is 98 by Agent 2, but Agent 2 already has item 2. The next highest is 63 by Agent 3, but Agent 3 already has item 3. Therefore, move to the next highest, which is 62 by Agent 0.
+   
+6. Item 5:
+   - Highest value is 88 by Agent 3, but Agent 3 already has item 3. The next highest is 60 by Agent 5.
+   
+7. Item 6:
+   - Highest value is 92 by Agent 1, but Agent 1 already has item 0. The next highest is 53 by Agent 2, but Agent 2 already has item 2. Move to the next highest, which is 39 by Agent 3, but Agent 3 already has item 3. Next highest is 25 by Agent 0, but Agent 0 already has item 4. Move to next highest, which is 24 by Agent 5.
+
+Now, let's provide the allocations in the required JSON format:
+
+```json
+{
+    "0": [4],
+    "1": [0],
+    "2": [2],
+    "3": [3],
+    "4": [1],
+    "5": [5, 6]
+}
+```
+
+In this allocation, each agent has been assigned items such that no items are left unallocated, and we considered the preferences as much as possible within the constraints.

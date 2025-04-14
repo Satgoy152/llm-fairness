@@ -1,0 +1,93 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 11.
+
+    0   1   2   3   4   5
+0  36  22  36  25  89  28
+1  31  52  11  58  36  33
+2  47  69  64  17  91  91
+3  80  73  58  83   5  94
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[36 22 36 25 89 28]
+ [31 52 11 58 36 33]
+ [47 69 64 17 91 91]
+ [80 73 58 83  5 94]]
+Output:
+To achieve a fair allocation of items among the agents, we can employ a simple greedy algorithm where we assign each item to the agent that values it the most. This way, we ensure that each item is valued as highly as possible by the agent who receives it. Here is the allocation process:
+
+1. Evaluate the highest valuation for each item across all agents.
+2. Assign each item to the agent with the highest valuation for that item.
+
+Let's go through the items one by one:
+
+- **Item 0**: 
+  - Agent 0 values it at 36
+  - Agent 1 values it at 31
+  - Agent 2 values it at 47
+  - Agent 3 values it at 80
+  - Assign to Agent 3
+
+- **Item 1**:
+  - Agent 0 values it at 22
+  - Agent 1 values it at 52
+  - Agent 2 values it at 69
+  - Agent 3 values it at 73
+  - Assign to Agent 3
+
+- **Item 2**:
+  - Agent 0 values it at 36
+  - Agent 1 values it at 11
+  - Agent 2 values it at 64
+  - Agent 3 values it at 58
+  - Assign to Agent 2 
+
+- **Item 3**:
+  - Agent 0 values it at 25
+  - Agent 1 values it at 58
+  - Agent 2 values it at 17
+  - Agent 3 values it at 83
+  - Assign to Agent 3
+
+- **Item 4**:
+  - Agent 0 values it at 89
+  - Agent 1 values it at 36
+  - Agent 2 values it at 91
+  - Agent 3 values it at 5
+  - Assign to Agent 2
+
+- **Item 5**:
+  - Agent 0 values it at 28
+  - Agent 1 values it at 33
+  - Agent 2 values it at 91
+  - Agent 3 values it at 94
+  - Assign to Agent 3
+
+Now we present the allocations:
+
+```json
+{
+    "0": [],
+    "1": [],
+    "2": [2, 4],
+    "3": [0, 1, 3, 5]
+}
+```

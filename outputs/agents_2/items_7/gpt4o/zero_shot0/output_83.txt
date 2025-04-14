@@ -1,0 +1,53 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 40.
+
+    0   1   2   3   4   5   6
+0  51  77   2  93  10  64   3
+1  61  34  40  34  34  84  51
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[51 77  2 93 10 64  3]
+ [61 34 40 34 34 84 51]]
+Output:
+To fairly allocate the items between the two agents, we can use the strategy of maximizing the total valuation for each agent while ensuring that each agent gets an integer number of items. One common approach is to use the "envy-free" principle, where neither agent should feel that the other has a better allocation.
+
+To achieve this, let's evaluate the potential allocations:
+
+1. Agent 0 has higher valuations for items 0, 1, 3, and 5.
+2. Agent 1 has higher valuations for items 2, 4, and 6.
+
+We can allocate the items as follows:
+
+- Assign items 0, 1, 3, and 5 to Agent 0.
+- Assign items 2, 4, and 6 to Agent 1.
+
+This allocation aims to balance the total values received by each agent based on their preferences:
+
+- Agent 0's total valuation: 51 (item 0) + 77 (item 1) + 93 (item 3) + 64 (item 5) = 285
+- Agent 1's total valuation: 40 (item 2) + 34 (item 4) + 51 (item 6) = 125
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 1, 3, 5],
+    "1": [2, 4, 6]
+}
+```

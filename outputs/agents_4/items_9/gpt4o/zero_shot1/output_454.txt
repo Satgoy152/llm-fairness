@@ -1,0 +1,56 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 93.
+
+    0   1   2   3   4   5   6   7   8
+0  96  62  72  39  29  16  58  49  33
+1  16  32  93  27  68  22  46   3  20
+2  18  72  11  80  58  92  31  42  57
+3  78   2  93  24  22  11   0  99  34
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 9 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[96 62 72 39 29 16 58 49 33]
+ [16 32 93 27 68 22 46  3 20]
+ [18 72 11 80 58 92 31 42 57]
+ [78  2 93 24 22 11  0 99 34]]
+Output:
+To fairly allocate the items to the agents, we can follow a strategy that aims to maximize the total valuation each agent receives. We will try to assign items to agents based on their highest valuations. Here's one possible allocation:
+
+1. Assign item 0 to agent 0 because agent 0 values it at 96, which is the highest valuation for that item.
+2. Assign item 1 to agent 2 because agent 2 values it at 72, which is the highest valuation for that item.
+3. Assign item 2 to agent 1 because agent 1 values it at 93, which is the highest valuation for that item.
+4. Assign item 3 to agent 2 because agent 2 values it at 80, which is the highest valuation for that item.
+5. Assign item 4 to agent 1 because agent 1 values it at 68, which is the highest valuation for that item.
+6. Assign item 5 to agent 2 because agent 2 values it at 92, which is the highest valuation for that item.
+7. Assign item 6 to agent 0 because agent 0 values it at 58, which is the highest valuation for that item.
+8. Assign item 7 to agent 3 because agent 3 values it at 99, which is the highest valuation for that item.
+9. Assign item 8 to agent 2 because agent 2 values it at 57, which is the highest valuation for that item.
+
+Based on these allocations, here is the JSON representation:
+
+```json
+{
+    "0": [0, 6],
+    "1": [2, 4],
+    "2": [1, 3, 5, 8],
+    "3": [7]
+}
+```

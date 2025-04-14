@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 95.
+
+    0   1   2   3
+0  87   2  87  18
+1   9  16  95   7
+2  38   2   7  63
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 4 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[87  2 87 18]
+ [ 9 16 95  7]
+ [38  2  7 63]]
+Output:
+To fairly allocate the items among the agents, we can use a method that tries to maximize the total valuations for the agents while ensuring each one gets at least one item. Here's one possible allocation approach:
+
+1. **Agent 0:** 
+   - Likely prefers item 0 (value 87) or item 2 (value 87).
+
+2. **Agent 1:** 
+   - Strongly values item 2 (value 95).
+
+3. **Agent 2:** 
+   - Prefers item 3 (value 63).
+
+With these preferences in mind, we can allocate as follows to fairly distribute the items:
+
+- **Agent 0:** receives item 0. (Value = 87)
+- **Agent 1:** receives item 2. (Value = 95)
+- **Agent 2:** receives item 3. (Value = 63)
+
+Now, we have one item left, item 1, which has low values for each agent. We can allocate it to Agent 0 to balance the number of items:
+
+- **Agent 0:** receives items 0 and 1.
+
+This results in:
+
+- Agent 0: items 0 and 1
+- Agent 1: item 2
+- Agent 2: item 3
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [0, 1],
+    "1": [2],
+    "2": [3]
+}
+```

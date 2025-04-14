@@ -1,0 +1,70 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 96.
+
+    0   1   2   3   4   5
+0  19  88  66  25  88  78
+1  90  92  96  27  96  80
+2  57  74   9  72  92  46
+3  57  72  58  35  74  36
+4  19  55  34  70  96  85
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[19 88 66 25 88 78]
+ [90 92 96 27 96 80]
+ [57 74  9 72 92 46]
+ [57 72 58 35 74 36]
+ [19 55 34 70 96 85]]
+Output:
+To fairly allocate the items among the agents, we should consider maximizing the total valuation for each agent while ensuring that each agent receives at least one item, if possible. Let's analyze the valuations:
+
+1. Agent 0: [19, 88, 66, 25, 88, 78]
+2. Agent 1: [90, 92, 96, 27, 96, 80]
+3. Agent 2: [57, 74, 9, 72, 92, 46]
+4. Agent 3: [57, 72, 58, 35, 74, 36]
+5. Agent 4: [19, 55, 34, 70, 96, 85]
+
+The goal is to allocate the items in a way that maximizes the agents' satisfaction based on their valuations. A typical approach is to assign the highest valued item for each agent, while ensuring that no item is allocated to more than one agent.
+
+Here's a fair allocation strategy:
+
+- Allocate item 2 to Agent 1, as it's their highest valuation and also the highest single valuation (96).
+- Allocate item 4 to Agent 4, as it's their highest valuation and matches Agent 1's highest valuation, but Agent 1 already got item 2.
+- Allocate item 1 to Agent 0, as it's their highest remaining valuation.
+- Allocate item 5 to Agent 3, as it holds a higher valuation compared to other items Agent 3 values.
+- Allocate item 3 to Agent 2, as it holds the best remaining valuation for that agent.
+- Allocate item 0 to Agent 0, to ensure all items are allocated and because Agent 0 values it more than anyone else remaining.
+
+This allocation attempts to balance fairness, giving each agent at least one item they highly value, while maximizing overall satisfaction.
+
+The final allocation presented in JSON format is:
+
+```json
+{
+    "0": [0, 1],
+    "1": [2],
+    "2": [3],
+    "3": [5],
+    "4": [4]
+}
+```

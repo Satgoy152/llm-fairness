@@ -1,0 +1,64 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2   3   4   5
+0  15   9  98  80  47  50
+1  36  67  50  75  16  14
+2  71  36  99  56  43  27
+3  35  36  96  50  73  48
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[15  9 98 80 47 50]
+ [36 67 50 75 16 14]
+ [71 36 99 56 43 27]
+ [35 36 96 50 73 48]]
+Output:
+To fairly allocate the items among the agents, we can consider maximizing the total valuation for each agent while ensuring each agent gets at least one item, if possible. We will allocate each item to the agent who values it the most. Here’s a step-by-step approach to achieve a fair allocation:
+
+1. **Identify Maximum Valuations for Each Item:**
+   - Item 0: Highest value is 71 by agent 2.
+   - Item 1: Highest value is 67 by agent 1.
+   - Item 2: Highest value is 99 by agent 2.
+   - Item 3: Highest value is 80 by agent 0.
+   - Item 4: Highest value is 73 by agent 3.
+   - Item 5: Highest value is 50 by agent 0.
+
+2. **Allocate Items to Agents:**
+   - Agent 0: Item 3, Item 5
+   - Agent 1: Item 1
+   - Agent 2: Item 0, Item 2
+   - Agent 3: Item 4
+
+This ensures each item is allocated to the agent who values it the most, and each agent gets a fair share of items based on their valuations.
+
+3. **Prepare the JSON Output:**
+
+```json
+{
+    "0": [3, 5],
+    "1": [1],
+    "2": [0, 2],
+    "3": [4]
+}
+```
+
+This allocation ensures that each item is assigned to the agent who values it the most, while ensuring a fair distribution of items among agents.

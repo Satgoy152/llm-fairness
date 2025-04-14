@@ -1,0 +1,65 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 61.
+
+    0   1   2   3   4
+0  27  33  56  42  27
+1  44  78  61  50  51
+2  80  23   6  99  78
+3  77   7  17  99   6
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[27 33 56 42 27]
+ [44 78 61 50 51]
+ [80 23  6 99 78]
+ [77  7 17 99  6]]
+Output:
+To fairly allocate the items among the agents, we need to consider the valuations and aim to assign items so that the total value received by each agent is as balanced as possible. Here is one possible allocation:
+
+1. **Agent 0**: Looking at the valuations, Agent 0 values item 2 the highest (56). Assign item 2 to Agent 0.
+
+2. **Agent 1**: The highest valuation for Agent 1 is item 1 (78), so assign item 1 to Agent 1.
+
+3. **Agent 2**: The highest value for Agent 2 is item 3 (99). Assign item 3 to Agent 2.
+
+4. **Agent 3**: The highest valuation for Agent 3 is also item 3 (99), but since it's already assigned, we look at the next highest, which is item 0 (77). Assign item 0 to Agent 3.
+
+5. We have one item left (item 4), and we need to decide which agent gets it. Let's look at the remaining values:
+
+   - Agent 0 values item 4 at 27.
+   - Agent 1 values item 4 at 51.
+   - Agent 2 values item 4 at 78.
+   - Agent 3 values item 4 at 6.
+
+   The highest unallocated valuation for item 4 is by Agent 2 (78), but they already have item 3. To balance the allocation, let's give item 4 to Agent 1, who values it at 51 and doesn't have a second item yet.
+
+The allocation is as follows:
+
+```json
+{
+    "0": [2],
+    "1": [1, 4],
+    "2": [3],
+    "3": [0]
+}
+```
+
+This allocation ensures that all items are fairly distributed based on the agents' valuations while ensuring each agent receives some benefit.

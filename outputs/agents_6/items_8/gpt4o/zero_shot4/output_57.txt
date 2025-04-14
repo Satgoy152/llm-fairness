@@ -1,0 +1,70 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 53.
+
+    0   1   2   3   4   5   6   7
+0  30  24  99  54   3  53  48  96
+1  58  17  53  88  91   4  20  27
+2  97  67  95  16  27  34  86  44
+3  24  95  78  53  44  22  33  98
+4  64  24  72  57  82  77  59  68
+5  51  88  89   6   4  49  17  16
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[30 24 99 54  3 53 48 96]
+ [58 17 53 88 91  4 20 27]
+ [97 67 95 16 27 34 86 44]
+ [24 95 78 53 44 22 33 98]
+ [64 24 72 57 82 77 59 68]
+ [51 88 89  6  4 49 17 16]]
+Output:
+To fairly allocate the items among the agents, we need to consider the valuations and ensure that each agent gets an integer number of items. Here's a possible allocation strategy:
+
+1. Assign each agent at least one item, if possible, based on their highest valuations to ensure fairness.
+2. Adjust the allocation to ensure all items are distributed.
+
+Here's one way to allocate the items based on their valuations:
+
+- Agent 0: Item 2 (highest valuation at 99)
+- Agent 1: Item 4 (highest valuation at 91)
+- Agent 2: Item 0 (highest valuation at 97)
+- Agent 3: Item 7 (highest valuation at 98)
+- Agent 4: Item 5 (highest valuation at 77)
+- Agent 5: Item 1 (highest valuation at 88)
+- Remaining items 3 and 6 can be allocated as follows:
+  - Agent 1 can take item 3 (second highest valuation at 88)
+  - Agent 2 can take item 6 (second highest valuation at 86)
+
+Now, every agent has at least one item, and all items are allocated. Here's how the allocations look:
+
+```json
+{
+    "0": [2],
+    "1": [4, 3],
+    "2": [0, 6],
+    "3": [7],
+    "4": [5],
+    "5": [1]
+}
+```

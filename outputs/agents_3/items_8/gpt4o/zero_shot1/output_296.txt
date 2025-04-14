@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 64.
+
+    0   1   2   3   4   5   6   7
+0  36  14  82  68  84  62  28  23
+1  76   2  64  73  35  70  18  93
+2  20  13  64  88  97  78   8  43
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[36 14 82 68 84 62 28 23]
+ [76  2 64 73 35 70 18 93]
+ [20 13 64 88 97 78  8 43]]
+Output:
+To fairly allocate the 8 items among the 3 agents, we need to consider their valuations and try to maximize the total satisfaction while ensuring each agent gets an integer number of items. Here's a potential allocation strategy:
+
+1. **Agent 0:**
+   - Items with high valuation: 2 (82), 4 (84)
+   - Allocate items: 2, 4
+
+2. **Agent 1:**
+   - Items with high valuation: 0 (76), 7 (93)
+   - Allocate items: 0, 7
+
+3. **Agent 2:**
+   - Items with high valuation: 3 (88), 5 (78)
+   - Allocate items: 3, 5
+
+Now we have allocated 6 items. We need to allocate 2 more items to ensure all 8 items are distributed. Let's consider the remaining items 1 and 6.
+
+- **Agent 0:** Item 1 has a valuation of 14, item 6 has a valuation of 28.
+- **Agent 1:** Item 1 has a valuation of 2, item 6 has a valuation of 18.
+- **Agent 2:** Item 1 has a valuation of 13, item 6 has a valuation of 8.
+
+Allocate item 1 to Agent 0 (valuation of 14) and item 6 to Agent 0 (valuation of 28) to balance the distribution.
+
+Final allocation:
+- Agent 0: Items 1, 2, 4, 6
+- Agent 1: Items 0, 7
+- Agent 2: Items 3, 5
+
+Here's the allocation in the required JSON format:
+
+```json
+{
+    "0": [1, 2, 4, 6],
+    "1": [0, 7],
+    "2": [3, 5]
+}
+```

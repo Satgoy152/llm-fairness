@@ -1,0 +1,57 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 78.
+
+    0   1   2   3   4
+0  76  27  29  53   8
+1  27   2  78   7   1
+2  46  69  49  93  81
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[76 27 29 53  8]
+ [27  2 78  7  1]
+ [46 69 49 93 81]]
+Output:
+To fairly allocate the items to the agents based on their valuations, we aim to maximize the total value each agent receives while ensuring each agent gets a fair share of items. We'll assign the items to agents based on their highest valuation for each item.
+
+Here's one possible allocation:
+
+1. **Agent 0**:
+    - Item 0: Valuation is 76 (highest among agents).
+    - Item 3: Valuation is 53 (second highest for this item, but Agent 2 gets higher value items).
+
+2. **Agent 1**:
+    - Item 2: Valuation is 78 (highest among agents).
+
+3. **Agent 2**:
+    - Item 1: Valuation is 69 (highest among agents).
+    - Item 4: Valuation is 81 (highest among agents).
+
+This allocation ensures each item is given to the agent valuing it the most or based on maximizing their total valuation given the constraints. Here's the allocation in JSON format:
+
+```json
+{
+    "0": [0, 3],
+    "1": [2],
+    "2": [1, 4]
+}
+```
+This allocation ensures all items are distributed while considering the agents' valuations.

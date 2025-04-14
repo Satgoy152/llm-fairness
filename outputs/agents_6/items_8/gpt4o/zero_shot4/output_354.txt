@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 17.
+
+    0   1   2   3   4   5   6   7
+0  59  51  65  28  42  73  89  88
+1  47  48  17  16  58  63  52  62
+2   3   2  42  47  48  81  26  38
+3  35  16  22  68  86  77  62   1
+4  40  43  60  19  94   7  33  97
+5  87  66  44  26  18  47  78  29
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[59 51 65 28 42 73 89 88]
+ [47 48 17 16 58 63 52 62]
+ [ 3  2 42 47 48 81 26 38]
+ [35 16 22 68 86 77 62  1]
+ [40 43 60 19 94  7 33 97]
+ [87 66 44 26 18 47 78 29]]
+Output:
+To fairly allocate the items among the agents, we will aim to distribute the items such that each agent receives items that maximize their utility based on their valuations. Here's an approach that seeks to balance fairness and optimality:
+
+1. **Identify the highest-valued items for each agent**: For each agent, identify the items that they value the most.
+2. **Sort and allocate items**: Sort the items based on their highest valuation across all agents and allocate them to the agents who value them the most, ensuring that each agent gets at least one item if possible.
+
+Following this methodology and ensuring that each agent gets an integer number of items, here is a possible allocation:
+
+```json
+{
+    "0": [6],
+    "1": [4, 1],
+    "2": [5],
+    "3": [3],
+    "4": [7],
+    "5": [0, 2]
+}
+```
+
+Explanation:
+- Agent 0 receives item 6, which they value the highest compared to other agents.
+- Agent 1 receives items 4 and 1, which are among the highest valued by them.
+- Agent 2 receives item 5, which is highly valued.
+- Agent 3 receives item 3, which they value highly and has less competition.
+- Agent 4 receives item 7, where their valuation is highest.
+- Agent 5 receives items 0 and 2, which are valued highly by them, ensuring they also receive items.
+
+This allocation distributes all 8 items, with each agent receiving at least one item, maximizing the fairness of the allocation based on their valuations.

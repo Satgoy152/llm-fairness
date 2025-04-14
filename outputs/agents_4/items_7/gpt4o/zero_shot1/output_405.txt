@@ -1,0 +1,75 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 81.
+
+    0   1   2   3   4   5   6
+0  73  47   7  45  78  62  57
+1  67  40  81  90  71  33  33
+2  86  61  18  60  84  35  91
+3   8  38  95  37  82  45  81
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[73 47  7 45 78 62 57]
+ [67 40 81 90 71 33 33]
+ [86 61 18 60 84 35 91]
+ [ 8 38 95 37 82 45 81]]
+Output:
+To fairly allocate the items among the agents, we aim to ensure that each agent receives a roughly equal share based on their preferences, while also considering the total number of items (7) that need to be distributed. One approach is to allocate items by maximizing the total value assigned to each agent, ensuring that the allocation is as balanced as possible.
+
+Here's a step-by-step allocation:
+
+1. **Agent 0**:
+   - Highest value item: 4 (value 78)
+   - Next highest: 0 (value 73)
+   
+2. **Agent 1**:
+   - Highest value item: 3 (value 90)
+   - Next highest: 2 (value 81)
+   
+3. **Agent 2**:
+   - Highest value item: 6 (value 91)
+   - Next highest: 0, but it's already allocated. Next available highest: 4 (value 84), but it's already allocated.
+   - Allocate item 1 (value 61) instead.
+   
+4. **Agent 3**:
+   - Highest value item: 2 (value 95), but it's already allocated.
+   - Next highest: 4 (value 82), but it's already allocated.
+   - Allocate item 5 (value 45).
+
+After these allocations, we have:
+
+- Agent 0: Items 4, 0
+- Agent 1: Items 3, 2
+- Agent 2: Items 6, 1
+- Agent 3: Item 5
+
+This allocation ensures that each agent receives a fair share based on their preferences, and all 7 items are allocated.
+
+Final allocation in JSON format:
+
+```json
+{
+    "0": [0, 4],
+    "1": [2, 3],
+    "2": [1, 6],
+    "3": [5]
+}
+```

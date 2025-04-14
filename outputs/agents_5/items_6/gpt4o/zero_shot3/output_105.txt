@@ -1,0 +1,75 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 49.
+
+    0   1   2   3   4   5
+0  47  10  91  44  10  42
+1  83  24  49   1  38  61
+2  54  87  92  46   9  41
+3  59  24  45  17  46  32
+4  32  22  25  46  93   1
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[47 10 91 44 10 42]
+ [83 24 49  1 38 61]
+ [54 87 92 46  9 41]
+ [59 24 45 17 46 32]
+ [32 22 25 46 93  1]]
+Output:
+To fairly allocate the items among the agents, we want to ensure that each agent receives items such that their total valuation for the items they receive is as balanced as possible compared to other agents. We will aim for a distribution where each agent ends up with approximately the same total value or an allocation that seems fair given the constraints.
+
+Let's evaluate a fair allocation:
+
+1. **Agent 0**: 
+   - Allocating item 2 (value 91) and item 0 (value 47)
+   - Total value = 91 + 47 = 138
+
+2. **Agent 1**:
+   - Allocating item 5 (value 61)
+   - Total value = 61
+
+3. **Agent 2**:
+   - Allocating item 1 (value 87)
+   - Total value = 87
+
+4. **Agent 3**:
+   - Allocating item 3 (value 17)
+   - Total value = 17
+
+5. **Agent 4**:
+   - Allocating item 4 (value 93)
+   - Total value = 93
+
+This allocation ensures that each agent receives at least one item, and the distribution is fair based on the value each agent places on the items they receive.
+
+Here's the allocation in the required JSON format:
+
+```json
+{
+    "0": [2, 0],
+    "1": [5],
+    "2": [1],
+    "3": [3],
+    "4": [4]
+}
+```

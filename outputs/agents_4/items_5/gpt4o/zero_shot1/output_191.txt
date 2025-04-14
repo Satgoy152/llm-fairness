@@ -1,0 +1,107 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 25.
+
+    0   1   2   3   4
+0  18  87  76  53  65
+1  25  59  25  51  28
+2   9  63  55  85  52
+3  30  83  61  41  68
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[18 87 76 53 65]
+ [25 59 25 51 28]
+ [ 9 63 55 85 52]
+ [30 83 61 41 68]]
+Output:
+To fairly allocate the items among the agents, we can use a strategy that aims to maximize the total valuation based on the agents' preferences. One common approach is the "maximum sum allocation," which seeks to assign items to agents in a way that maximizes the total valuation. This approach doesn't necessarily ensure individual fairness in terms of equal distribution of items or individual satisfaction but helps maximize overall efficiency.
+
+Here's a step-by-step method to perform the allocation:
+
+1. List all the valuations and their corresponding agent-item pairs.
+2. Sort these pairs in descending order based on the valuation.
+3. Allocate items to agents starting from the highest valuation, ensuring that each item is only allocated once and each agent receives an integer number of items.
+
+Let's perform this allocation:
+
+1. Create a list of all valuations with their corresponding agent-item pairs:
+   - (87, 0, 1)
+   - (83, 3, 1)
+   - (85, 2, 3)
+   - (76, 0, 2)
+   - (68, 3, 4)
+   - (65, 0, 4)
+   - (63, 2, 1)
+   - (61, 3, 2)
+   - (59, 1, 1)
+   - (55, 2, 2)
+   - (53, 0, 3)
+   - (52, 2, 4)
+   - (51, 1, 3)
+   - (41, 3, 3)
+   - (30, 3, 0)
+   - (28, 1, 4)
+   - (25, 1, 2)
+   - (25, 1, 0)
+   - (18, 0, 0)
+   - (9, 2, 0)
+
+2. Sort this list in descending order based on valuation:
+   - (87, 0, 1)
+   - (85, 2, 3)
+   - (83, 3, 1)
+   - (76, 0, 2)
+   - (68, 3, 4)
+   - (65, 0, 4)
+   - (63, 2, 1)
+   - (61, 3, 2)
+   - (59, 1, 1)
+   - (55, 2, 2)
+   - (53, 0, 3)
+   - (52, 2, 4)
+   - (51, 1, 3)
+   - (41, 3, 3)
+   - (30, 3, 0)
+   - (28, 1, 4)
+   - (25, 1, 2)
+   - (25, 1, 0)
+   - (18, 0, 0)
+   - (9, 2, 0)
+
+3. Allocate items to agents:
+   - Assign item 1 to agent 0 (valuation: 87)
+   - Assign item 3 to agent 2 (valuation: 85)
+   - Assign item 4 to agent 3 (valuation: 68)
+   - Assign item 2 to agent 0 (valuation: 76)
+   - Assign item 0 to agent 3 (valuation: 30)
+
+Now, each item has been allocated, and the final allocation is:
+
+```json
+{
+    "0": [1, 2],
+    "1": [],
+    "2": [3],
+    "3": [0, 4]
+}
+```
+
+This allocation ensures that all items are distributed, each agent receives an integer number of items, and the total valuation is reasonably high.

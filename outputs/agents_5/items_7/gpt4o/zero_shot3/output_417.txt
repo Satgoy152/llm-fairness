@@ -1,0 +1,61 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 39.
+
+    0   1   2   3   4   5   6
+0  35  17  77  14  30  89  77
+1  83  98  39  44  55  45  51
+2  89  63  47  33  44   5   0
+3  18  34  25  55  49  49  44
+4  33  44  70  41  93  68  87
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[35 17 77 14 30 89 77]
+ [83 98 39 44 55 45 51]
+ [89 63 47 33 44  5  0]
+ [18 34 25 55 49 49 44]
+ [33 44 70 41 93 68 87]]
+Output:
+To fairly allocate the items to the agents, we need to consider the valuations each agent has for the items and try to distribute the items in a way that maximizes overall satisfaction. One possible approach is to assign each item to the agent who values it the most, while ensuring each agent gets at least one item where possible.
+
+Let's analyze the table and allocate the items:
+
+1. **Item 0**: Highest value is for agent 2 (89).
+2. **Item 1**: Highest value is for agent 1 (98).
+3. **Item 2**: Highest value is for agent 0 (77).
+4. **Item 3**: Highest value is for agent 3 (55).
+5. **Item 4**: Highest value is for agent 4 (93).
+6. **Item 5**: Highest value is for agent 0 (89, already has an item). Next highest is agent 4 (68).
+7. **Item 6**: Highest value is for agent 0 (77, already has an item). Next highest is agent 4 (87).
+
+With this allocation, we ensure each agent gets at least one item where possible, and the total number of items allocated is 7. Here's the allocation:
+
+```json
+{
+    "0": [2],
+    "1": [1],
+    "2": [0],
+    "3": [3],
+    "4": [4, 5, 6]
+}
+```

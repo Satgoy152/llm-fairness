@@ -1,0 +1,61 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 22.
+
+    0   1   2   3   4   5
+0  71  23  75  92  96  81
+1  75  73  22  62   3  45
+2  11  95  86  72  20  67
+3  28  54  92  88  35  10
+4  68  95  31  83  96   7
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[71 23 75 92 96 81]
+ [75 73 22 62  3 45]
+ [11 95 86 72 20 67]
+ [28 54 92 88 35 10]
+ [68 95 31 83 96  7]]
+Output:
+To fairly allocate the items to the agents, we need to consider the valuations and ensure that each agent gets approximately equal total value from their allocated items, while also ensuring that each agent receives an integer number of items and all items are distributed.
+
+Here's one potential allocation:
+
+- Agent 0: Items 0 and 5 (values: 71, 81)
+- Agent 1: Items 1 (value: 73)
+- Agent 2: Items 2 (value: 86)
+- Agent 3: Items 3 (value: 88)
+- Agent 4: Items 4 (value: 96)
+
+This allocation attempts to balance the total value each agent receives while ensuring that all items are fairly distributed.
+
+Here is the allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 5],
+    "1": [1],
+    "2": [2],
+    "3": [3],
+    "4": [4]
+}
+```

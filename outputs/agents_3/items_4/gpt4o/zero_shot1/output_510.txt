@@ -1,0 +1,79 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 70.
+
+    0   1   2   3
+0   3  92  24  87
+1  86  21  70  73
+2  81  15  10  23
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 4 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[ 3 92 24 87]
+ [86 21 70 73]
+ [81 15 10 23]]
+Output:
+To fairly allocate the items to the agents while maximizing the total valuation, we can use a method that ensures each agent receives at least one item. One potential approach is to assign items such that each agent gets some items with consideration for their valuations.
+
+Given the valuation matrix:
+
+```
+    0   1   2   3
+0   3  92  24  87
+1  86  21  70  73
+2  81  15  10  23
+```
+
+We will allocate the items using a greedy approach:
+
+1. First, we identify the highest value for each agent:
+
+   - Agent 0 values item 1 the most at 92.
+   - Agent 1 values item 0 the most at 86.
+   - Agent 2 values item 0 the most at 81.
+
+2. Assign these items to the respective agents:
+   - Assign item 1 to Agent 0.
+   - Assign item 0 to Agent 1.
+   - Since item 0 is already assigned, we consider Agent 2's next highest value, which is item 3 at 23.
+
+3. The allocations after assigning one high-value item to each agent:
+   - Agent 0: [1]
+   - Agent 1: [0]
+   - Agent 2: [3]
+
+4. Now, we have one item left (item 2). We assign it to the agent who would increase their total valuation the most without disrupting others:
+   - Agent 0: Current total = 92, with item 2 = 116 (increase of 24)
+   - Agent 1: Current total = 86, with item 2 = 156 (increase of 70)
+   - Agent 2: Current total = 23, with item 2 = 33 (increase of 10)
+
+   The highest increase is for Agent 1 with an increase of 70.
+
+5. Assign item 2 to Agent 1.
+
+Final allocations:
+
+```json
+{
+    "0": [1],
+    "1": [0, 2],
+    "2": [3]
+}
+```

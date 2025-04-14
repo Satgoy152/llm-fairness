@@ -1,0 +1,67 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 56.
+
+    0   1   2   3   4   5   6
+0   2  27   8  52  97  66  91
+1  52  81  56  81  11  15  76
+2  42   0  60  85  45  20  26
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[ 2 27  8 52 97 66 91]
+ [52 81 56 81 11 15 76]
+ [42  0 60 85 45 20 26]]
+Output:
+To fairly allocate the items among the agents, we aim to maximize the total value each agent receives while ensuring that all items are allocated and each agent receives an integer number of items. Let's consider the valuations and make allocations based on maximizing each agent's preference:
+
+### Valuations Table:
+- Agent 0: [2, 27, 8, 52, 97, 66, 91]
+- Agent 1: [52, 81, 56, 81, 11, 15, 76]
+- Agent 2: [42, 0, 60, 85, 45, 20, 26]
+
+### Allocation Strategy:
+1. **Assign the highest valued item for each agent**, considering the overall distribution and ensuring every item is allocated.
+2. **Attempt to balance the total value assigned to each agent** to ensure fairness.
+
+### Allocation:
+- **Agent 0** highly values item 4 and item 6.
+- **Agent 1** highly values item 1 and item 3.
+- **Agent 2** highly values item 3, but since agent 1 also values it highly and has another high-value option, we will give item 2 to agent 2.
+
+### Final Assignments:
+1. Assign item 4 to agent 0
+2. Assign item 6 to agent 0
+3. Assign item 1 to agent 1
+4. Assign item 3 to agent 1
+5. Assign item 2 to agent 2
+6. Assign item 0 to agent 2
+7. Assign item 5 to agent 2
+
+This way, each agent gets items they highly value, and all items are assigned.
+
+### JSON Allocation:
+```json
+{
+    "0": [4, 6],
+    "1": [1, 3],
+    "2": [0, 2, 5]
+}
+```

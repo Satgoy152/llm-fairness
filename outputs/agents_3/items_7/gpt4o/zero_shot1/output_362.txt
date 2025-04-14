@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 21.
+
+    0   1   2   3   4   5   6
+0  51  21  52  95   0   4  80
+1  91  84  21  95  59  27  55
+2  38  79  59   7  62  35  29
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[51 21 52 95  0  4 80]
+ [91 84 21 95 59 27 55]
+ [38 79 59  7 62 35 29]]
+Output:
+To fairly allocate the items among the agents, we want to maximize the total satisfaction based on their valuations. One approach to achieve this is to use a method inspired by the "maximum weighted matching" technique or simply ensuring that each item is allocated to the agent that values it most, while ensuring each agent has an integer number of items.
+
+Here is a step-by-step allocation:
+
+1. **Item 0:** 
+   - Agent 1 values it the most at 91. Allocate item 0 to agent 1.
+
+2. **Item 1:** 
+   - Agent 2 values it the most at 79. Allocate item 1 to agent 2.
+
+3. **Item 2:** 
+   - Agent 0 values it the most at 52. Allocate item 2 to agent 0.
+
+4. **Item 3:** 
+   - Both agents 0 and 1 value it the same at 95. Choose agent 0 to allocate item 3, as agent 1 already received item 0.
+
+5. **Item 4:**
+   - Agent 2 values it the most at 62. Allocate item 4 to agent 2.
+
+6. **Item 5:**
+   - Agent 2 values it the most at 35. Allocate item 5 to agent 2.
+
+7. **Item 6:**
+   - Agent 0 values it the most at 80. Allocate item 6 to agent 0.
+
+This allocation ensures that each agent gets an integer number of items, and the total number of items allocated is 7.
+
+Here are the final allocations:
+
+```json
+{
+    "0": [2, 3, 6],
+    "1": [0],
+    "2": [1, 4, 5]
+}
+```

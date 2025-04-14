@@ -1,0 +1,76 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 22.
+
+    0   1   2   3   4   5   6
+0  53  65  49  31  81  12  10
+1  37  60  22  42  44  56  29
+2  85   1  53  93  65  43  31
+3  34  58  41  61  78  34  31
+4  11  18  64  25  81  25  61
+5   3  42  82  84  97  84  77
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[53 65 49 31 81 12 10]
+ [37 60 22 42 44 56 29]
+ [85  1 53 93 65 43 31]
+ [34 58 41 61 78 34 31]
+ [11 18 64 25 81 25 61]
+ [ 3 42 82 84 97 84 77]]
+Output:
+To fairly allocate the items among the 6 agents, we should consider the valuations each agent has for the items and aim to distribute them such that the overall satisfaction among agents is maximized, while ensuring each agent gets an integer number of items.
+
+Here's one way to allocate the items:
+
+Agent 0:
+- Item 4 (Value: 81)
+
+Agent 1:
+- Item 5 (Value: 56)
+
+Agent 2:
+- Item 3 (Value: 93)
+
+Agent 3:
+- Item 1 (Value: 58)
+
+Agent 4:
+- Item 2 (Value: 64)
+
+Agent 5:
+- Item 0 (Value: 3)
+- Item 6 (Value: 77)
+
+This allocation ensures that each agent gets at least one item, and the total number of items allocated is 7. The allocations are:
+
+```json
+{
+    "0": [4],
+    "1": [5],
+    "2": [3],
+    "3": [1],
+    "4": [2],
+    "5": [0, 6]
+}
+```

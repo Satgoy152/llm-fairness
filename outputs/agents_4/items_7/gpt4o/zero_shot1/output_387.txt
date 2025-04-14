@@ -1,0 +1,72 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 10.
+
+    0   1   2   3   4   5   6
+0  88   9  19  64  95  63  77
+1  30  98  10  93  91  31   0
+2  87  87  62   9  96  39  63
+3  79  22  55   5  61  13   0
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 7 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[88  9 19 64 95 63 77]
+ [30 98 10 93 91 31  0]
+ [87 87 62  9 96 39 63]
+ [79 22 55  5 61 13  0]]
+Output:
+To fairly allocate the items among the agents, we want to ensure that each agent receives a reasonable share of the total value of the items. Here’s a possible allocation strategy that attempts to balance the total value each agent receives:
+
+1. Calculate the total valuation each agent has for all items and consider these totals when making allocations.
+2. Assign items to agents in a way that maximizes their total valuation while ensuring all items are allocated.
+
+Let's calculate the total valuation for each agent:
+
+- Agent 0: 88 + 9 + 19 + 64 + 95 + 63 + 77 = 415
+- Agent 1: 30 + 98 + 10 + 93 + 91 + 31 + 0 = 353
+- Agent 2: 87 + 87 + 62 + 9 + 96 + 39 + 63 = 443
+- Agent 3: 79 + 22 + 55 + 5 + 61 + 13 + 0 = 235
+
+Next, we can allocate items by prioritizing higher valuations:
+
+- Agent 0 should get items that maximize their total value.
+- Agent 1 should also get items that maximize their value while considering what’s left.
+- Agent 2 should receive items maximizing their total value.
+- Agent 3, having the lowest total potential value, gets the remaining allocation.
+
+Here's a possible item allocation based on these considerations:
+
+- Agent 0: Items 0, 4 (88, 95)
+- Agent 1: Items 1, 3 (98, 93)
+- Agent 2: Items 2, 6 (62, 63)
+- Agent 3: Item 5 (13)
+
+This allocation ensures that each agent receives at least one item and maximizes their respective total valuations within the available constraints.
+
+Finally, the allocations in JSON format are:
+
+```json
+{
+    "0": [0, 4],
+    "1": [1, 3],
+    "2": [2, 6],
+    "3": [5]
+}
+```

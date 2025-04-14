@@ -1,0 +1,83 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 11.
+
+    0   1   2   3   4   5
+0  22   8   4  91  10  18
+1  41  59  11  57  71  57
+2  52  85  87  24  23  34
+3  33   6   4  35  52  83
+4  57  84  83  95  92  44
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[22  8  4 91 10 18]
+ [41 59 11 57 71 57]
+ [52 85 87 24 23 34]
+ [33  6  4 35 52 83]
+ [57 84 83 95 92 44]]
+Output:
+To fairly allocate items to the agents, we should consider distributing the items based on maximizing the overall satisfaction or value for each agent. Let's use a greedy approach where we assign the highest value item to each agent in a round-robin manner until all items are allocated. This approach tries to ensure that each agent gets items they value highly, and the allocation is as fair as possible.
+
+First, we'll convert the table into a list of tuples with each tuple containing (agent, item, value) for easy sorting and allocation:
+
+```
+values = [
+    (0, 0, 22), (0, 1, 8), (0, 2, 4), (0, 3, 91), (0, 4, 10), (0, 5, 18),
+    (1, 0, 41), (1, 1, 59), (1, 2, 11), (1, 3, 57), (1, 4, 71), (1, 5, 57),
+    (2, 0, 52), (2, 1, 85), (2, 2, 87), (2, 3, 24), (2, 4, 23), (2, 5, 34),
+    (3, 0, 33), (3, 1, 6), (3, 2, 4), (3, 3, 35), (3, 4, 52), (3, 5, 83),
+    (4, 0, 57), (4, 1, 84), (4, 2, 83), (4, 3, 95), (4, 4, 92), (4, 5, 44)
+]
+```
+
+Next, we sort this list in descending order based on the value:
+
+```
+sorted_values = sorted(values, key=lambda x: x[2], reverse=True)
+```
+
+Now, we'll allocate items to agents. Each agent will receive items in the order of their highest valuations, ensuring each item is allocated only once and that all items are assigned:
+
+```python
+allocations = {0: [], 1: [], 2: [], 3: [], 4: []}
+allocated_items = set()
+
+for agent, item, value in sorted_values:
+    if item not in allocated_items and len(allocated_items) < 6:
+        allocations[agent].append(item)
+        allocated_items.add(item)
+```
+
+Finally, the allocations are:
+
+```json
+{
+    "0": [3],
+    "1": [4],
+    "2": [2],
+    "3": [5],
+    "4": [1, 0]
+}
+```
+
+This allocation ensures that all 6 items are distributed among the agents, with each agent receiving items they value highly.

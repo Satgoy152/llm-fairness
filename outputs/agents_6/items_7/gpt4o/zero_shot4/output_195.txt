@@ -1,0 +1,65 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 52.
+
+    0   1   2   3   4   5   6
+0  27  28  49  10  80  54  47
+1  14  84  52  58  13  57  80
+2   7  47   4  23  45  93  82
+3  89  68  51  39  72  66  46
+4   0  54  84  29  75  58  69
+5  88  64  81  39  54   3  80
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[27 28 49 10 80 54 47]
+ [14 84 52 58 13 57 80]
+ [ 7 47  4 23 45 93 82]
+ [89 68 51 39 72 66 46]
+ [ 0 54 84 29 75 58 69]
+ [88 64 81 39 54  3 80]]
+Output:
+To fairly allocate the items among the agents, we aim to ensure that each agent receives a reasonable share given their valuations. We will consider maximizing the total value each agent receives and try to distribute the items so that each agent gets at least one item, if possible. Here is one way to allocate the items:
+
+1. **Agent 0**: Item 4 (Value: 80) 
+2. **Agent 1**: Item 1 (Value: 84) 
+3. **Agent 2**: Item 5 (Value: 93) 
+4. **Agent 3**: Item 0 (Value: 89)
+5. **Agent 4**: Item 2 (Value: 84) 
+6. **Agent 5**: Item 6 (Value: 80) 
+7. **Agent 5**: Item 3 (Value: 39) 
+
+Here is the JSON representation of the allocation:
+
+```json
+{
+    "0": [4],
+    "1": [1],
+    "2": [5],
+    "3": [0],
+    "4": [2],
+    "5": [3, 6]
+}
+```
+
+This allocation ensures that each item is assigned to exactly one agent, and all agents receive at least one item.

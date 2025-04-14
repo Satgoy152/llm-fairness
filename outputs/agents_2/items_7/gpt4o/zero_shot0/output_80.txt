@@ -1,0 +1,71 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 39.
+
+    0   1   2   3   4   5   6
+0  79  46  80  58  44  94  73
+1  11  64  39   8  21  48  16
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[79 46 80 58 44 94 73]
+ [11 64 39  8 21 48 16]]
+Output:
+To fairly allocate the items between the two agents while considering their valuations, we need to aim for a balanced allocation where the total value each agent receives is as close as possible. Here is one such allocation:
+
+- Agent 0 has higher valuations for most items, so we should prioritize giving them items with higher values for them.
+- Agent 1 should be given items that have relatively higher value compared to the value agent 0 assigns to them.
+
+Let's find a fair allocation:
+
+1. Calculate the total value for each agent and each item:
+   - Agent 0: [79, 46, 80, 58, 44, 94, 73]
+   - Agent 1: [11, 64, 39,  8, 21, 48, 16]
+
+2. Sort items based on the difference in valuations between agents (favoring the agent with higher relative valuation):
+
+   - Item 0: Agent 0 has a much higher value (79 vs 11)
+   - Item 1: Agent 1 has a higher value (64 vs 46)
+   - Item 2: Agent 0 has a much higher value (80 vs 39)
+   - Item 3: Agent 0 has a higher value (58 vs 8)
+   - Item 4: Agent 1 has a higher value (21 vs 44)
+   - Item 5: Agent 0 has a much higher value (94 vs 48)
+   - Item 6: Agent 0 has a higher value (73 vs 16)
+
+3. Allocate items to balance the total valuation:
+
+   - Allocate items with higher relative value to each agent:
+     - Agent 0: [0, 2, 3, 5, 6]
+     - Agent 1: [1, 4]
+
+4. Check the total value received by each agent:
+   - Total value for Agent 0: 79 + 80 + 58 + 94 + 73 = 384
+   - Total value for Agent 1: 64 + 21 = 85
+
+This allocation isn't perfectly equal in value, but it maximizes the value for each agent based on their preferences.
+
+Here's the allocation in the required JSON format:
+
+```json
+{
+    "0": [0, 2, 3, 5, 6],
+    "1": [1, 4]
+}
+```
+
+This allocation ensures that each agent receives an integer number of items while considering their valuation preferences.

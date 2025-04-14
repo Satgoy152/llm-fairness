@@ -1,0 +1,77 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 17.
+
+    0   1   2   3   4   5
+0  77  24  30  97   3   9
+1  85  51  17   1  89  14
+2  26  12  27  49  96  91
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 6 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[77 24 30 97  3  9]
+ [85 51 17  1 89 14]
+ [26 12 27 49 96 91]]
+Output:
+To fairly allocate the items among the agents, we will try to maximize each agent's total value from the items they receive while ensuring all items are distributed and each agent gets an integer number of items.
+
+Let's evaluate the allocations:
+
+1. **Agent 0:**  
+   - Values: [77, 24, 30, 97, 3, 9]
+   - Highest values: 97 (Item 3), 77 (Item 0)
+
+2. **Agent 1:**  
+   - Values: [85, 51, 17, 1, 89, 14]
+   - Highest values: 89 (Item 4), 85 (Item 0)
+
+3. **Agent 2:**  
+   - Values: [26, 12, 27, 49, 96, 91]
+   - Highest values: 96 (Item 4), 91 (Item 5)
+
+Start by assigning the highest value items to each agent:
+
+- **Agent 0:** Assign Item 3 (97) and Item 0 (77)
+- **Agent 1:** Assign Item 4 (89)
+- **Agent 2:** Assign Item 5 (91)
+
+Now allocate the remaining items:
+
+- **Agent 1:** Assign Item 1 (51)
+- **Agent 2:** Assign Item 2 (27)
+- **Agent 0:** Assign Item 1 (24) to Agent 1, but since Agent 1 already has Item 1, distribute Item 2 to Agent 2, and Item 1 to Agent 0.
+
+Final allocations:
+
+```json
+{
+    "0": [0, 1],
+    "1": [3, 4],
+    "2": [5, 2]
+}
+```
+
+Let's double-check to ensure no items are left unallocated and each agent receives an integer number of items:
+
+- Agent 0 has items: 0, 1
+- Agent 1 has items: 3, 4
+- Agent 2 has items: 5, 2
+
+All six items are allocated, and each agent has an integer number of items.

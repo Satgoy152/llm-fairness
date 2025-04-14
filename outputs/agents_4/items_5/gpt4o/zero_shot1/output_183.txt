@@ -1,0 +1,77 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+
+    0   1   2   3   4
+0  42  72  61  53  71
+1  35  68  34  20   9
+2  91  45  58  70  45
+3  72  33  34  10  72
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[42 72 61 53 71]
+ [35 68 34 20  9]
+ [91 45 58 70 45]
+ [72 33 34 10 72]]
+Output:
+To fairly allocate the items to the agents, we can use a strategy that maximizes the total valuation while ensuring each agent gets at least one item. We'll evaluate each possible allocation and aim to distribute the items to maximize the utility for each agent.
+
+To achieve this, we can follow a simple greedy algorithm to allocate items to the agents:
+
+1. Assign each item to the agent who values it the most.
+2. Ensure each agent gets at least one item if possible.
+
+Let’s allocate the items based on the given valuations:
+
+- **Item 0**: Highest value is 91 by Agent 2.
+- **Item 1**: Highest value is 72 by Agent 0.
+- **Item 2**: Highest value is 61 by Agent 0.
+- **Item 3**: Highest value is 70 by Agent 2.
+- **Item 4**: Highest value is 72 by Agent 3.
+
+Now, check if each agent receives at least one item. If not, adjust the allocation to ensure fairness:
+
+- Agent 0 has items [1, 2].
+- Agent 1 has no items.
+- Agent 2 has items [0, 3].
+- Agent 3 has item [4].
+
+To ensure that Agent 1 gets at least one item, we can adjust the allocation of the item with the next highest value for Agent 1:
+
+- Assign item 1 to Agent 1, which has a high value of 68 for them.
+
+After adjusting the allocation:
+
+- Agent 0 gets item 2.
+- Agent 1 gets item 1.
+- Agent 2 gets items 0 and 3.
+- Agent 3 gets item 4.
+
+The final allocation in JSON format is:
+
+```json
+{
+    "0": [2],
+    "1": [1],
+    "2": [0, 3],
+    "3": [4]
+}
+```

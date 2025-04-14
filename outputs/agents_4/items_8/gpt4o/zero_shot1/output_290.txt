@@ -1,0 +1,73 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 26.
+
+    0   1   2   3   4   5   6   7
+0  57   2  69  79  16  20  82  85
+1  29  27  26  18   9  20  56  49
+2   3  43  99  50  26  56  48  58
+3  68  50   4  94  92  97  82  12
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[57  2 69 79 16 20 82 85]
+ [29 27 26 18  9 20 56 49]
+ [ 3 43 99 50 26 56 48 58]
+ [68 50  4 94 92 97 82 12]]
+Output:
+To fairly allocate the items to the agents, we need to balance the total valuations each agent receives. Let's analyze the table:
+
+```
+    0   1   2   3   4   5   6   7
+0  57   2  69  79  16  20  82  85
+1  29  27  26  18   9  20  56  49
+2   3  43  99  50  26  56  48  58
+3  68  50   4  94  92  97  82  12
+```
+
+First, let's try to allocate items to maximize each agent's satisfaction while attempting to keep each agent's total valuation close to the others. We will aim to give each agent two items, as there are 4 agents and 8 items.
+
+1. **Agent 0**: Highest valuations are for items 7 and 6.
+2. **Agent 1**: Highest valuations are for items 6 and 7.
+3. **Agent 2**: Highest valuations are for items 2 and 5.
+4. **Agent 3**: Highest valuations are for items 3 and 5.
+
+Let's allocate based on the above observations while considering overlaps and fairness:
+
+- **Agent 0**: Items 7 (85) and 3 (79)
+- **Agent 1**: Items 6 (56) and 4 (9)
+- **Agent 2**: Items 2 (99) and 5 (56)
+- **Agent 3**: Items 0 (68) and 1 (50)
+
+Now, let's verify that all items are allocated and no overlap occurs:
+
+- Items allocated: 0, 1, 2, 3, 4, 5, 6, 7
+- Total items allocated: 8
+
+Here's the final allocation:
+
+```json
+{
+    "0": [7, 3],
+    "1": [6, 4],
+    "2": [2, 5],
+    "3": [0, 1]
+}
+```

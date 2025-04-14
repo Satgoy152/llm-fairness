@@ -1,0 +1,50 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 24.
+
+    0   1   2   3
+0  97  55  14  57
+1  63  31  24  13
+2  44  49   2  95
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 4 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[97 55 14 57]
+ [63 31 24 13]
+ [44 49  2 95]]
+Output:
+To allocate the items fairly among the agents, we need to consider the valuations each agent has for the items. A common approach is to maximize the overall value for each agent while ensuring all items are allocated. Here's a potential allocation strategy:
+
+1. Agent 0 values item 0 the most (97), so allocate item 0 to agent 0.
+2. Agent 2 values item 3 the most (95), so allocate item 3 to agent 2.
+3. Agent 1 has relatively high values for items 1 and 2 compared to their other options, but item 1 is the highest (31), so allocate item 1 to agent 1.
+4. Finally, item 2 can be allocated to agent 0, as it balances the allocation while still providing some value to that agent (14).
+
+This allocation ensures that each item is given to one agent and that the distribution maximizes the satisfaction based on individual valuations.
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [0, 2],
+    "1": [1],
+    "2": [3]
+}
+```

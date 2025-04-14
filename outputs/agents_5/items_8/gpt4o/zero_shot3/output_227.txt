@@ -1,0 +1,83 @@
+Input:
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2   3   4   5   6   7
+0  74  13  12  67  27  85  47  89
+1  47  94  50  14  83   5  44  98
+2   4  99   2   7  93  29  30   8
+3  50  45  83  72  98  31   5  27
+4  72  98  21  36  58  79  36  57
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot3
+Valuation Table:
+[[74 13 12 67 27 85 47 89]
+ [47 94 50 14 83  5 44 98]
+ [ 4 99  2  7 93 29 30  8]
+ [50 45 83 72 98 31  5 27]
+ [72 98 21 36 58 79 36 57]]
+Output:
+To fairly allocate the items among the 5 agents, we can aim to maximize each agent's satisfaction based on their valuations, ensuring each agent gets at least one item if possible. Here's a step-by-step approach to achieve this:
+
+1. **Identify Maximum Valuation for Each Agent:** Start by identifying the item with the highest valuation for each agent. This will help ensure that each agent gets at least one item they highly value.
+
+2. **Allocate Items Based on Maximum Valuation:**
+   - Agent 0: Item 7 (Value: 89)
+   - Agent 1: Item 7 (Value: 98) [already taken, choose next highest]
+   - Agent 1: Item 1 (Value: 94)
+   - Agent 2: Item 1 (Value: 99) [already taken, choose next highest]
+   - Agent 2: Item 4 (Value: 93)
+   - Agent 3: Item 4 (Value: 98) [already taken, choose next highest]
+   - Agent 3: Item 2 (Value: 83)
+   - Agent 4: Item 1 (Value: 98) [already taken, choose next highest]
+   - Agent 4: Item 0 (Value: 72)
+
+3. **Resolve Conflicts and Ensure All Items Are Allocated:**
+   - Some items may have multiple agents desiring them based on their highest valuation. Allocate based on the next highest value available to each agent and ensure all items are used.
+
+4. **Remaining Items:** Allocate remaining items to agents in a way that increases their total valuation, considering items not yet assigned.
+
+Let's allocate the items:
+
+- Agent 0: Item 7
+- Agent 1: Item 1
+- Agent 2: Item 4
+- Agent 3: Item 2
+- Agent 4: Item 0
+
+Now, allocate the remaining items (3, 5, 6):
+
+- Agent 0: Item 5 (second-highest value after item 7)
+- Agent 1: Item 6 (as 44 is the next highest evaluation after item 1)
+- Agent 3: Item 3 (as 72 is a high evaluation after item 2)
+
+This allocation ensures that each agent gets items valuing their preferences, and all items are allocated. Here's the final allocation:
+
+```json
+{
+    "0": [7, 5],
+    "1": [1, 6],
+    "2": [4],
+    "3": [2, 3],
+    "4": [0]
+}
+```

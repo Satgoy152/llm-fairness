@@ -1,0 +1,60 @@
+Input:
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 62.
+
+    0   1   2   3   4   5   6   7
+0  40   7  78  99   1  63  14  10
+1  83   2  62  45  94  78  93  37
+2  78  88  33  56  42  34  39  18
+3  18  62  74  13   4  77  63   0
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 8 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[40  7 78 99  1 63 14 10]
+ [83  2 62 45 94 78 93 37]
+ [78 88 33 56 42 34 39 18]
+ [18 62 74 13  4 77 63  0]]
+Output:
+To fairly allocate the items among the agents, we need to consider the valuations each agent has for the items. A common approach is to maximize the overall satisfaction by ensuring each agent receives items that they value highly, while also attempting to distribute the total number of items as evenly as possible.
+
+Let's start by analyzing the highest valuations each agent has and distribute the items accordingly:
+
+1. **Agent 0** has high valuations for items 3 (99), 2 (78), and 5 (63).
+2. **Agent 1** values items 4 (94), 6 (93), and 5 (78) the most.
+3. **Agent 2** prefers items 1 (88), 0 (78), and 3 (56).
+4. **Agent 3** has high valuations for items 5 (77), 2 (74), and 1 (62).
+
+We can attempt to allocate items by giving each agent one of their highest valued items in a way that minimizes conflicts and ensures each agent gets at least one item:
+
+- **Agent 0**: Item 3 (99), Item 2 (78)
+- **Agent 1**: Item 4 (94), Item 6 (93)
+- **Agent 2**: Item 1 (88)
+- **Agent 3**: Item 5 (77), Item 0 (18), Item 7 (0)
+
+This allocation gives each agent at least one item and tries to satisfy their preferences as much as possible. Here's the allocation presented in JSON format:
+
+```json
+{
+    "0": [3, 2],
+    "1": [4, 6],
+    "2": [1],
+    "3": [5, 0, 7]
+}
+```

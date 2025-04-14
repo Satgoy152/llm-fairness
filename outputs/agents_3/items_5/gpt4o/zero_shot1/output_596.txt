@@ -1,0 +1,77 @@
+Input:
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 25.
+
+    0   1   2   3   4
+0  96  74  97  75   1
+1  86  40  25  18   7
+2  19  86  55  11  58
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only 5 items are allocated in total.
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot1
+Valuation Table:
+[[96 74 97 75  1]
+ [86 40 25 18  7]
+ [19 86 55 11 58]]
+Output:
+To fairly allocate the items to the agents, we aim to maximize the total valuation for all agents while ensuring that each agent receives an integer number of items. Let's consider the valuations:
+
+Agent 0:
+- Item 0: 96
+- Item 1: 74
+- Item 2: 97
+- Item 3: 75
+- Item 4: 1
+
+Agent 1:
+- Item 0: 86
+- Item 1: 40
+- Item 2: 25
+- Item 3: 18
+- Item 4: 7
+
+Agent 2:
+- Item 0: 19
+- Item 1: 86
+- Item 2: 55
+- Item 3: 11
+- Item 4: 58
+
+A possible allocation that maximizes total valuation while giving each agent at least one item could be:
+
+1. Assign item 2 to Agent 0 (value 97 for Agent 0).
+2. Assign item 0 to Agent 1 (value 86 for Agent 1).
+3. Assign item 1 to Agent 2 (value 86 for Agent 2).
+4. Assign item 3 to Agent 0 (value 75 for Agent 0).
+5. Assign item 4 to Agent 2 (value 58 for Agent 2).
+
+Now, let's present the allocation:
+
+```json
+{
+    "0": [2, 3],
+    "1": [0],
+    "2": [1, 4]
+}
+```
+
+In this allocation:
+- Agent 0 receives items 2 and 3.
+- Agent 1 receives item 0.
+- Agent 2 receives items 1 and 4.

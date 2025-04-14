@@ -1,0 +1,80 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 71.
+
+    0   1   2   3   4   5   6
+0  76  16  69  54  57  34  39
+1  54  70  71   1  84   8  54
+2  57  42  93   0  84  58  63
+3  61  38  63  22  49  73  34
+4  68  11  65  21  72  83  65
+5  26  83  86  72  89  29  91
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[76 16 69 54 57 34 39]
+ [54 70 71  1 84  8 54]
+ [57 42 93  0 84 58 63]
+ [61 38 63 22 49 73 34]
+ [68 11 65 21 72 83 65]
+ [26 83 86 72 89 29 91]]
+Output:
+To fairly allocate the items among the agents, we aim to distribute the total items (7 in this case) such that each agent receives an integer number of items, and the overall distribution maximizes the total value each agent receives. 
+
+Here's a possible allocation strategy based on the valuations provided:
+
+- First, start by identifying high-value pairings to ensure that agents get the items they value most. 
+- Each agent should ideally receive at least one item, given there are six agents and seven items. 
+
+Based on the valuation table, here's a proposed allocation:
+
+1. **Agent 0**: Values item 0 highly (76), so assign item 0 to agent 0.
+2. **Agent 1**: Values item 4 highly (84), so assign item 4 to agent 1.
+3. **Agent 2**: Values item 2 highly (93), so assign item 2 to agent 2.
+4. **Agent 3**: Values item 5 highly (73), so assign item 5 to agent 3.
+5. **Agent 4**: Values item 5 highly (83), but will be assigned item 6 (65) because item 5 is given to agent 3.
+6. **Agent 5**: Values item 1 highly (83), so assign item 1 to agent 5.
+
+After assigning one item to each agent as above, we still have one item left (item 3). Let's assess which agent values item 3 the most:
+
+- Agent 0 values item 3 at 54.
+- Agent 1 values item 3 at 1.
+- Agent 2 values item 3 at 0.
+- Agent 3 values item 3 at 22.
+- Agent 4 values item 3 at 21.
+- Agent 5 values item 3 at 72.
+
+Agent 5 values item 3 the most, so item 3 will be assigned to agent 5.
+
+Thus, the proposed allocation is:
+
+```json
+{
+    "0": [0],
+    "1": [4],
+    "2": [2],
+    "3": [5],
+    "4": [6],
+    "5": [1, 3]
+}
+```

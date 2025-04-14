@@ -1,0 +1,76 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 87.
+
+    0   1   2   3   4   5   6
+0  95  31  13  64  41  52   3
+1  36  98  87  92  69  11  20
+2   2  12  52  14  96  90  65
+3  24  43  24  49  57  40  48
+4  15  59  33  80  69  52  77
+5  35  18  95  65  55  51   1
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[95 31 13 64 41 52  3]
+ [36 98 87 92 69 11 20]
+ [ 2 12 52 14 96 90 65]
+ [24 43 24 49 57 40 48]
+ [15 59 33 80 69 52 77]
+ [35 18 95 65 55 51  1]]
+Output:
+To fairly allocate the 7 items among the 6 agents based on their valuations, we need to ensure that each agent receives at least one item or a fair share of items based on their preferences. Here is one way to allocate the items:
+
+1. **Agent 0**:
+   - Highest valuation: Item 0 (95)
+
+2. **Agent 1**:
+   - Highest valuation: Item 1 (98)
+
+3. **Agent 2**:
+   - Highest valuation: Item 4 (96)
+
+4. **Agent 3**:
+   - Highest valuation: Item 3 (49)
+
+5. **Agent 4**:
+   - Highest valuation: Item 6 (77)
+
+6. **Agent 5**:
+   - Highest valuation: Item 2 (95)
+   - Second highest valuation: Item 5 (51) (since no other agent has a very strong preference for Item 5, it can go to Agent 5 to ensure all items are allocated)
+
+This allocation gives each agent at least one item and ensures all items are allocated.
+
+Here's the final allocation in JSON format:
+
+```json
+{
+    "0": [0],
+    "1": [1],
+    "2": [4],
+    "3": [3],
+    "4": [6],
+    "5": [2, 5]
+}
+```
