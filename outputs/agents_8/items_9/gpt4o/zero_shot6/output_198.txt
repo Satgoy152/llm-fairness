@@ -1,0 +1,76 @@
+Input:
+
+        The following table represents the valuations of 8 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 66.
+
+    0   1   2   3   4   5   6   7   8
+0  91   5  87  13  35  55  71   9  94
+1  29  52  66  64  58  68  29  92  34
+2  91  27  56  52  64  38  51  57   9
+3  28  48  29  62  11  84   7  52  57
+4  57  21  61  81  89  23  85  38   6
+5  22  58  17   1  31  15  41  47  52
+6  49  79  45  81  41  34  63  40   4
+7  85  68  14  76  43  99  21  15  12
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...],
+        "7": [15,16,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot6
+Valuation Table:
+[[91  5 87 13 35 55 71  9 94]
+ [29 52 66 64 58 68 29 92 34]
+ [91 27 56 52 64 38 51 57  9]
+ [28 48 29 62 11 84  7 52 57]
+ [57 21 61 81 89 23 85 38  6]
+ [22 58 17  1 31 15 41 47 52]
+ [49 79 45 81 41 34 63 40  4]
+ [85 68 14 76 43 99 21 15 12]]
+Output:
+To fairly allocate the 9 items among the 8 agents while considering their valuations, we should aim to maximize the total value each agent receives or ensure a balanced distribution of value. Let's proceed with an allocation that attempts to balance value among agents:
+
+1. Assign item 0 to agent 0 (value: 91 for agent 0)
+2. Assign item 1 to agent 6 (value: 79 for agent 6)
+3. Assign item 2 to agent 0 (value: 87 for agent 0)
+4. Assign item 3 to agent 4 (value: 81 for agent 4)
+5. Assign item 4 to agent 4 (value: 89 for agent 4)
+6. Assign item 5 to agent 7 (value: 99 for agent 7)
+7. Assign item 6 to agent 4 (value: 85 for agent 4)
+8. Assign item 7 to agent 1 (value: 92 for agent 1)
+9. Assign item 8 to agent 0 (value: 94 for agent 0)
+
+This allocation ensures that each agent receives a fair share based on their valuations, and all items are allocated.
+
+Here is the allocation in the required JSON format:
+
+```json
+{
+    "0": [0, 2, 8],
+    "1": [7],
+    "2": [],
+    "3": [],
+    "4": [3, 4, 6],
+    "5": [],
+    "6": [1],
+    "7": [5]
+}
+```

@@ -1,0 +1,73 @@
+Input:
+
+        The following table represents the valuations of 8 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 37.
+
+    0   1   2   3   4   5   6   7   8
+0  86  36  24  95  68  75   7  61  88
+1  16  68  37   0  43  12  31  67  25
+2  35  40  37  86   1  61  13  72  81
+3  21  92  93  38  34  17   9  71  50
+4  56  89  81  15  67  38  23  29  84
+5  51  51  85  85  70  12  21  79  46
+6  61  51  35  86  41  97  69  20  14
+7  53  90  21  94  17  61  43  44  67
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...],
+        "7": [15,16,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot6
+Valuation Table:
+[[86 36 24 95 68 75  7 61 88]
+ [16 68 37  0 43 12 31 67 25]
+ [35 40 37 86  1 61 13 72 81]
+ [21 92 93 38 34 17  9 71 50]
+ [56 89 81 15 67 38 23 29 84]
+ [51 51 85 85 70 12 21 79 46]
+ [61 51 35 86 41 97 69 20 14]
+ [53 90 21 94 17 61 43 44 67]]
+Output:
+To fairly allocate the items to the agents, we aim to distribute the items in such a way that each agent receives an integer number of items, and that the distribution is as even as possible given the constraints of the valuations. Here is one possible allocation:
+
+- Agent 0: Item 3
+- Agent 1: Item 1
+- Agent 2: Item 8
+- Agent 3: Item 2
+- Agent 4: Item 4
+- Agent 5: Item 5
+- Agent 6: Item 6
+- Agent 7: Items 0 and 7
+
+This allocation ensures each agent receives at least one item, and the total number of items allocated is 9. Now, I will present this in the requested JSON format:
+
+```json
+{
+    "0": [3],
+    "1": [1],
+    "2": [8],
+    "3": [2],
+    "4": [4],
+    "5": [5],
+    "6": [6],
+    "7": [0, 7]
+}
+```

@@ -1,0 +1,83 @@
+Input:
+
+        The following table represents the valuations of 8 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 29.
+
+    0   1   2   3   4   5   6   7   8
+0  44  15  31  92  56  66  69  12  33
+1  58  81  29  12  57   7  45  78  43
+2  79   7  54  80  66  43  82  58  37
+3  41  36  69  36  82   2  29  79  64
+4  69  24   4  46   1  94  96  91  97
+5   7  12  14   6  96  69  59  59  99
+6  27  43  31  36  13  41  50  89  65
+7  31  46  98  16  78  47  79  67  10
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...],
+        "7": [15,16,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot6
+Valuation Table:
+[[44 15 31 92 56 66 69 12 33]
+ [58 81 29 12 57  7 45 78 43]
+ [79  7 54 80 66 43 82 58 37]
+ [41 36 69 36 82  2 29 79 64]
+ [69 24  4 46  1 94 96 91 97]
+ [ 7 12 14  6 96 69 59 59 99]
+ [27 43 31 36 13 41 50 89 65]
+ [31 46 98 16 78 47 79 67 10]]
+Output:
+To fairly allocate the items to the agents, we should aim to distribute the items in a way that balances the total value each agent receives while ensuring that all items are allocated. Given that there are 9 items and 8 agents, one agent must receive 2 items while the others receive 1 item each. 
+
+Here's a possible allocation strategy:
+
+1. Calculate the total value each agent assigns to all items.
+2. Attempt to allocate items to balance these total values as evenly as possible.
+
+Let's perform this allocation:
+
+- Agent 0: Choose the item with the highest value for Agent 0, which is item 3 (value 92).
+- Agent 1: Choose item 1 (value 81) for Agent 1.
+- Agent 2: Choose item 6 (value 82) for Agent 2.
+- Agent 3: Choose item 4 (value 82) for Agent 3.
+- Agent 4: Choose item 8 (value 97) for Agent 4.
+- Agent 5: Choose item 5 (value 69) for Agent 5.
+- Agent 6: Choose item 7 (value 89) for Agent 6.
+- Agent 7: Choose item 2 (value 98) for Agent 7.
+- Agent 0 again: Since one agent needs to receive 2 items, and Agent 0 has the next highest value available for item 0 (value 44), assign item 0 to Agent 0 as well.
+
+Final allocation in JSON format:
+
+```json
+{
+    "0": [3, 0],
+    "1": [1],
+    "2": [6],
+    "3": [4],
+    "4": [8],
+    "5": [5],
+    "6": [7],
+    "7": [2]
+}
+```
+
+This allocation attempts to balance the total value each agent receives as fairly as possible while ensuring every item is allocated.

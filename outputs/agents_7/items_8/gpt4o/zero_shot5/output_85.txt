@@ -1,0 +1,84 @@
+Input:
+
+        The following table represents the valuations of 7 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 1.
+
+    0   1   2   3   4   5   6   7
+0  17  25  73  91   2  39  84  41
+1  97  71   1  71  73  86  71  23
+2  63  57  66  44  17  12  78  43
+3   7  65  90  14   4  95  34  77
+4  66  78   7  53  34  58  81   9
+5  47  90  83  74  69  54  63   5
+6  48  55   8  37  53  92  45  79
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot5
+Valuation Table:
+[[17 25 73 91  2 39 84 41]
+ [97 71  1 71 73 86 71 23]
+ [63 57 66 44 17 12 78 43]
+ [ 7 65 90 14  4 95 34 77]
+ [66 78  7 53 34 58 81  9]
+ [47 90 83 74 69 54 63  5]
+ [48 55  8 37 53 92 45 79]]
+Output:
+To fairly allocate items among the agents, we need to consider each agent's valuation of each item and try to maximize the total value each agent receives. The goal is to ensure that every agent gets a fair share of items based on their preferences.
+
+Here's one way to allocate the items:
+
+1. Identify which items are highly valued by specific agents.
+2. Try to allocate items in a way that maximizes the overall satisfaction.
+
+Let's proceed with the allocation:
+
+- Agent 0 seems to value item 3 (91) the most.
+- Agent 1 values item 0 (97) the most.
+- Agent 2 values item 6 (78) the most.
+- Agent 3 values item 5 (95) the most.
+- Agent 4 values item 6 (81) highly, but item 1 (78) is also significant.
+- Agent 5 values item 1 (90) the most.
+- Agent 6 values item 5 (92) the most, but also values item 7 (79).
+
+Given these valuations, let's allocate the items:
+
+- Agent 0: [3] (Item with highest value for agent 0)
+- Agent 1: [0] (Item with highest value for agent 1)
+- Agent 2: [6] (Item with highest value for agent 2)
+- Agent 3: [5] (Item with highest value for agent 3)
+- Agent 4: [1] (Item with highest value among remaining for agent 4)
+- Agent 5: [2] (Item with next highest value for agent 5)
+- Agent 6: [4, 7] (Remaining items, with item 7 being highly valued by agent 6)
+
+Here is the allocation in the required JSON format:
+
+```json
+{
+    "0": [3],
+    "1": [0],
+    "2": [6],
+    "3": [5],
+    "4": [1],
+    "5": [2],
+    "6": [4, 7]
+}
+```

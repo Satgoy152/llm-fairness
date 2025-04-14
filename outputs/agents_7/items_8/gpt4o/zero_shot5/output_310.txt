@@ -1,0 +1,69 @@
+Input:
+
+        The following table represents the valuations of 7 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 28.
+
+    0   1   2   3   4   5   6   7
+0  91  96  80  27  27  18   6  40
+1  94  58  28   7  62  89  95  66
+2  36  15  25  39  92  66  53  18
+3  62  85   0  22  70  93  24  74
+4  37  71  11  74   3  91  49  23
+5  37  65  36  95   9  97  52  47
+6  58  66  37  54  40  30  49  76
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot5
+Valuation Table:
+[[91 96 80 27 27 18  6 40]
+ [94 58 28  7 62 89 95 66]
+ [36 15 25 39 92 66 53 18]
+ [62 85  0 22 70 93 24 74]
+ [37 71 11 74  3 91 49 23]
+ [37 65 36 95  9 97 52 47]
+ [58 66 37 54 40 30 49 76]]
+Output:
+To fairly allocate the items among the agents, we can aim to maximize the total valuation received by each agent while ensuring every item is assigned to exactly one agent. Here's one possible allocation that considers the valuations provided:
+
+- Agent 0: Allocating items that have relatively high valuations for Agent 0.
+- Agent 1: Allocating items that have relatively high valuations for Agent 1.
+- Agent 2: Allocating items that have relatively high valuations for Agent 2.
+- Agent 3: Allocating items that have relatively high valuations for Agent 3.
+- Agent 4: Allocating items that have relatively high valuations for Agent 4.
+- Agent 5: Allocating items that have relatively high valuations for Agent 5.
+- Agent 6: Allocating items that have relatively high valuations for Agent 6.
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [0],
+    "1": [6],
+    "2": [4],
+    "3": [5],
+    "4": [1],
+    "5": [3],
+    "6": [2, 7]
+}
+``` 
+
+This allocation ensures that each agent gets at least one item, and all items are allocated. The allocation seeks to maximize each agent's satisfaction based on their valuations.

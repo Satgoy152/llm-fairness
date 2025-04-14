@@ -1,0 +1,78 @@
+Input:
+
+        The following table represents the valuations of 7 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 20.
+
+    0   1   2   3   4   5   6   7
+0  50  93  81   1  64  26  94  56
+1  35  17  20  85  81   3  40  59
+2  12  33  95  43  91  58  65  40
+3  98  33  17  99  70  89  36   6
+4  53  66  92  23  72  49  74  82
+5   0   0  23  94  42  87  96  86
+6  37  23  12  66  85   9   9  13
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot5
+Valuation Table:
+[[50 93 81  1 64 26 94 56]
+ [35 17 20 85 81  3 40 59]
+ [12 33 95 43 91 58 65 40]
+ [98 33 17 99 70 89 36  6]
+ [53 66 92 23 72 49 74 82]
+ [ 0  0 23 94 42 87 96 86]
+ [37 23 12 66 85  9  9 13]]
+Output:
+To fairly allocate the items among the agents based on their valuations, we need to consider their preferences and aim to maximize the overall satisfaction. Here is one possible allocation strategy:
+
+- Agent 0 values item 1 the most.
+- Agent 1 values item 3 the most.
+- Agent 2 values item 2 the most.
+- Agent 3 values item 3 the most, but since it's already taken, we allocate item 0 which is their second preference.
+- Agent 4 values item 2 the most, but since it's already taken, we allocate item 7 which is their second preference.
+- Agent 5 values item 6 the most.
+- Agent 6 values item 4 the most.
+
+Following these preferences, here is how the allocation might look:
+
+```json
+{
+    "0": [1],
+    "1": [3],
+    "2": [2],
+    "3": [0],
+    "4": [7],
+    "5": [6],
+    "6": [4]
+}
+```
+
+Explanation:
+- Agent 0 gets item 1
+- Agent 1 gets item 3
+- Agent 2 gets item 2
+- Agent 3 gets item 0
+- Agent 4 gets item 7
+- Agent 5 gets item 6
+- Agent 6 gets item 4
+
+This allocation ensures each agent gets at least one item according to their preferences, and all 8 items are allocated.

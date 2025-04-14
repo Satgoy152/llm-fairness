@@ -1,0 +1,75 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 7.
+
+    0   1   2   3   4   5   6   7   8
+0  44  85  10  19  96  65  57  53  55
+1  89   2   7  37  50  77  56  65  29
+2  37   8  76  84  38  96  29  80  35
+3  36  14  91  10  55  53  15  40  40
+4  92  39  61  35   9  42  79   9  42
+5  53  46   8  63   3  18  93  94   6
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[44 85 10 19 96 65 57 53 55]
+ [89  2  7 37 50 77 56 65 29]
+ [37  8 76 84 38 96 29 80 35]
+ [36 14 91 10 55 53 15 40 40]
+ [92 39 61 35  9 42 79  9 42]
+ [53 46  8 63  3 18 93 94  6]]
+Output:
+To fairly allocate the items to the agents, we aim to maximize the total value each agent receives based on their valuations while ensuring that each agent receives an integer number of items and that all 9 items are allocated.
+
+Here's a possible allocation based on the given valuations:
+
+- Agent 0 values item 4 the most (96), and item 0 is also highly valued (44).
+- Agent 1 values item 0 the most (89) and item 5 (77).
+- Agent 2 values item 5 the most (96) and item 3 (84).
+- Agent 3 values item 2 the most (91).
+- Agent 4 values item 0 the most (92).
+- Agent 5 values items 6 and 7 highly (93 and 94, respectively).
+
+We aim to allocate the items to the agents while considering these preferences:
+
+1. Agent 0: Allocated item 4
+2. Agent 1: Allocated item 0
+3. Agent 2: Allocated item 3
+4. Agent 3: Allocated item 2
+5. Agent 4: Allocated item 1
+6. Agent 5: Allocated items 5, 6, 7, 8
+
+This allocation ensures each agent has a fair distribution based on their preferences, and all items are allocated.
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [4],
+    "1": [0],
+    "2": [3],
+    "3": [2],
+    "4": [1],
+    "5": [5, 6, 7, 8]
+}
+```

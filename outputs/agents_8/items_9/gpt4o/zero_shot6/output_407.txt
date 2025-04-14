@@ -1,0 +1,88 @@
+Input:
+
+        The following table represents the valuations of 8 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2   3   4   5   6   7   8
+0  82  94  26  49  43  64   9  35  47
+1  51  41  50  12  45  12  64   5  76
+2  78  48  41  28  80  75  67  98  77
+3   4  37  47  83  70  86  31  26  51
+4  35   0  88  53  35  94  80  15  62
+5  25  98   7  98  82  27  90  86  24
+6  49  62  61   9  15  11  99  60  52
+7  32  89   3  14  53  24  48  55  81
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...],
+        "7": [15,16,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot6
+Valuation Table:
+[[82 94 26 49 43 64  9 35 47]
+ [51 41 50 12 45 12 64  5 76]
+ [78 48 41 28 80 75 67 98 77]
+ [ 4 37 47 83 70 86 31 26 51]
+ [35  0 88 53 35 94 80 15 62]
+ [25 98  7 98 82 27 90 86 24]
+ [49 62 61  9 15 11 99 60 52]
+ [32 89  3 14 53 24 48 55 81]]
+Output:
+To fairly allocate the items among the agents, we can use a simple round-robin or priority-based approach. We'll consider each agent's perceived value of the items and aim to distribute the items evenly among the agents while maximizing the total value each agent receives. 
+
+Let's allocate the items based on the highest value each agent has for the available items. We'll ensure that each agent gets at least one item until all items are allocated.
+
+1. **Agent 0** - Initially selects item 1 (value 94)
+2. **Agent 1** - Initially selects item 8 (value 76)
+3. **Agent 2** - Initially selects item 7 (value 98)
+4. **Agent 3** - Initially selects item 5 (value 86)
+5. **Agent 4** - Initially selects item 5 (value 94)
+6. **Agent 5** - Initially selects item 1 (value 98)
+7. **Agent 6** - Initially selects item 6 (value 99)
+8. **Agent 7** - Initially selects item 8 (value 81)
+
+Now, let's adjust to ensure each agent gets an item and maximize their values:
+
+- **Agent 0**: Items 1, 0 (Values: 94, 82)
+- **Agent 1**: Item 8 (Value: 76)
+- **Agent 2**: Item 7 (Value: 98)
+- **Agent 3**: Item 5 (Value: 86)
+- **Agent 4**: Item 2 (Value: 88)
+- **Agent 5**: Item 3 (Value: 98)
+- **Agent 6**: Item 6 (Value: 99)
+- **Agent 7**: Item 4 (Value: 53)
+
+Now, each agent has at least one item, and all items are allocated fairly based on their preferences.
+
+Here is the allocation in the specified JSON format:
+
+```json
+{
+    "0": [0, 1],
+    "1": [8],
+    "2": [7],
+    "3": [5],
+    "4": [2],
+    "5": [3],
+    "6": [6],
+    "7": [4]
+}
+```

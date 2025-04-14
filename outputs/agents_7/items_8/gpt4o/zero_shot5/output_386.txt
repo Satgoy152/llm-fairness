@@ -1,0 +1,90 @@
+Input:
+
+        The following table represents the valuations of 7 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 99.
+
+    0   1   2   3   4   5   6   7
+0   5  45  28  48  28  67  25  59
+1  27  76  99  13  66  79  75  57
+2  69  62  21  86  86  64  73  95
+3   9  65  27   0  32  36  77  62
+4  67  74  46  49  78  16  13  33
+5  22  58  85  11  73  58  93  69
+6  42  98  63  12   3  54   0  78
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot5
+Valuation Table:
+[[ 5 45 28 48 28 67 25 59]
+ [27 76 99 13 66 79 75 57]
+ [69 62 21 86 86 64 73 95]
+ [ 9 65 27  0 32 36 77 62]
+ [67 74 46 49 78 16 13 33]
+ [22 58 85 11 73 58 93 69]
+ [42 98 63 12  3 54  0 78]]
+Output:
+To fairly allocate the items among the agents, we need to consider the valuations and try to distribute the items so that each agent gets a fair share based on their preferences. Since there are 8 items and 7 agents, some agents will get more items than others. The goal is to maximize fairness by considering the highest valuations where possible.
+
+Let's go through the allocations step-by-step:
+
+1. Identify key preferences for each agent by considering the highest valuations.
+2. Distribute items while ensuring each agent gets at least one item, if possible.
+
+### Allocation Strategy:
+- Assign items based on the highest valuations for each agent.
+- Ensure all items are allocated, and each agent receives an integer number of items.
+- Balance the allocation so that no agent is significantly disadvantaged.
+
+### Allocation:
+
+1. **Agent 0**: Choose items with significant valuations like item 7 (59) and item 5 (67).
+2. **Agent 1**: Choose high-value items like item 2 (99).
+3. **Agent 2**: Choose high-value items like item 7 (95) and item 3 (86).
+4. **Agent 3**: Choose item 6 (77).
+5. **Agent 4**: Choose item 4 (78).
+6. **Agent 5**: Choose item 6 (93).
+7. **Agent 6**: Choose item 1 (98).
+
+### Final Allocation:
+
+```json
+{
+    "0": [5, 7],
+    "1": [2],
+    "2": [3],
+    "3": [6],
+    "4": [4],
+    "5": [],
+    "6": [1]
+}
+```
+
+### Explanation:
+- Agent 0 gets items 5 and 7 (valuations of 67 and 59).
+- Agent 1 gets item 2 (valuation of 99).
+- Agent 2 gets item 3 (valuation of 86).
+- Agent 3 gets item 6 (valuation of 77).
+- Agent 4 gets item 4 (valuation of 78).
+- Agent 5 does not get any item due to constraints.
+- Agent 6 gets item 1 (valuation of 98).
+
+This allocation attempts to maximize the total value received by each agent while ensuring fairness across allocations.

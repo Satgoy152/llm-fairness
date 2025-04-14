@@ -1,0 +1,75 @@
+Input:
+
+        The following table represents the valuations of 7 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 26.
+
+    0   1   2   3   4   5   6   7   8
+0  17  94  26  49  44   3  76  35  70
+1  79  23  26  94  42  29  71  99  61
+2  70   6  82  53  27  34  84  73  14
+3  71  67  96  76  87  29  62  37  91
+4  58  76  92  55  28  58  42  27   5
+5  63  33  18  81  10  21  75  23  68
+6  55  66  23   7  15  74  13  99  80
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot5
+Valuation Table:
+[[17 94 26 49 44  3 76 35 70]
+ [79 23 26 94 42 29 71 99 61]
+ [70  6 82 53 27 34 84 73 14]
+ [71 67 96 76 87 29 62 37 91]
+ [58 76 92 55 28 58 42 27  5]
+ [63 33 18 81 10 21 75 23 68]
+ [55 66 23  7 15 74 13 99 80]]
+Output:
+To fairly allocate the items among the agents, we need to consider the valuations and attempt to distribute the items in a way that maximizes overall satisfaction. Here's one way to allocate the items:
+
+1. Assign each agent the item(s) for which they have the highest relative valuation compared to other agents. This means checking which agent values an item the most and assigning that item to the agent.
+
+2. Make sure each agent ends up with at least one item. Since there are 9 items and 7 agents, two agents can receive two items.
+
+Based on the given table, here is a proposed allocation:
+
+- Agent 0: Items 0, 5
+- Agent 1: Item 7
+- Agent 2: Items 2
+- Agent 3: Items 4
+- Agent 4: Item 3
+- Agent 5: Item 8
+- Agent 6: Item 1
+
+This allocation attempts to maximize fairness based on the relative values.
+
+Now, I will present the allocations in the requested JSON format:
+
+```json
+{
+    "0": [0, 5],
+    "1": [7],
+    "2": [2],
+    "3": [4],
+    "4": [3],
+    "5": [8],
+    "6": [1]
+}
+```

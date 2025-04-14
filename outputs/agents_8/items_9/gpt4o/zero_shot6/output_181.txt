@@ -1,0 +1,106 @@
+Input:
+
+        The following table represents the valuations of 8 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 80.
+
+    0   1   2   3   4   5   6   7   8
+0  56  67  90  78  18  68  54  60  53
+1  35  21  80  86  89  25  76  95  99
+2   5  14  77  30  28   1  92  33  21
+3   4  80  42  89  35  22  40   7  88
+4  96  31  37  73  22  99  66  74  33
+5  79  59  44  58  87  23  74  82  69
+6  64  16  46  75  49  30  32  78  92
+7  85   2  55  38  80  52  74  72   5
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...],
+        "6": [13,14,...],
+        "7": [15,16,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot6
+Valuation Table:
+[[56 67 90 78 18 68 54 60 53]
+ [35 21 80 86 89 25 76 95 99]
+ [ 5 14 77 30 28  1 92 33 21]
+ [ 4 80 42 89 35 22 40  7 88]
+ [96 31 37 73 22 99 66 74 33]
+ [79 59 44 58 87 23 74 82 69]
+ [64 16 46 75 49 30 32 78 92]
+ [85  2 55 38 80 52 74 72  5]]
+Output:
+To fairly allocate the items among the agents, we should aim to distribute items based on the agents' valuations, ensuring each agent receives an integer number of items and that each agent is considered. Here's a possible allocation strategy:
+
+1. Calculate the total valuation of each agent for all items.
+2. Sort the agents by their total valuation to give priority to agents with higher overall valuations.
+3. Allocate items one by one, prioritizing agents with higher valuations for those specific items.
+
+Let's proceed step by step:
+
+1. Calculate the total valuation of each agent:
+
+    - Agent 0: 56 + 67 + 90 + 78 + 18 + 68 + 54 + 60 + 53 = 544
+    - Agent 1: 35 + 21 + 80 + 86 + 89 + 25 + 76 + 95 + 99 = 606
+    - Agent 2: 5 + 14 + 77 + 30 + 28 + 1 + 92 + 33 + 21 = 301
+    - Agent 3: 4 + 80 + 42 + 89 + 35 + 22 + 40 + 7 + 88 = 407
+    - Agent 4: 96 + 31 + 37 + 73 + 22 + 99 + 66 + 74 + 33 = 531
+    - Agent 5: 79 + 59 + 44 + 58 + 87 + 23 + 74 + 82 + 69 = 575
+    - Agent 6: 64 + 16 + 46 + 75 + 49 + 30 + 32 + 78 + 92 = 482
+    - Agent 7: 85 + 2 + 55 + 38 + 80 + 52 + 74 + 72 + 5 = 463
+
+2. Sort agents by total valuation: 1, 5, 0, 4, 6, 7, 3, 2
+
+3. Allocate items:
+
+- Agent 1: High valuation for item 8 (99), item 7 (95), item 4 (89)
+- Agent 5: High valuation for item 0 (79), item 4 (87)
+- Agent 0: High valuation for item 2 (90)
+- Agent 4: High valuation for item 5 (99)
+- Agent 6: High valuation for item 8 (92)
+- Agent 7: High valuation for item 0 (85)
+- Agent 3: High valuation for item 3 (89)
+- Agent 2: High valuation for item 6 (92)
+
+Final allocation:
+- Agent 1: [8, 7]
+- Agent 5: [0]
+- Agent 0: [2]
+- Agent 4: [5]
+- Agent 6: [6]
+- Agent 7: [1]
+- Agent 3: [3]
+- Agent 2: [4]
+
+Here's the JSON representation of the allocations:
+
+```json
+{
+    "0": [2],
+    "1": [8, 7],
+    "2": [4],
+    "3": [3],
+    "4": [5],
+    "5": [0],
+    "6": [6],
+    "7": [1]
+}
+```
+
+This allocation ensures that each agent receives at least one item and the total number of items allocated is exactly 9.

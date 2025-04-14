@@ -1,0 +1,68 @@
+Input:
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 3.
+
+    0   1   2   3   4   5   6   7   8
+0  73  13  84   7  93  39  84  68  45
+1   6  77   3  43  89  51  59   2  18
+2  90  93  41  35  37  16  83  77  27
+3  63  96  49  37  50  85  41  49  45
+4  30  98  94  46  66  22  64  95  37
+5  50  18  99  15  30  65  50  88  88
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot4
+Valuation Table:
+[[73 13 84  7 93 39 84 68 45]
+ [ 6 77  3 43 89 51 59  2 18]
+ [90 93 41 35 37 16 83 77 27]
+ [63 96 49 37 50 85 41 49 45]
+ [30 98 94 46 66 22 64 95 37]
+ [50 18 99 15 30 65 50 88 88]]
+Output:
+To fairly allocate the items to the agents, we need to consider the valuations each agent has for the items and try to distribute them so that each agent receives a reasonable benefit while respecting the constraint that exactly 9 items need to be allocated.
+
+A possible approach to achieve a fair allocation is to follow a max-min fairness strategy, where we try to maximize the minimum value assigned to any agent. The goal is to ensure that no agent is left with significantly lower total value compared to others.
+
+Here's a potential allocation of items to agents, aiming for a fair balance:
+
+- Agent 0 receives items: [0, 5]
+- Agent 1 receives items: [1, 4]
+- Agent 2 receives items: [6]
+- Agent 3 receives items: [3]
+- Agent 4 receives items: [7]
+- Agent 5 receives items: [2, 8]
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [0, 5],
+    "1": [1, 4],
+    "2": [6],
+    "3": [3],
+    "4": [7],
+    "5": [2, 8]
+}
+```
+
+This allocation ensures each agent receives some items, and a total of 9 items are distributed.
