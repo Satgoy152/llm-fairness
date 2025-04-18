@@ -1,7 +1,7 @@
 from valuation_generation import generate_valuations
 from prompt_generation import generate_prompts
 from model_response import model_init, query_model, extract_json
-from envy_freeness import calculate_envy, evaluate_envy, evaluate_welfare
+from envy_freeness import calculate_envy, evaluate_envy
 from stats_utils import generate_all_allocations, calculate_utilities, calculate_all_envy, get_max_nash_welfare, get_max_egalitarian_welfare, get_max_utilitarian_welfare
 
 from itertools import product
@@ -190,7 +190,6 @@ def evaluate_outputs(agents: int, items: int, distribution: str='uniform', model
     
     envy_matrix_clipped, envy_matrix_unclipped, nash_welfare, utilitarian_welfare, egalitarian_welfare = calculate_envy(valuation_tables, allocation_matrices, agents, items)
     envy_df = pd.read_csv(f"{path}/envy_output.csv")
-    # evaluate_welfare(envy_df, utilities_list, llm_allocation_indices, path)
     # logging.info("Envy calculated")
 
     evaluate_envy(envy_matrix_clipped, envy_matrix_unclipped, agents, items, distribution, f"{path}", num_outputs, number_of_possible_allocations, envy_free_count , max_nash_welfare, max_utilitarian_welfare, max_egalitarian_welfare, nash_welfare, utilitarian_welfare, egalitarian_welfare)
