@@ -1,0 +1,85 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 36.
+
+    0   1   2   3   4   5
+0  65  61   7  15  76  26
+1  96  70  36   6  21  67
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[65 61  7 15 76 26]
+ [96 70 36  6 21 67]]
+Output:
+To allocate the items fairly between the two agents, we aim to achieve envy-freeness, where each agent feels that they receive at least as much value as they perceive from the allocation of any other agent. Given the valuations matrix:
+
+```
+    0   1   2   3   4   5
+0  65  61   7  15  76  26
+1  96  70  36   6  21  67
+```
+
+We need to consider each agent's valuations and try to distribute the items such that both agents have allocations that they perceive as fair. One approach is to maximize the minimum value each agent receives.
+
+### Agent 0's Valuations:
+- Item 0: 65
+- Item 1: 61
+- Item 2: 7
+- Item 3: 15
+- Item 4: 76
+- Item 5: 26
+
+### Agent 1's Valuations:
+- Item 0: 96
+- Item 1: 70
+- Item 2: 36
+- Item 3: 6
+- Item 4: 21
+- Item 5: 67
+
+### Strategy:
+1. Start by allocating the highest valued items to each agent.
+2. Ensure that each agent's total perceived value is roughly equal or as balanced as possible.
+
+### Allocation:
+- Agent 0 highly values items 4 (76), 0 (65), and 1 (61).
+- Agent 1 highly values items 0 (96), 1 (70), and 5 (67).
+
+Given the above preferences, let's allocate:
+
+- **Allocate item 0 to Agent 1:** Agent 1 values this the most.
+- **Allocate item 4 to Agent 0:** Agent 0 values this the most.
+- **Allocate item 1 to Agent 1:** Agent 1 has the next highest value for this item.
+- **Allocate item 5 to Agent 0:** As Agent 1 already has two high-valued items, we balance by giving this to Agent 0.
+- **Allocate item 2 to Agent 1:** Agent 1 values this item higher than Agent 0.
+- **Allocate item 3 to Agent 0:** This balances the number of items and gives Agent 0 another item.
+
+### Final Allocation:
+```
+{
+    "0": [3, 4, 5],
+    "1": [0, 1, 2]
+}
+```
+
+This allocation ensures that both agents receive a fair share based on their valuations while maintaining integer allocations. Each agent receives exactly three items, and the total number of allocated items is six.

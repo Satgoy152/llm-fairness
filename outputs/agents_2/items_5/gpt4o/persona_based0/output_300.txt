@@ -1,0 +1,60 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 90.
+
+    0   1   2   3   4
+0  68  26  68  69  51
+1  35  94  90  46  91
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 5 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[68 26 68 69 51]
+ [35 94 90 46 91]]
+Output:
+To fairly allocate the items between the two agents while considering their valuations and ensuring envy-freeness, we can use the concept of maximizing the total value for each agent while ensuring that neither feels envious of the other's allocation. 
+
+Let's analyze the given valuations:
+
+- Agent 0's valuations: [68, 26, 68, 69, 51]
+- Agent 1's valuations: [35, 94, 90, 46, 91]
+
+We will try to allocate items in a way that each agent feels they are getting a fair share based on their valuations:
+
+1. Agent 0 values items 0 and 3 significantly high, both at 68 and 69, respectively.
+2. Agent 1 values items 1, 2, and 4 significantly high at 94, 90, and 91, respectively.
+
+Given these valuations, a fair allocation could be:
+
+- Assign items 0 and 3 to Agent 0, as they provide high value to Agent 0.
+- Assign items 1, 2, and 4 to Agent 1, as they provide high value to Agent 1.
+
+This allocation ensures that each agent receives a set of items they value highly, and neither is envious of the other's allocation as each feels they have received a fair value.
+
+Here is the allocation in the required JSON format:
+
+```json
+{
+    "0": [0, 3],
+    "1": [1, 2, 4]
+}
+```

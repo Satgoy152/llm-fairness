@@ -1,0 +1,97 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 39.
+
+    0   1   2   3   4   5
+0  66  38  64  94  92  14
+1  36  43  39  78  26  36
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[66 38 64 94 92 14]
+ [36 43 39 78 26 36]]
+Output:
+To allocate the items fairly between the two agents, we aim for an envy-free allocation where each agent feels they have received a fair share considering their own valuations. Since there are only two agents, we can use a simple method to attempt an envy-free allocation based on maximizing each agent's total value while ensuring each gets three items.
+
+Let's calculate the total value each agent assigns to each potential bundle of three items, and then make a selection that maximizes each agent's satisfaction.
+
+Agent 0's valuations:  
+- Items 0, 1, 2: 66 + 38 + 64 = 168  
+- Items 0, 1, 3: 66 + 38 + 94 = 198  
+- Items 0, 1, 4: 66 + 38 + 92 = 196  
+- Items 0, 1, 5: 66 + 38 + 14 = 118  
+- Items 0, 2, 3: 66 + 64 + 94 = 224  
+- Items 0, 2, 4: 66 + 64 + 92 = 222  
+- Items 0, 2, 5: 66 + 64 + 14 = 144  
+- Items 0, 3, 4: 66 + 94 + 92 = 252  
+- Items 0, 3, 5: 66 + 94 + 14 = 174  
+- Items 0, 4, 5: 66 + 92 + 14 = 172  
+- Items 1, 2, 3: 38 + 64 + 94 = 196  
+- Items 1, 2, 4: 38 + 64 + 92 = 194  
+- Items 1, 2, 5: 38 + 64 + 14 = 116  
+- Items 1, 3, 4: 38 + 94 + 92 = 224  
+- Items 1, 3, 5: 38 + 94 + 14 = 146  
+- Items 1, 4, 5: 38 + 92 + 14 = 144  
+- Items 2, 3, 4: 64 + 94 + 92 = 250  
+- Items 2, 3, 5: 64 + 94 + 14 = 172  
+- Items 2, 4, 5: 64 + 92 + 14 = 170  
+- Items 3, 4, 5: 94 + 92 + 14 = 200  
+
+Agent 1's valuations:  
+- Items 0, 1, 2: 36 + 43 + 39 = 118  
+- Items 0, 1, 3: 36 + 43 + 78 = 157  
+- Items 0, 1, 4: 36 + 43 + 26 = 105  
+- Items 0, 1, 5: 36 + 43 + 36 = 115  
+- Items 0, 2, 3: 36 + 39 + 78 = 153  
+- Items 0, 2, 4: 36 + 39 + 26 = 101  
+- Items 0, 2, 5: 36 + 39 + 36 = 111  
+- Items 0, 3, 4: 36 + 78 + 26 = 140  
+- Items 0, 3, 5: 36 + 78 + 36 = 150  
+- Items 0, 4, 5: 36 + 26 + 36 = 98  
+- Items 1, 2, 3: 43 + 39 + 78 = 160  
+- Items 1, 2, 4: 43 + 39 + 26 = 108  
+- Items 1, 2, 5: 43 + 39 + 36 = 118  
+- Items 1, 3, 4: 43 + 78 + 26 = 147  
+- Items 1, 3, 5: 43 + 78 + 36 = 157  
+- Items 1, 4, 5: 43 + 26 + 36 = 105  
+- Items 2, 3, 4: 39 + 78 + 26 = 143  
+- Items 2, 3, 5: 39 + 78 + 36 = 153  
+- Items 2, 4, 5: 39 + 26 + 36 = 101  
+- Items 3, 4, 5: 78 + 26 + 36 = 140  
+
+By looking at these, we find that Agent 0 values the bundle {0, 3, 4} the most (value 252), and Agent 1 values the bundle {1, 3, 5} the most (value 157). However, these allocations overlap on item 3, so we need to adjust to avoid conflict.
+
+Let's try allocating:
+- Agent 0: Items {0, 2, 4} (value 222 for Agent 0)
+- Agent 1: Items {1, 3, 5} (value 157 for Agent 1)
+
+This allocation resolves item 3 conflict and gives each agent a high total value. 
+
+Thus, the allocation is:
+
+```json
+{
+    "0": [0, 2, 4],
+    "1": [1, 3, 5]
+}
+```

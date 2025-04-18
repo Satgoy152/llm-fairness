@@ -1,0 +1,77 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 3 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 12.
+
+    0   1   2
+0  26  27  20
+1  33  75  12
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 3 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[26 27 20]
+ [33 75 12]]
+Output:
+To fairly allocate the items among the two agents while aiming for envy-freeness, we need to consider the valuations each agent has for the items. The goal is to distribute the items such that each agent feels they have received a fair share of what is available based on their own valuations.
+
+Here's a breakdown of the valuations:
+
+- Agent 0 values:
+  - Item 0: 26
+  - Item 1: 27
+  - Item 2: 20
+
+- Agent 1 values:
+  - Item 0: 33
+  - Item 1: 75
+  - Item 2: 12
+
+To achieve a fair division:
+
+1. **Identify High-Value Items:** 
+   - Agent 0 values Item 1 the most (27).
+   - Agent 1 values Item 1 the most (75).
+
+2. **Allocate the Most Valued Item First:**
+   - Since both agents value Item 1 highly, it would be strategically fair to give Item 1 to Agent 1, as their valuation of it is significantly higher (75 vs. 27).
+
+3. **Allocate the Remaining Items:**
+   - After allocating Item 1 to Agent 1, we need to allocate Items 0 and 2.
+   - Agent 1 values Item 0 at 33 and Item 2 at 12.
+   - Agent 0 values Item 0 at 26 and Item 2 at 20.
+   - Allocate Item 0 to Agent 1 (since 33 > 26) and Item 2 to Agent 0 (since 20 > 12).
+
+This allocation results in:
+
+- Agent 0 receives Item 2.
+- Agent 1 receives Items 0 and 1.
+
+This distribution ensures that each agent receives at least one item, and the allocation considers their preferences to minimize envy.
+
+Final allocation in JSON format:
+
+```json
+{
+    "0": [2],
+    "1": [0, 1]
+}
+```

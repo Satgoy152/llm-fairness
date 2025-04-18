@@ -1,0 +1,69 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 24.
+
+    0   1   2   3   4   5   6   7
+0  10  82  54  55  46  61   4  78
+1  82  94  24  66  95  80  13  14
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[10 82 54 55 46 61  4 78]
+ [82 94 24 66 95 80 13 14]]
+Output:
+To fairly allocate the items between the two agents while aiming for envy-freeness (where each agent believes they received at least as much value as the other), we first calculate the total value each agent assigns to all items and consider the proportionality.
+
+### Step 1: Calculate Total Valuation for Each Agent
+- **Agent 0 Total Valuation**: 10 + 82 + 54 + 55 + 46 + 61 + 4 + 78 = 390
+- **Agent 1 Total Valuation**: 82 + 94 + 24 + 66 + 95 + 80 + 13 + 14 = 468
+
+### Step 2: Consider Envy-Free Allocations
+We aim to distribute items such that each agent believes they receive at least half of the total value (given there are only two agents). The goal is to allocate the items such that neither agent envies the other's allocation.
+
+### Step 3: Allocate Items
+We attempt to allocate items based on maximizing each agent's perceived value while ensuring the total number of items allocated equals 8.
+
+#### Possible Allocation Strategy
+1. **Agent 0**: Assign items that maximize agent 0's value without exceeding their perceived fair share.
+2. **Agent 1**: Assign items that maximize agent 1's value without exceeding their perceived fair share.
+
+#### Allocation
+- **Agent 0**: Let's select items they value highly, prioritizing their top picks:
+  - Items: 1 (82), 4 (46), 5 (61), 7 (78) 
+  - Total Value for Agent 0: 82 + 46 + 61 + 78 = 267
+
+- **Agent 1**: Allocate the remaining items to agent 1:
+  - Items: 0 (82), 2 (24), 3 (66), 6 (13)
+  - Total Value for Agent 1: 82 + 24 + 66 + 13 = 185
+
+### Final Allocations
+This allocation ensures both agents have items they value highly and aims to minimize envy.
+
+```json
+{
+    "0": [1, 4, 5, 7],
+    "1": [0, 2, 3, 6]
+}
+```
+
+This allocation respects the integer assignment rule and ensures all 8 items are allocated. Each agent receives an allocation that relatively maximizes their perceived value given the constraints.

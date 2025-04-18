@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 76.
+
+    0   1   2   3   4   5
+0  89   6  97  21  77   3
+1  20  93  76   4  38  76
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[89  6 97 21 77  3]
+ [20 93 76  4 38 76]]
+Output:
+To fairly allocate items between the two agents while considering the valuations provided, we can use a method that aims to maximize total value and minimize envy. A common approach is to use the "maximum weighted matching" method, where we assign items based on maximizing each agent's total perceived value.
+
+Here's a step-by-step process:
+
+1. **List Agent Preferences**:
+   - Agent 0 values: [89, 6, 97, 21, 77, 3]
+   - Agent 1 values: [20, 93, 76, 4, 38, 76]
+
+2. **Calculate Total Value**:
+   - Agent 0 total value: 89 + 6 + 97 + 21 + 77 + 3 = 293
+   - Agent 1 total value: 20 + 93 + 76 + 4 + 38 + 76 = 307
+
+3. **Prioritize Assignments**:
+   - Identify which items are most valued by each agent.
+   - Allocate items to the agents starting with the highest-valued items for each, ensuring no overlap and maintaining a balance.
+
+4. **Fair Allocation**:
+   - Agent 0's highest-valued items: 2 (97), 0 (89), 4 (77)
+   - Agent 1's highest-valued items: 1 (93), 2 (76), 5 (76)
+
+5. **Resolve Conflicts**:
+   - Item 2 is highly valued by both agents. We will allocate it to Agent 0, as it provides the highest value to them.
+   - Assign remaining high-value items to balance out the allocation.
+
+6. **Final Allocation**:
+   - Allocate items to maximize total perceived value and minimize envy while ensuring each agent receives an integer number of items.
+
+Based on the above approach, here is a fair allocation of items:
+
+```json
+{
+    "0": [0, 2, 4],
+    "1": [1, 3, 5]
+}
+```
+
+Each agent receives three items, maximizing their perceived value and maintaining a fair distribution.

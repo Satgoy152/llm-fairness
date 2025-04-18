@@ -1,0 +1,71 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 95.
+
+    0   1   2   3   4   5
+0   4  54  54  31  61   5
+1  58  25  95  85  41  73
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[ 4 54 54 31 61  5]
+ [58 25 95 85 41 73]]
+Output:
+To fairly allocate the items among the agents while aiming to achieve envy-freeness, we'll consider the valuations provided. The goal is to ensure that each agent perceives the allocation as fair based on their valuations, while ensuring that each agent receives items with a total value as close as possible to their preferred outcome.
+
+Here's the valuation table for reference:
+
+```
+Agent 0: [4, 54, 54, 31, 61, 5]
+Agent 1: [58, 25, 95, 85, 41, 73]
+```
+
+Let's analyze the valuations:
+
+1. **Agent 0** values items 1 and 2 highly (54 each), followed by item 4 (61).
+2. **Agent 1** values item 2 the highest (95), followed by item 3 (85) and item 5 (73).
+
+A potential fair allocation strategy could be:
+
+- Assign items with high valuations to the agent who values them most, while ensuring the total value for each agent is balanced.
+
+Allocation:
+
+- **Agent 0**:
+  - Items: 0, 1, 4
+  - Total valuation: 4 + 54 + 61 = 119
+
+- **Agent 1**:
+  - Items: 2, 3, 5
+  - Total valuation: 95 + 85 + 73 = 253
+
+This allocation ensures both agents receive a fair share based on their valuations, and minimizes envy since each agent receives highly valued items according to their preferences.
+
+Now, let's present the allocations in the specified JSON format:
+
+```json
+{
+    "0": [0, 1, 4],
+    "1": [2, 3, 5]
+}
+```

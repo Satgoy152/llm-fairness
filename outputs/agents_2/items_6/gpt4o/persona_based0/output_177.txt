@@ -1,0 +1,82 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 49.
+
+    0   1   2   3   4   5
+0  45  39  37  58  17  59
+1  77  61  49  35   6  46
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[45 39 37 58 17 59]
+ [77 61 49 35  6 46]]
+Output:
+To solve this fair division problem, we aim to allocate the 6 items between the 2 agents such that we achieve a fair allocation, ideally minimizing envy or achieving envy-freeness. Envy-freeness means that each agent values their own allocation at least as much as they value the other agent's allocation.
+
+Let's calculate the total value each agent assigns to all items:
+
+- Total value for Agent 0: \(45 + 39 + 37 + 58 + 17 + 59 = 255\)
+- Total value for Agent 1: \(77 + 61 + 49 + 35 + 6 + 46 = 274\)
+
+Given these values, let's attempt to allocate items such that each agent receives an allocation they value highly.
+
+### Allocation Attempt
+
+1. **Agent 0's Preferences:**
+   - Highest valued items: 5 (59), 3 (58), 0 (45)
+
+2. **Agent 1's Preferences:**
+   - Highest valued items: 0 (77), 1 (61), 2 (49)
+
+### Allocation:
+
+- **Agent 0:**
+  - Items: 3, 5, 4
+  - Value: \(58 (3) + 59 (5) + 17 (4) = 134\)
+
+- **Agent 1:**
+  - Items: 0, 1, 2
+  - Value: \(77 (0) + 61 (1) + 49 (2) = 187\)
+
+### Analysis
+
+- **Agent 0**: 
+  - Values their own allocation at 134
+  - Values Agent 1's allocation at \(45 (0) + 39 (1) + 37 (2) = 121\)
+  - No envy as 134 > 121
+
+- **Agent 1**:
+  - Values their own allocation at 187
+  - Values Agent 0's allocation at \(35 (3) + 46 (5) + 6 (4) = 87\)
+  - No envy as 187 > 87
+
+Both agents value their allocations higher than the other agent's allocation, suggesting this is an envy-free allocation.
+
+### Allocation in JSON Format:
+
+```json
+{
+    "0": [3, 5, 4],
+    "1": [0, 1, 2]
+}
+```

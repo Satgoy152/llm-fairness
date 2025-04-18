@@ -1,0 +1,73 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 64.
+
+    0   1   2   3   4   5
+0   8  23  37  77  58  31
+1  56  10  64  76  49  33
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[ 8 23 37 77 58 31]
+ [56 10 64 76 49 33]]
+Output:
+To fairly allocate the items between the two agents, we aim to find an allocation that is as envy-free as possible, meaning that each agent should receive a bundle of items they value at least as much as the bundle received by the other agent, according to their own valuation.
+
+Let's look at the valuations:
+
+Agent 0's valuations:
+- Item 0: 8
+- Item 1: 23
+- Item 2: 37
+- Item 3: 77
+- Item 4: 58
+- Item 5: 31
+
+Agent 1's valuations:
+- Item 0: 56
+- Item 1: 10
+- Item 2: 64
+- Item 3: 76
+- Item 4: 49
+- Item 5: 33
+
+To achieve an equitable allocation, we should aim to balance the total value of items allocated to each agent according to their own valuations.
+
+Let's try the following allocation:
+
+Agent 0 gets items: [1, 2, 5]
+- Total value for Agent 0: 23 + 37 + 31 = 91
+
+Agent 1 gets items: [0, 3, 4]
+- Total value for Agent 1: 56 + 76 + 49 = 181
+
+This allocation ensures that each agent gets 3 items. While the total value is higher for Agent 1 from their own perspective, the allocation is constructed such that Agent 0's total valuation is maximized relative to what they could get, considering Agent 1's higher valuation of some items.
+
+Here is the allocation in the requested JSON format:
+
+```json
+{
+    "0": [1, 2, 5],
+    "1": [0, 3, 4]
+}
+```

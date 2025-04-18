@@ -1,0 +1,84 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 22.
+
+    0   1   2   3   4   5
+0  51  67  68  90  93  83
+1  73  85  22  84  13  68
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[51 67 68 90 93 83]
+ [73 85 22 84 13 68]]
+Output:
+To achieve a fair allocation that minimizes envy between the agents, we can consider maximizing the total utility for each agent while ensuring that no agent envies another more than necessary. One way to do this is to consider the items' valuations for each agent and allocate them in such a way that each agent's total valuation is as balanced as possible.
+
+Here are the valuations for both agents:
+
+Agent 0:
+- Item 0: 51
+- Item 1: 67
+- Item 2: 68
+- Item 3: 90
+- Item 4: 93
+- Item 5: 83
+
+Agent 1:
+- Item 0: 73
+- Item 1: 85
+- Item 2: 22
+- Item 3: 84
+- Item 4: 13
+- Item 5: 68
+
+### Allocation Strategy
+
+1. **Allocate high-value items to the agent who values them most**:
+   - Item 4 is most valued by Agent 0 (93 > 13).
+   - Item 1 is most valued by Agent 1 (85 > 67).
+
+2. **Balance the remaining items to minimize envy**:
+   - Agent 0 values Item 3 the highest (90 > 84).
+   - Agent 1 values Item 0 higher than Agent 0 (73 > 51).
+
+3. **Allocate the remaining items to balance total valuations**:
+   - Allocate Item 5 to Agent 0 (83 > 68).
+   - Allocate Item 2 to Agent 1 (22 to minimize envy).
+
+### Final Allocation
+
+Now, let's organize this into a fair allocation:
+
+- Agent 0: Items [3, 4, 5]
+- Agent 1: Items [0, 1, 2]
+
+The allocations in JSON format:
+
+```json
+{
+    "0": [3, 4, 5],
+    "1": [0, 1, 2]
+}
+```
+
+This allocation balances the total valuations and minimizes envy as much as possible given the constraints.

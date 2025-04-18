@@ -1,0 +1,62 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2   3
+0  79   1  42   0
+1  30  74  50  39
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 4 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[79  1 42  0]
+ [30 74 50 39]]
+Output:
+To ensure a fair division of the items between the two agents, we aim to follow the principle of envy-freeness, where no agent prefers the allocation of another agent over their own.
+
+Let's analyze the valuations:
+
+- Agent 0 values the items as follows: Item 0 = 79, Item 1 = 1, Item 2 = 42, Item 3 = 0.
+- Agent 1 values the items as follows: Item 0 = 30, Item 1 = 74, Item 2 = 50, Item 3 = 39.
+
+We need to allocate all four items such that each agent feels they have received a fair share based on their own valuations. One possible approach is to maximize the total value each agent receives according to their preference while ensuring no envy.
+
+### Potential Allocation:
+
+1. **Agent 0:**
+   - Agent 0 highly values Item 0 (79) and Item 2 (42).
+   - Allocating these items to Agent 0 would give them a total value of 121.
+   
+2. **Agent 1:**
+   - Agent 1 highly values Item 1 (74) and Item 3 (39).
+   - Allocating these items to Agent 1 would give them a total value of 113.
+
+This allocation respects each agent's preferences as closely as possible and ensures that no agent envies the other's allocation, given the total utility they receive.
+
+### Final Allocations:
+
+```json
+{
+    "0": [0, 2],
+    "1": [1, 3]
+}
+```

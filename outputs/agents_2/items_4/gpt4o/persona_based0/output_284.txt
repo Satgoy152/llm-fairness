@@ -1,0 +1,62 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 88.
+
+    0   1   2   3
+0  36  37  20  78
+1  34  52  88  86
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 4 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[36 37 20 78]
+ [34 52 88 86]]
+Output:
+To fairly allocate the items between the two agents while considering their valuations, we aim to achieve an envy-free allocation where each agent perceives their allocated set of items as being at least as valuable as the other agent's allocation.
+
+Let's start by examining the valuations:
+
+- Agent 0's valuations: [36, 37, 20, 78]
+- Agent 1's valuations: [34, 52, 88, 86]
+
+A potential allocation is to maximize each agent's perceived value while maintaining envy-freeness. Let's consider possible allocations:
+
+1. **Allocate item 3 to Agent 0**: Agent 0 values this item at 78, which is their highest valuation.
+2. **Allocate item 2 to Agent 1**: Agent 1 values this item at 88, which is their highest valuation.
+3. **Allocate item 1 to Agent 1**: This item is valued at 52 by Agent 1, and at 37 by Agent 0. Giving this to Agent 1 maintains a high total value for them.
+4. **Allocate item 0 to Agent 0**: This item is valued at 36 by Agent 0, which is better than Agent 1's valuation of 34, and it balances the allocation.
+
+Now, let's verify the allocations:
+
+- **Agent 0's allocation**: Items 3 and 0, total valuation = 78 + 36 = 114.
+- **Agent 1's allocation**: Items 2 and 1, total valuation = 88 + 52 = 140.
+
+This allocation is envy-free because each agent receives a bundle that they value as high as possible given the other's allocation. Agent 0 cannot claim to prefer Agent 1's bundle over their own, and vice versa.
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [3, 0],
+    "1": [2, 1]
+}
+```

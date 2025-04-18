@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 93.
+
+    0   1   2   3   4   5   6   7
+0  58  46  34  58  66  20  85   0
+1  69  75  93   4  68  12  97  52
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[58 46 34 58 66 20 85  0]
+ [69 75 93  4 68 12 97 52]]
+Output:
+To achieve a fair allocation of items between the two agents, we want to ensure that the division is as envy-free as possible, given the differences in their valuations. An envy-free allocation is one where no agent prefers the bundle of items received by another agent over their own. 
+
+Let's calculate the total value each agent assigns to all items:
+
+- Agent 0's total valuation: 58 + 46 + 34 + 58 + 66 + 20 + 85 + 0 = 367
+- Agent 1's total valuation: 69 + 75 + 93 + 4 + 68 + 12 + 97 + 52 = 470
+
+Next, let's try to allocate the items in such a way that the total value of items each agent receives is as close as possible to their proportional share of the total valuation. 
+
+The total value of all items is 367 + 470 = 837. Ideally, each agent should receive items with a total value close to:
+
+- Agent 0: (367/837) * 837 ≈ 367
+- Agent 1: (470/837) * 837 ≈ 470
+
+Now, let's attempt to allocate the items to maximize fairness. A simple way to approach this is to allow each agent to take turns picking the item they value the most from the remaining items, ensuring they get their share as close as possible to their ideal allocation.
+
+1. Agent 1 values item 2 the most (93), so we allocate item 2 to Agent 1.
+2. Agent 0 values item 6 the most (85), so we allocate item 6 to Agent 0.
+3. Agent 1 values item 6 next (97), which has been taken, so they take item 4 (68).
+4. Agent 0 values item 4 next (66), which has been taken, so they take item 0 (58).
+5. Agent 1 values item 0 next (69), but it's taken, so they take item 1 (75).
+6. Agent 0 values item 3 next (58), so they take item 3.
+7. Agent 1 values item 7 (52) next, so they take it.
+8. The remaining items are 5 and 7, and Agent 0 takes item 5.
+
+Now let's verify these allocations:
+
+- Agent 0 receives items: [6, 0, 3, 5]
+  - Total value for Agent 0: 85 + 58 + 58 + 20 = 221
+
+- Agent 1 receives items: [2, 4, 1, 7]
+  - Total value for Agent 1: 93 + 68 + 75 + 52 = 288
+
+These allocations are not exactly envy-free, but they attempt to balance the total values received by each agent as fairly as possible. 
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [6, 0, 3, 5],
+    "1": [2, 4, 1, 7]
+}
+```
