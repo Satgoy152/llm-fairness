@@ -1,0 +1,74 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 22.
+
+    0   1   2   3   4   5   6   7   8
+0  47  51  15  33  46  61  15  25  35
+1  11  50  22  80  86   9  31  35  84
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[47 51 15 33 46 61 15 25 35]
+ [11 50 22 80 86  9 31 35 84]]
+Output:
+To allocate the items fairly between the two agents while minimizing envy, we can use a method known as the adjusted winner procedure or a similar approach. However, since this example involves discrete items and different valuations, we can employ a simpler method by ensuring each agent receives items with approximately equal total value according to their personal valuations.
+
+Let's calculate the total value each agent assigns to all items:
+
+- Agent 0's total valuation: 47 + 51 + 15 + 33 + 46 + 61 + 15 + 25 + 35 = 328
+- Agent 1's total valuation: 11 + 50 + 22 + 80 + 86 + 9 + 31 + 35 + 84 = 408
+
+We aim to distribute the items such that the total valuation of the items for each agent is as balanced as possible according to their own valuations.
+
+### Allocation Strategy
+1. **Initial High Value Items for Agent 1**: Assign items with high valuation for Agent 1.
+    - Pick items 4, 3, 8 for Agent 1 as these have high valuations (86, 80, 84).
+
+2. **Remaining Items**: Assign the remaining items to minimize the difference in total value perceived by each agent.
+    - Calculate remaining items: [0, 1, 2, 5, 6, 7].
+
+3. **Balance Remaining Items**:
+    - For Agent 0, pick items that maximize their valuation and minimize envy. Suitable choices are items 0, 1, and 5.
+    - For Agent 1, assign items 2, 6, 7 to balance the remaining value.
+
+### Calculation of Final Allocations
+- **Agent 0**:
+  - Items: 0, 1, 5
+  - Total value: 47 + 51 + 61 = 159
+
+- **Agent 1**:
+  - Items: 2, 3, 4, 6, 7, 8
+  - Total value: 22 + 80 + 86 + 31 + 35 + 84 = 338
+
+This allocation strives to balance the perceived value of the items allocated to each agent.
+
+### Final Allocation in JSON Format
+
+```json
+{
+    "0": [0, 1, 5],
+    "1": [2, 3, 4, 6, 7, 8]
+}
+```
+
+This allocation ensures that all items are distributed and each agent receives an integer number of items, aiming to minimize envy based on their valuations.

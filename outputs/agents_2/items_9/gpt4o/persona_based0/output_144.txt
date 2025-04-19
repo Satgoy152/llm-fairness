@@ -1,0 +1,78 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 46.
+
+    0   1   2   3   4   5   6   7   8
+0  23  37  54  15   0  78  36  29  20
+1  88   6  46  40  95  54  45  82  43
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[23 37 54 15  0 78 36 29 20]
+ [88  6 46 40 95 54 45 82 43]]
+Output:
+To fairly allocate the items between the two agents (0 and 1) while maintaining envy-freeness, we need to maximize each agent's total valuation and try to ensure that each agent feels they have received a fair share.
+
+### Step-by-step Allocation:
+
+1. **Calculate Total Valuations by Agent:**
+   - Agent 0's total valuation for all items: \(23 + 37 + 54 + 15 + 0 + 78 + 36 + 29 + 20 = 292\)
+   - Agent 1's total valuation for all items: \(88 + 6 + 46 + 40 + 95 + 54 + 45 + 82 + 43 = 499\)
+
+2. **Determine Fair Share:**
+   - Fair share for Agent 0: \(292 / 2 = 146\)
+   - Fair share for Agent 1: \(499 / 2 = 249.5\)
+
+3. **Allocate Items to Maximize Each Agent's Valuation:**
+   - **Agent 0**: Choose items that maximize Agent 0's valuation, ensuring the total valuation is as close to 146 as possible without exceeding it.
+
+     Items for Agent 0: 
+     - Item 5: Value 78
+     - Item 2: Value 54
+     - Item 0: Value 23
+     
+     Total valuation for Agent 0: \(78 + 54 + 23 = 155\)
+
+   - **Agent 1**: Allocate remaining items, ensuring the total valuation is as close to 249.5 as possible.
+
+     Items for Agent 1:
+     - Item 4: Value 95
+     - Item 1: Value 6
+     - Item 3: Value 40
+     - Item 6: Value 45
+     - Item 7: Value 82
+     - Item 8: Value 43
+     
+     Total valuation for Agent 1: \(95 + 6 + 40 + 45 + 82 + 43 = 311\)
+
+### Final Allocation:
+The allocation ensures that all items are distributed, and each agent has a fair share according to their total valuation.
+
+```json
+{
+    "0": [0, 2, 5],
+    "1": [1, 3, 4, 6, 7, 8]
+}
+```
+
+In this allocation, Agent 0 receives three items with a total value close to their fair share, and Agent 1 receives the remaining items, maintaining the envy-free condition based on their valuations.

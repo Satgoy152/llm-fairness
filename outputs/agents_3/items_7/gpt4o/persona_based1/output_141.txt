@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 94.
+
+    0   1   2   3   4   5   6
+0  65  10  90  23  18  94  55
+1  31  61  94  80  66  25  79
+2  12  22  22  30  26  14  81
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[65 10 90 23 18 94 55]
+ [31 61 94 80 66 25 79]
+ [12 22 22 30 26 14 81]]
+Output:
+To achieve a fair allocation of the items among the agents, we can use an envy-free approach, which tries to ensure that each agent feels they have received an equitable share based on their own valuations. One common method for this is the "Round Robin" or "Sequential Allocation" method, where each agent takes turns choosing their most preferred available item.
+
+Here's a step-by-step allocation:
+
+1. **Agent 0** picks first:
+   - Highest value item: Item 5 (value 94)
+
+2. **Agent 1** picks next:
+   - Highest value item: Item 2 (value 94)
+
+3. **Agent 2** picks next:
+   - Highest value item: Item 6 (value 81)
+
+4. **Agent 0** picks again:
+   - Highest value item: Item 0 (value 65)
+
+5. **Agent 1** picks again:
+   - Highest value item: Item 3 (value 80)
+
+6. **Agent 2** picks again:
+   - Highest value item: Item 4 (value 26)
+
+7. **Agent 0** picks last:
+   - Remaining item: Item 1 (value 10)
+
+Now, let's present the allocations in the required JSON format:
+
+```json
+{
+    "0": [5, 0, 1],
+    "1": [2, 3],
+    "2": [6, 4]
+}
+```
+
+This allocation ensures that each agent receives a fair share based on their preferences and all items are distributed.

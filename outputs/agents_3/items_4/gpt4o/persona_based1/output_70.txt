@@ -1,0 +1,81 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 4 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 72.
+
+    0   1   2   3
+0   9  77  31  20
+1  48  41  72  66
+2  41   1  20   4
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 4 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[ 9 77 31 20]
+ [48 41 72 66]
+ [41  1 20  4]]
+Output:
+To achieve a fair allocation and minimize envy among the agents, one common approach is to use an envy-free allocation method that considers each agent's valuation of the items. An envy-free allocation ensures that no agent prefers another agent's bundle of items over their own.
+
+Let's examine the valuation matrix:
+
+```
+    0   1   2   3
+0   9  77  31  20
+1  48  41  72  66
+2  41   1  20   4
+```
+
+The total value each agent assigns to all items is:
+- Agent 0: 9 + 77 + 31 + 20 = 137
+- Agent 1: 48 + 41 + 72 + 66 = 227
+- Agent 2: 41 + 1 + 20 + 4 = 66
+
+Since the goal is to distribute the 4 items among the 3 agents, we should aim for each agent to receive items that maximize their individual value while ensuring no envy.
+
+Let's explore a possible allocation:
+
+1. **Assign Item 1 to Agent 0**: Agent 0 values this item highly (77), and it maximizes their satisfaction.
+2. **Assign Item 2 to Agent 1**: Agent 1 has the highest valuation for this item (72).
+3. **Assign Item 3 to Agent 1**: Agent 1 also values this item highly (66).
+4. **Assign Item 0 to Agent 2**: Agent 2 values this item the highest among their options (41).
+
+Let's check if this allocation is envy-free:
+
+- Agent 0 has item 1 (value 77).
+- Agent 1 has items 2 and 3 (values 72 and 66, totaling 138).
+- Agent 2 has item 0 (value 41).
+
+No agent can receive a more valuable bundle by swapping their allocation with another agent, given the constraints.
+
+Thus, the allocation is:
+- Agent 0: [1]
+- Agent 1: [2, 3]
+- Agent 2: [0]
+
+Here is the allocation in the required JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [2, 3],
+    "2": [0]
+}
+```

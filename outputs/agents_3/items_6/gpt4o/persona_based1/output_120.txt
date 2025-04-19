@@ -1,0 +1,81 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 14.
+
+    0   1   2   3   4   5
+0  63  19  44  47  67  13
+1  47  42  14  97  96  18
+2  34  33  52   1  67   7
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[63 19 44 47 67 13]
+ [47 42 14 97 96 18]
+ [34 33 52  1 67  7]]
+Output:
+To solve this fair division problem, we need to allocate the 6 items among the 3 agents in a way that aims to be as fair as possible. We will consider fairness in terms of maximizing each agent's satisfaction based on their valuations while ensuring envy-freeness, if possible. 
+
+To achieve a fair division, we will employ a strategy that seeks to minimize envy by considering agents' valuations of the items. One approach is to assign items based on a round-robin or priority system where agents pick items they value the most, ensuring that we account for each agent's preferences.
+
+Let's analyze the situation:
+
+1. **Valuations by Agent:**
+
+   - Agent 0: [63, 19, 44, 47, 67, 13]
+   - Agent 1: [47, 42, 14, 97, 96, 18]
+   - Agent 2: [34, 33, 52, 1, 67, 7]
+
+2. **Highest Valuation Items:**
+
+   - Item 0: Valued highest by Agent 0 (63)
+   - Item 1: Valued highest by Agent 1 (42)
+   - Item 2: Valued highest by Agent 2 (52)
+   - Item 3: Valued highest by Agent 1 (97)
+   - Item 4: Tie between Agent 0 (67) and Agent 2 (67)
+   - Item 5: Valued highest by Agent 1 (18)
+
+3. **Allocation Strategy:**
+
+   - Since Item 4 has a tie, we will prioritize based on remaining allocations.
+   - Allocate initially based on highest unique values, then fill remaining items.
+   - Aim to allocate 2 items per agent, given 6 items and 3 agents.
+
+**Allocation Process:**
+
+- Allocate Item 0 to Agent 0.
+- Allocate Item 3 to Agent 1.
+- Allocate Item 2 to Agent 2.
+- Allocate Item 4 to Agent 0 (resolve tie by giving to Agent 0 to balance allocations).
+- Allocate Item 1 to Agent 1.
+- Allocate Item 5 to Agent 2.
+
+**Final Allocation:**
+
+```json
+{
+    "0": [0, 4],
+    "1": [3, 1],
+    "2": [2, 5]
+}
+```
+
+This allocation aims to balance the number of items each agent receives while considering their valuations to minimize envy.

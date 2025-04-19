@@ -1,0 +1,79 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 16.
+
+    0   1   2   3   4   5   6   7   8
+0  44  69  99  22  94   7  61   1  28
+1  14  63  16  13  55  44  55  88  83
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[44 69 99 22 94  7 61  1 28]
+ [14 63 16 13 55 44 55 88 83]]
+Output:
+To fairly allocate the items between the two agents while ensuring that the allocation is envy-free or as close to envy-free as possible given integer constraints, we can use the concept of maximizing the minimum utility that each agent receives. This involves considering each agent's valuation for each item and trying to distribute the items so that both agents feel they received a fair share based on their valuations.
+
+Let's calculate the total value each agent assigns to all items:
+
+- **Agent 0's total valuation**: 44 + 69 + 99 + 22 + 94 + 7 + 61 + 1 + 28 = 425
+- **Agent 1's total valuation**: 14 + 63 + 16 + 13 + 55 + 44 + 55 + 88 + 83 = 431
+
+Now, we aim to allocate items such that each agent's perceived total value is as close to half of their respective total valuations as possible, which would be approximately:
+
+- **Agent 0's target value**: 425 / 2 = 212.5
+- **Agent 1's target value**: 431 / 2 = 215.5
+
+To achieve this, we can utilize a method inspired by the adjusted winner procedure or other fair division algorithms, considering each agent's valuations to guide the allocation:
+
+1. **Allocate items with the highest individual valuation differences to the agent who values them more.**
+2. **Ensure that each agent's total allocated value is as close to their target value as possible.**
+
+Here's a possible allocation:
+
+- **Agent 0** values items 2 (99), 4 (94), and 0 (44) highly, which are significant differences compared to Agent 1. Allocating these items to Agent 0 provides a high utility.
+- **Agent 1** values items 7 (88), 8 (83), and 5 (44) highly. Allocating these items to Agent 1 provides a high utility.
+
+We continue allocating based on remaining items and their differences:
+
+- Allocate item 1 (69 vs. 63) and item 6 (61 vs. 55) to Agent 0, as these provide slightly more value to them.
+- Allocate item 3 (22 vs. 13) to Agent 0 for balance, as the discrepancy is not large, and Agent 0 still needs more value.
+
+After allocation, let's calculate the total value each agent receives:
+
+- **Agent 0's allocated items**: 2, 4, 0, 1, 6, 3 
+  - Total value: 99 + 94 + 44 + 69 + 61 + 22 = 389
+- **Agent 1's allocated items**: 7, 8, 5
+  - Total value: 88 + 83 + 44 = 215
+
+This allocation provides Agent 0 with a total value closer to their target and uses integer allocations. Agent 1 receives fewer items but with higher individual values, keeping them close to their target.
+
+Final allocation in JSON format:
+
+```json
+{
+    "0": [2, 4, 0, 1, 6, 3],
+    "1": [7, 8, 5]
+}
+```
+
+This ensures all items are allocated and attempts to balance the perceived fairness in terms of total value.
