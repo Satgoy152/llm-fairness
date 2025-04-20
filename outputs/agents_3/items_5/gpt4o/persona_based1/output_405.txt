@@ -1,0 +1,72 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 25.
+
+    0   1   2   3   4
+0  51  86  99  21  10
+1   4  61  25  92  49
+2  15  69  25  79  45
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 5 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[51 86 99 21 10]
+ [ 4 61 25 92 49]
+ [15 69 25 79 45]]
+Output:
+To achieve a fair division of items among the agents, we aim to ensure that the allocation is envy-free, which means each agent should prefer their own bundle of items over any other agent's bundle, based on their valuations. To find such a division, we will consider the valuation matrix and the preferences of each agent. 
+
+Let's examine the valuations:
+
+- Agent 0 values: [51, 86, 99, 21, 10]
+- Agent 1 values: [4, 61, 25, 92, 49]
+- Agent 2 values: [15, 69, 25, 79, 45]
+
+A possible strategy for fair division is to assign items to agents based on their highest value preferences whilst ensuring that no agent envies another's allocation.
+
+### Allocation Strategy:
+
+1. **Agent 0**:
+   - Highest value item is item 2 with value 99, assign item 2.
+   - Next highest value item is item 1 with value 86, assign item 1.
+
+2. **Agent 1**:
+   - Highest value item is item 3 with value 92, assign item 3.
+   - Next highest preference is item 4 with value 49, assign item 4.
+
+3. **Agent 2**:
+   - Remaining item 0 is assigned by default to Agent 2.
+
+### Final Allocations:
+
+- Agent 0 receives items [1, 2]
+- Agent 1 receives items [3, 4]
+- Agent 2 receives item [0]
+
+These allocations ensure that each agent receives an integer number of items, and the distribution is based on their highest preferences, aiming to minimize envy.
+
+```json
+{
+    "0": [1, 2],
+    "1": [3, 4],
+    "2": [0]
+}
+```

@@ -1,0 +1,92 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 92.
+
+    0   1   2   3   4   5   6
+0  63  47  63  25  89  46  45
+1  16  30  92  30  60  87  72
+2  64  81  62  42  39  91  94
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[63 47 63 25 89 46 45]
+ [16 30 92 30 60 87 72]
+ [64 81 62 42 39 91 94]]
+Output:
+To fairly allocate the items among the agents such that envy-freeness is achieved as much as possible, we can consider each agent's valuation of the items. One common approach is to use the "maximum envy-free" allocation, which aims to allocate items so that no agent feels another agent's allocation is strictly better than their own.
+
+Here's the table of valuations for convenience:
+
+```
+       0   1   2   3   4   5   6
+Agent 0: 63  47  63  25  89  46  45
+Agent 1: 16  30  92  30  60  87  72
+Agent 2: 64  81  62  42  39  91  94
+```
+
+### Allocation Strategy
+1. **Identify High-Value Items:** First, identify the items that are highly valued by each agent.
+2. **Greedy Allocation:** Assign items to agents based on maximizing their individual valuation while considering fairness.
+3. **Check Envy:** Adjust allocations if there is significant envy.
+
+### Allocation Process
+- **Agent 0:**
+  - Highest values are for items: 4 (89), 2 (63), and 0 (63).
+  - Allocate item 4 to Agent 0.
+
+- **Agent 1:**
+  - Highest values are for items: 2 (92), 5 (87), and 6 (72).
+  - Allocate item 2 to Agent 1.
+
+- **Agent 2:**
+  - Highest values are for items: 6 (94), 5 (91), and 1 (81).
+  - Allocate item 6 to Agent 2.
+
+### Continue Allocation
+- **Agent 0:** 
+  - Remaining high-value item is 0 (63).
+  - Allocate item 0 to Agent 0.
+
+- **Agent 1:**
+  - Next high-value item is item 5 (87).
+  - Allocate item 5 to Agent 1.
+
+- **Agent 2:**
+  - Next high-value item is item 1 (81).
+  - Allocate item 1 to Agent 2.
+
+### Final Adjustments
+- Two remaining items: 3 and 7.
+- Allocate based on remaining highest values for each agent.
+  - **Agent 1:** Allocate item 3 (30).
+  - **Agent 2:** Allocate item 7 (39).
+
+### Final Allocation
+```json
+{
+    "0": [0, 4],
+    "1": [2, 5, 3],
+    "2": [6, 1]
+}
+```
+
+This allocation ensures that each agent receives items they value highly, aiming to minimize envy between agents.

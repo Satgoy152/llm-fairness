@@ -1,0 +1,69 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 90.
+
+    0   1   2   3   4   5
+0  93  79  47  55  95  59
+1  62  68  90   6  75  61
+2  18  81  47  42  22  17
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[93 79 47 55 95 59]
+ [62 68 90  6 75 61]
+ [18 81 47 42 22 17]]
+Output:
+To fairly allocate the items among agents 0, 1, and 2 while considering envy-freeness and the valuations provided, we can use a combination of strategies like maximizing individual utility and minimizing envy. The goal is to allocate the items so that each agent is as happy as possible with their bundle relative to others'.
+
+Here's a breakdown of the valuations for each agent:
+
+- Agent 0 values: [93, 79, 47, 55, 95, 59]
+- Agent 1 values: [62, 68, 90, 6, 75, 61]
+- Agent 2 values: [18, 81, 47, 42, 22, 17]
+
+We aim to balance the total value of items allocated to each agent while attempting to minimize envy. One potential approach is to use the "round-robin" or "sequential" allocation method, where each agent takes turns picking their most valued remaining item until all items are allocated.
+
+### Proposed Allocation Strategy:
+
+1. **Round 1:**
+   - Agent 0 picks item 4 (value 95).
+   - Agent 1 picks item 2 (value 90).
+   - Agent 2 picks item 1 (value 81).
+
+2. **Round 2:**
+   - Agent 0 picks item 0 (value 93).
+   - Agent 1 picks item 5 (value 61).
+   - Agent 2 picks item 3 (value 42).
+
+This allocation attempts to maximize each agent's satisfaction based on their highest remaining valued items.
+
+### Final Allocation:
+
+```json
+{
+    "0": [4, 0],
+    "1": [2, 5],
+    "2": [1, 3]
+}
+```
+
+This allocation ensures each agent receives two items, and all six items are allocated. Each agent gets a combination of their highest and next highest valued items available in their rounds, aiming to maintain a level of fairness across the allocations.

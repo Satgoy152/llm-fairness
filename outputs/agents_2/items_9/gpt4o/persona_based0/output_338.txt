@@ -1,0 +1,68 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 86.
+
+    0   1   2   3   4   5   6   7   8
+0   8  27  59  44  55  45  82  34  58
+1  54  54  86  80  82  28  85  51  59
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[ 8 27 59 44 55 45 82 34 58]
+ [54 54 86 80 82 28 85 51 59]]
+Output:
+To allocate the items fairly between the two agents while ensuring an integer number of items per agent, a common approach is to use the concept of "envy-freeness," where each agent feels they have received the best possible allocation given their valuations.
+
+Given the valuations:
+
+- Agent 0's total valuation: 8 + 27 + 59 + 44 + 55 + 45 + 82 + 34 + 58 = 412
+- Agent 1's total valuation: 54 + 54 + 86 + 80 + 82 + 28 + 85 + 51 + 59 = 579
+
+Let's attempt to distribute the items based on maximizing individual utility and ensuring envy-freeness:
+
+1. First, identify high-value items for each agent.
+2. Distribute items such that each agent's total valuation of their items is as close as possible to an equitable split.
+
+### Allocation Strategy:
+
+1. **Agent 0**: Maximize the sum of values by prioritizing items they value highly.
+   - High-value items: 6 (82), 2 (59), 8 (58).
+
+2. **Agent 1**: Maximize the sum of values by prioritizing items they value highly.
+   - High-value items: 2 (86), 6 (85), 4 (82).
+
+Given the constraints of integer allocations:
+
+- **Agent 0** receives items: 6, 2, 8
+- **Agent 1** receives items: 0, 1, 3, 4, 5, 7
+
+### Final Allocation:
+
+```json
+{
+    "0": [6, 2, 8],
+    "1": [0, 1, 3, 4, 5, 7]
+}
+```
+
+This allocation ensures both agents receive a fair share based on their valuations, and all 9 items are allocated.

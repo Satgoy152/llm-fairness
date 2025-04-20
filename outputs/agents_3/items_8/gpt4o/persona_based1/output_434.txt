@@ -1,0 +1,63 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 70.
+
+    0   1   2   3   4   5   6   7
+0   6  74  53   0  97  71   4  29
+1  77  15  70  45  47  84  87  76
+2  76  47   1  31  93  29  35  47
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[ 6 74 53  0 97 71  4 29]
+ [77 15 70 45 47 84 87 76]
+ [76 47  1 31 93 29 35 47]]
+Output:
+To fairly allocate the items among the agents while aiming for envy-freeness, we can use a method that attempts to maximize each agent's satisfaction based on their valuations. One approach is to use a round-robin method where each agent picks their most valued item from the remaining items in a sequential order. This method helps in achieving fairness, though it might not always result in perfect envy-freeness.
+
+Let's go through the allocation step-by-step following a round-robin approach:
+
+1. **Round 1:**
+   - Agent 0 picks item 4 (value 97).
+   - Agent 1 picks item 6 (value 87).
+   - Agent 2 picks item 0 (value 76).
+
+2. **Round 2:**
+   - Agent 0 picks item 1 (value 74).
+   - Agent 1 picks item 5 (value 84).
+   - Agent 2 picks item 7 (value 47).
+
+3. **Round 3:**
+   - Agent 0 picks item 2 (value 53).
+   - Agent 1 picks item 3 (value 45).
+
+Now, let's present the allocations in the requested JSON format:
+
+```json
+{
+    "0": [4, 1, 2],
+    "1": [6, 5, 3],
+    "2": [0, 7]
+}
+```
+
+This allocation attempts to balance the agents' satisfaction based on their preferences for the items.

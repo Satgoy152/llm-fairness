@@ -1,0 +1,82 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 55.
+
+    0   1   2   3   4   5   6   7
+0  16  72  51   5   8  11  22   2
+1  34  92  55   4  26  45  57  53
+2  18  86  88  70  96   3  45   6
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[16 72 51  5  8 11 22  2]
+ [34 92 55  4 26 45 57 53]
+ [18 86 88 70 96  3 45  6]]
+Output:
+To fairly allocate the items among the agents, we aim to achieve a distribution where no agent envies another agent's bundle of items. One of the standard methods for achieving this is using the Envy-Free or Nash Bargaining solution. However, it's important to note that achieving absolute envy-freeness can be challenging in discrete settings without monetary compensation or item splitting. Thus, we aim to find an allocation that minimizes envy as much as possible given the integer constraints.
+
+Let's consider the valuations of the agents for the items:
+
+- Agent 0: [16, 72, 51, 5, 8, 11, 22, 2]
+- Agent 1: [34, 92, 55, 4, 26, 45, 57, 53]
+- Agent 2: [18, 86, 88, 70, 96, 3, 45, 6]
+
+One way to approach this is to use a method like the "round-robin" allocation or the "maximum value allocation" where each agent picks the item they value most that hasn't been allocated yet. We can attempt a simple optimization here to ensure each agent gets a collection of items that maximizes their total valuation.
+
+### Allocation Strategy
+
+1. **Initial Allocation (Highest Valuation per Round):**
+    - Round 1: Assign the highest valued item for each agent.
+    - Round 2: Assign the next highest valued item among the remaining items, ensuring each agent gets at least one item.
+
+2. **Adjust for Fairness:**
+    - Consider the total value each agent has received and attempt to adjust so that no agent has an extreme advantage over the others.
+
+### Step-by-Step Allocation
+
+1. **Round 1 Highest Valuation:**
+    - Agent 0: Item 1 (72)
+    - Agent 1: Item 1 (92) but taken, next highest is item 6 (57)
+    - Agent 2: Item 4 (96)
+
+2. **Round 2:**
+    - Agent 0: Next highest is item 2 (51)
+    - Agent 1: Item 0 (34)
+    - Agent 2: Item 3 (70)
+
+3. **Round 3 and Adjustments:**
+    - Agent 0: Item 5 (11)
+    - Agent 1: Item 7 (53)
+    - Agent 2: Item 6 (45) but taken, so take item 2 (88)
+
+### Final Allocation
+Given the above rounds, we distribute the remaining items considering the total value each agent has accrued to minimize envy and ensure each agent gets at least one item:
+
+```json
+{
+    "0": [1, 5],
+    "1": [0, 7],
+    "2": [2, 3, 4, 6]
+}
+```
+
+This allocation attempts to balance the total valuation received by each agent, considering the constraints of integer-only allocations.

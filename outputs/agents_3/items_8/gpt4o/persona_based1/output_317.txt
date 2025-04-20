@@ -1,0 +1,85 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 16.
+
+    0   1   2   3   4   5   6   7
+0  53  69  39  88  25  65  52   7
+1  52   4  16   1  28  58  25  89
+2  47  41  77   0  99   5  96  16
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[53 69 39 88 25 65 52  7]
+ [52  4 16  1 28 58 25 89]
+ [47 41 77  0 99  5 96 16]]
+Output:
+To achieve a fair division that aims for envy-freeness, we can use a method such as the "round-robin" allocation, where agents take turns picking their most valued remaining item. This is a heuristic approach and may not always result in perfect envy-freeness, but it provides a reasonable allocation based on individual preferences.
+
+We'll start by determining the order of picks based on some initial rule, such as the sum of valuations (the agent with the highest total valuation goes first), and then proceed in a round-robin fashion.
+
+Let's calculate the total valuation for each agent:
+
+- Agent 0: 53 + 69 + 39 + 88 + 25 + 65 + 52 + 7 = 398
+- Agent 1: 52 + 4 + 16 + 1 + 28 + 58 + 25 + 89 = 273
+- Agent 2: 47 + 41 + 77 + 0 + 99 + 5 + 96 + 16 = 381
+
+Based on total valuation, the picking order will be Agent 0, Agent 2, and then Agent 1.
+
+Let's proceed with the allocation:
+
+1. **Round 1:**
+   - Agent 0 picks item 3 (value 88).
+   - Agent 2 picks item 4 (value 99).
+   - Agent 1 picks item 7 (value 89).
+
+2. **Round 2:**
+   - Agent 0 picks item 1 (value 69).
+   - Agent 2 picks item 6 (value 96).
+   - Agent 1 picks item 5 (value 58).
+
+3. **Round 3:**
+   - Agent 0 picks item 0 (value 53).
+   - Agent 2 picks item 2 (value 77).
+   - Agent 1 picks item 4 (value 28).
+
+After these rounds, all items have been allocated. Let's summarize the allocations:
+
+```json
+{
+    "0": [3, 1, 0],
+    "1": [7, 5, 4],
+    "2": [4, 6, 2]
+}
+```
+
+Note: The item 4 appears to be allocated to both Agent 2 and Agent 1 due to a mistake. Let's correct this by ensuring the allocation of unique items:
+
+Final allocations should be:
+```json
+{
+    "0": [3, 1, 0],
+    "1": [7, 5],
+    "2": [4, 6, 2]
+}
+```
+
+This result is consistent with the rule of allocating 8 items in total, and each agent receives a fair share of items based on their preferences.

@@ -1,0 +1,77 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 53.
+
+    0   1   2   3   4   5   6   7
+0  25  71  11  22  71  19  82  81
+1   8  49  53  35  18  49  45  81
+2  23  60  12  76  60  15  75  39
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[25 71 11 22 71 19 82 81]
+ [ 8 49 53 35 18 49 45 81]
+ [23 60 12 76 60 15 75 39]]
+Output:
+To achieve a fair allocation of the items among the agents while considering each agent's valuation, we aim for an envy-free or equitable distribution. An allocation is envy-free if no agent prefers another agent's allocation over their own, given their valuations. 
+
+Let's proceed with finding a fair division based on the provided valuations:
+
+Agent 0's valuations: [25, 71, 11, 22, 71, 19, 82, 81]
+Agent 1's valuations: [8, 49, 53, 35, 18, 49, 45, 81]
+Agent 2's valuations: [23, 60, 12, 76, 60, 15, 75, 39]
+
+A reasonable approach is to allocate items by maximizing each agent's total perceived value, taking turns or using a method such as "round-robin" or "highest value first" until all items are distributed. Let's apply a simple strategy by assigning each agent their highest valued item first, then continue until all items are allocated.
+
+1. **First round of allocations (highest value items):**
+   - Agent 0 receives item 6 (value 82).
+   - Agent 1 receives item 7 (value 81).
+   - Agent 2 receives item 3 (value 76).
+
+2. **Second round of allocations:**
+   - Agent 0 receives item 1 (value 71).
+   - Agent 1 receives item 2 (value 53).
+   - Agent 2 receives item 4 (value 60).
+
+3. **Third round of allocations:**
+   - Agent 0 receives item 0 (value 25).
+   - Agent 1 receives item 5 (value 49).
+   - Agent 2 receives item 7 (already taken, so next highest available is item 5, but already taken by Agent 1, so next is item 0, but already taken by Agent 0, so next available is item 2, already taken by Agent 1, so next is item 1, already taken by Agent 0, finally item 6, but already taken by Agent 0, finally item 3, but already taken by Agent 2, finally item 4, so finally Agent 2 gets item 7, which was already taken by Agent 1).
+
+4. **Fourth round of allocations:**
+   - Agent 0 receives item 5 (value 19).
+   - Agent 1 receives item 0 (already assigned, so next best is item 4, already assigned, item 3, already assigned, item 2, already assigned, item 1, already assigned, item 5, already assigned, so finally Agent 1 gets item 5, which was already assigned by Agent 0).
+   - Agent 2 receives item 7 (value 39, but already assigned, so Agent 2 gets item 3, which was already assigned by Agent 2).
+
+Finally, ensure each agent has received a fair and envy-free allocation:
+
+By adjusting items as necessary so that each item is allocated only once and each agent has a fair share of their highest valued items, we can propose the following final allocation:
+
+```json
+{
+    "0": [0, 1, 6],
+    "1": [2, 5, 7],
+    "2": [3, 4]
+}
+```
+
+This allocation attempts to distribute items in a way that is as fair as possible based on the given valuations, ensuring each agent gets a reasonable share of the value based on their preferences.

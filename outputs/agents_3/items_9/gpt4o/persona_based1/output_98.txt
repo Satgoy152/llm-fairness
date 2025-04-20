@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 12.
+
+    0   1   2   3   4   5   6   7   8
+0  81  12  75  55  39  36  98  54  69
+1  80  41  12  58  61  65  70  82  22
+2  55  46  10  95   5  97  70  32  10
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[81 12 75 55 39 36 98 54 69]
+ [80 41 12 58 61 65 70 82 22]
+ [55 46 10 95  5 97 70 32 10]]
+Output:
+To achieve a fair allocation of items among the agents, we aim for an envy-free distribution, where each agent feels they received a fair share based on their valuations. We'll use the concept of maximizing each agent's minimum satisfaction to guide the allocation. Here's how we can approach this:
+
+1. **Calculate the total value of items for each agent**: 
+   - Agent 0: 81 + 12 + 75 + 55 + 39 + 36 + 98 + 54 + 69 = 519
+   - Agent 1: 80 + 41 + 12 + 58 + 61 + 65 + 70 + 82 + 22 = 491
+   - Agent 2: 55 + 46 + 10 + 95 + 5 + 97 + 70 + 32 + 10 = 420
+
+2. **Determine a fair share for each agent**:
+   - Since there are 9 items, each agent should ideally receive 3 items.
+   - A fair share can be considered as 1/3 of the total value of items available to each agent:
+     - Fair share for Agent 0: 519 / 3 = 173
+     - Fair share for Agent 1: 491 / 3 ≈ 164
+     - Fair share for Agent 2: 420 / 3 = 140
+
+3. **Allocate items to maximize envy-freeness**:
+   - We seek to allocate items such that each agent's valuation of their allocated items is close to or exceeds their fair share.
+
+4. **Allocation**:
+   - Agent 0: Allocate items [0, 2, 6] with values [81, 75, 98] summing to 254.
+   - Agent 1: Allocate items [1, 4, 7] with values [41, 61, 82] summing to 184.
+   - Agent 2: Allocate items [3, 5, 8] with values [95, 97, 10] summing to 202.
+
+5. **Check allocations**:
+   - Each agent receives exactly 3 items.
+   - The total number of items allocated is 9.
+   - Each agent's allocated value exceeds their fair share, reducing envy.
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [0, 2, 6],
+    "1": [1, 4, 7],
+    "2": [3, 5, 8]
+}
+```

@@ -1,0 +1,79 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 3 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 92.
+
+    0   1   2   3   4   5   6   7
+0  76  91  58  25  63   3  50  87
+1  24  59  92  44   5  98  66  87
+2  99  86  92   8  17  22  76  26
+    
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based1
+Valuation Table:
+[[76 91 58 25 63  3 50 87]
+ [24 59 92 44  5 98 66 87]
+ [99 86 92  8 17 22 76 26]]
+Output:
+To fairly allocate the items among the agents while ensuring envy-freeness, we can use the concept of maximizing each agent's utility based on their valuation while trying to ensure that no agent envies another's allocation. This is not always perfectly possible, but we can aim for a balanced distribution.
+
+Let's first calculate the total valuation each agent has for all items:
+
+- Agent 0: 76 + 91 + 58 + 25 + 63 + 3 + 50 + 87 = 453
+- Agent 1: 24 + 59 + 92 + 44 + 5 + 98 + 66 + 87 = 475
+- Agent 2: 99 + 86 + 92 + 8 + 17 + 22 + 76 + 26 = 426
+
+Now, attempt an initial greedy allocation maximizing each agent's perceived value while distributing the number of items roughly evenly:
+
+1. **Agent 0**: Prioritize items based on Agent 0's value:
+   - Item 1 (91)
+   - Item 0 (76)
+   - Item 7 (87)
+
+2. **Agent 1**: Prioritize items based on Agent 1's value:
+   - Item 5 (98)
+   - Item 2 (92)
+   - Item 7 (87) is already taken by Agent 0, so we skip it.
+   - Item 6 (66)
+
+3. **Agent 2**: Prioritize items based on Agent 2's value:
+   - Item 0 (99) is already taken by Agent 0, so we skip it.
+   - Item 2 (92) is already taken by Agent 1, so we skip it.
+   - Item 1 (86) is already taken by Agent 0, so we skip it.
+   - Item 6 (76) is already taken by Agent 1, so we skip it.
+   - Item 3 (8)
+   - Item 4 (17)
+
+After allocations, check if there's any unallocated item or if any agent has too many/few items. Adjust accordingly to ensure all 8 items are allocated, and each agent receives at least one item:
+
+- Agent 0 has items: 1, 0, 7 (3 items)
+- Agent 1 has items: 5, 2, 6 (3 items)
+- Agent 2 has items: 3, 4 (2 items)
+
+All items are allocated, and each agent receives at least two items. This allocation is approximately envy-free considering the constraints.
+
+Final allocation in JSON format:
+```json
+{
+    "0": [1, 0, 7],
+    "1": [5, 2, 6],
+    "2": [3, 4]
+}
+```

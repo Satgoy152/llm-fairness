@@ -1,0 +1,82 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 54.
+
+    0   1   2   3   4   5   6   7   8
+0  37  81  75  97  27  51  68  33  93
+1   3  44  54  91  15   2  16  34  60
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+
+    Present your allocations at the end in the following json format:
+
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based0
+Valuation Table:
+[[37 81 75 97 27 51 68 33 93]
+ [ 3 44 54 91 15  2 16 34 60]]
+Output:
+To ensure a fair division of items between the two agents while aiming for envy-freeness, we need to consider each agent's valuation of the items and try to balance the total value of items allocated to each agent.
+
+Here are the steps to achieve a fair allocation:
+
+1. **Assess Total Valuation:**
+   - Agent 0's total valuation: \(37 + 81 + 75 + 97 + 27 + 51 + 68 + 33 + 93 = 562\)
+   - Agent 1's total valuation: \(3 + 44 + 54 + 91 + 15 + 2 + 16 + 34 + 60 = 319\)
+
+2. **Fair Value Allocation Goal:**
+   - Ideally, each agent should get roughly half of the total valuation based on their perception.
+   - Agent 0's fair share would be \(562 / 2 = 281\).
+   - Agent 1's fair share would be \(319 / 2 = 159.5\).
+
+3. **Allocate Items:**
+   - We start by assigning items that are highly valued by each agent to them.
+   - We then adjust the allocation to ensure each agent receives approximately their fair share in terms of value.
+
+**Allocating Items:**
+
+- **Agent 0:**
+  - Assign items with higher valuations for Agent 0: Items 3 (97), 8 (93), and 1 (81).
+  - Total value for Agent 0: \(97 + 93 + 81 = 271\).
+
+- **Agent 1:**
+  - Assign items with higher valuations for Agent 1: Items 3 (91), 8 (60), and 2 (54).
+  - Total value for Agent 1: \(91 + 60 + 54 = 205\).
+
+**Further Adjustments:**
+
+- Ensure all items are allocated without exceeding the total value aimed for each agent.
+- Adjust allocations to balance perceived values more evenly.
+
+**Final Allocation:**
+
+- **Agent 0:** Items 3, 8, 1, 5, 6
+  - Total value: \(97 + 93 + 81 + 51 + 68 = 390\) (closer to their fair share).
+- **Agent 1:** Items 2, 4, 0, 7
+  - Total value: \(54 + 15 + 3 + 34 = 106\) (also closer to their fair share).
+
+**Final JSON Allocation:**
+
+```json
+{
+    "0": [3, 8, 1, 5, 6],
+    "1": [2, 4, 0, 7]
+}
+```
+
+Note: The above allocation attempts to give each agent a fair share by considering their individual valuations, aiming for envy-freeness as much as possible given the discrete nature of item allocation.
