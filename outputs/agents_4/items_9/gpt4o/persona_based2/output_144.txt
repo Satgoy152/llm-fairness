@@ -1,0 +1,89 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 7.
+
+    0   1   2   3   4   5   6   7   8
+0   7  39   8  17  67  37  54  81  29
+1  75  59   7  36  32  15  12  12  22
+2  41  44   1  44  78  36  25  59  90
+3  49  49  51  48  42  97  53  19  39
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[ 7 39  8 17 67 37 54 81 29]
+ [75 59  7 36 32 15 12 12 22]
+ [41 44  1 44 78 36 25 59 90]
+ [49 49 51 48 42 97 53 19 39]]
+Output:
+To fairly allocate the items among the agents while considering envy-freeness, we can use a method called the "round-robin" allocation or "sequential allocation". This involves having each agent take turns selecting their most valued item from the remaining pool until all items are allocated. 
+
+Here's how the allocation would progress:
+
+1. Calculate the total value each agent assigns to all items.
+2. Order agents by their total valuations to determine the picking sequence. The agent with the highest total valuation goes first.
+3. In each round, each agent picks their most valued available item.
+4. Repeat this process until all items are allocated.
+
+Let's go through these steps:
+
+1. **Total Valuations:**
+   - Agent 0: 339
+   - Agent 1: 270
+   - Agent 2: 418
+   - Agent 3: 447
+
+2. **Picking Sequence:**
+   - Agent 3 (447)
+   - Agent 2 (418)
+   - Agent 0 (339)
+   - Agent 1 (270)
+
+3. **Allocation Rounds:**
+   - **Round 1:**
+     - Agent 3 picks item 5 (value 97)
+     - Agent 2 picks item 8 (value 90)
+     - Agent 0 picks item 4 (value 67)
+     - Agent 1 picks item 0 (value 75)
+   - **Round 2:**
+     - Agent 3 picks item 2 (value 51)
+     - Agent 2 picks item 7 (value 59)
+     - Agent 0 picks item 7 (this is no longer available, so picks next highest available, item 1, value 39)
+     - Agent 1 picks item 3 (value 36)
+   - **Round 3:**
+     - Agent 3 picks item 6 (value 53)
+     - Agent 2 picks item 3 (this is no longer available, so picks next highest available, item 4, value 78)
+     - Agent 0 picks item 0 (this is no longer available, so picks next highest available, item 6, value 54)
+     - Agent 1 picks item 1 (this is no longer available, so picks next highest available which is item 2, value 7)
+
+4. **Final Allocations:**
+
+```json
+{
+    "0": [4, 1],
+    "1": [0, 3],
+    "2": [8, 7],
+    "3": [5, 2, 6]
+}
+```
+
+This allocation ensures that all items are distributed, and each agent gets an integer number of items. Note that some adjustments were made during the rounds to ensure that all items are allocated when certain items became unavailable due to previous picks.

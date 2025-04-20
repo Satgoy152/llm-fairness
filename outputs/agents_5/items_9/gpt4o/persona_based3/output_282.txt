@@ -1,0 +1,79 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 35.
+    0   1   2   3   4   5   6   7   8
+0  16  39  40   8  67  24   4  52  85
+1  40  78  35  68  59  89   0  18  39
+2  62  40   9  33  51  67  23  90  42
+3  90  27  67  62  68  29  85  43  41
+4  17  33  64  92  43  46  11  13  86
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[16 39 40  8 67 24  4 52 85]
+ [40 78 35 68 59 89  0 18 39]
+ [62 40  9 33 51 67 23 90 42]
+ [90 27 67 62 68 29 85 43 41]
+ [17 33 64 92 43 46 11 13 86]]
+Output:
+To fairly allocate the items among the agents while ensuring envy-freeness, we can use a method like the "Greedy Round Robin" method, which is simple and often provides a reasonably fair division. In this method, each agent takes turns picking the most valuable item available to them according to their preferences. Here's how it can be applied to the given problem:
+
+1. **Setup**: Each agent, in turn, selects their most valued item from those that remain unallocated.
+
+2. **Procedure**:
+    - Start with an empty allocation for each agent.
+    - Agents take turns picking their most valued item from the remaining pool of items until all items are allocated.
+
+3. **Rounding**:
+    - If there is a tie when choosing items, we can break the tie by choosing the item with the highest valuation across all agents.
+
+Applying this method to the table:
+
+- **Round 1**:
+  - Agent 0 picks item 8 (value 85).
+  - Agent 1 picks item 5 (value 89).
+  - Agent 2 picks item 7 (value 90).
+  - Agent 3 picks item 0 (value 90).
+  - Agent 4 picks item 3 (value 92).
+
+- **Round 2**:
+  - Agent 0 picks item 4 (value 67).
+  - Agent 1 picks item 1 (value 78).
+  - Agent 2 picks item 5 (remaining highest, value 67).
+  - Agent 3 picks item 6 (value 85).
+  - Agent 4 picks item 2 (value 64).
+
+Now, let's map out the allocations based on the items chosen:
+
+```json
+{
+    "0": [8, 4],
+    "1": [5, 1],
+    "2": [7],
+    "3": [0, 6],
+    "4": [3, 2]
+}
+```
+
+This allocation ensures that each agent received items according to their preferences, and all items are distributed. Note that the method may not always yield a perfectly envy-free allocation, but it is a practical approach in many cases.

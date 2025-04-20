@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 48.
+    0   1   2   3   4   5   6   7   8
+0  88  31  22  79  45  18  40  25  11
+1  57  44  48  49  80  24  36  96  51
+2  83  18   0  41  79  51  42  88  33
+3  91  75  39  56  60  39  96  36  85
+4  69  99   2  43  53  80  74  99  99
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[88 31 22 79 45 18 40 25 11]
+ [57 44 48 49 80 24 36 96 51]
+ [83 18  0 41 79 51 42 88 33]
+ [91 75 39 56 60 39 96 36 85]
+ [69 99  2 43 53 80 74 99 99]]
+Output:
+To fairly allocate the items among the agents while considering their valuations, we aim to achieve an envy-free or as close to envy-free distribution as possible. This means each agent should feel that their allocation is at least as good as that of any other agent, based on their own valuations.
+
+Here's an approach to achieve a fair division:
+
+1. **Identify High Valuation Matches**: Assign items to agents who value them the highest, ensuring at least a good start toward envy-freeness.
+
+2. **Balance Allocations**: Adjust allocations to make sure each agent has a fair share and no one is left without items unless it results in a more balanced distribution.
+
+3. **Check for Envy**: Ensure that no agent envies another agent's allocation based on their own valuation.
+
+Following this approach, here's a fair allocation based on the given valuations:
+
+- Agent 0 gets item 0: Highest valuation for item 0 is by agent 3, but agent 0 also values it significantly and gets less otherwise.
+- Agent 1 gets item 7: Highest valuation for item 7.
+- Agent 2 gets items 5 and 8: Significant valuation for these, and balances the distribution.
+- Agent 3 gets items 3 and 6: High valuation for item 6, and decent for item 3.
+- Agent 4 gets items 1, 2, and 4: High valuation for item 1 and decent for item 4, and balances the distribution.
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [0],
+    "1": [7],
+    "2": [5, 8],
+    "3": [3, 6],
+    "4": [1, 2, 4]
+}
+```
+
+This allocation ensures each agent has items distributed based on their preferences, aiming for a fair and envy-free scenario.

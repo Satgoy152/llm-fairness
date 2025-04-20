@@ -1,0 +1,66 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 51.
+    0   1   2   3   4   5   6
+0  30  85  66  95   1  66  39
+1  26  18  51  54  82  15  96
+2  81  12   0  96  70  61  10
+3  29  53   4  26  48  35  79
+4  13  27  84  59  24  21  50
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[30 85 66 95  1 66 39]
+ [26 18 51 54 82 15 96]
+ [81 12  0 96 70 61 10]
+ [29 53  4 26 48 35 79]
+ [13 27 84 59 24 21 50]]
+Output:
+To allocate the items fairly among the agents, we can aim to minimize envy by maximizing the sum of valuations for each agent's allocation. However, given the constraint that each agent must receive an integer number of items and the total number of items is 7, we need to allocate all items without any being left unallocated.
+
+One common approach to fair division is to use the "Greedy Algorithm" or "Round-Robin Algorithm," which allocates items sequentially based on the highest marginal gain for each agent. This approach may not be perfectly envy-free but will aim to maximize each agent's satisfaction given their preferences.
+
+Following this approach, I will allocate the items as follows:
+
+1. **Agent 0**: Item 3 (value 95), Item 1 (value 85)
+2. **Agent 1**: Item 6 (value 96), Item 4 (value 82)
+3. **Agent 2**: Item 0 (value 81), Item 5 (value 61)
+4. **Agent 3**: Item 2 (value 4)
+5. **Agent 4**: No items
+
+This allocation is done by selecting high-value items for each agent based on their preferences, ensuring that all items are allocated.
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [3, 1],
+    "1": [6, 4],
+    "2": [0, 5],
+    "3": [2],
+    "4": []
+}
+```
+
+This allocation tries to ensure that each agent receives items that they value highly, attempting to reduce envy while ensuring each agent gets an integer number of items and all items are allocated.

@@ -1,0 +1,95 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 94.
+    0   1   2   3   4   5   6   7
+0  50  26  19  51  14  87  56  83
+1   5  63  94  58  93  78  87  87
+2  34  56  18   5  22  74  82   0
+3  83  49  60  55  98  75  80  12
+4  44  54  63  20  30  88  67  89
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[50 26 19 51 14 87 56 83]
+ [ 5 63 94 58 93 78 87 87]
+ [34 56 18  5 22 74 82  0]
+ [83 49 60 55 98 75 80 12]
+ [44 54 63 20 30 88 67 89]]
+Output:
+To fairly allocate the items among the agents while ensuring envy-freeness, we can apply a round-robin approach, considering each agent's highest-valued items. This method tries to ensure that each agent receives items that they value highly, reducing the potential for envy.
+
+Here's a step-by-step allocation process:
+
+1. **Agent 0**: 
+   - Highest value is for item 5 (87). Allocate item 5 to agent 0.
+   
+2. **Agent 1**: 
+   - Highest value is for item 2 (94). Allocate item 2 to agent 1.
+   
+3. **Agent 2**: 
+   - Highest value is for item 6 (82). Allocate item 6 to agent 2.
+   
+4. **Agent 3**: 
+   - Highest value is for item 4 (98). Allocate item 4 to agent 3.
+   
+5. **Agent 4**: 
+   - Highest value is for item 7 (89). Allocate item 7 to agent 4.
+
+Now, each agent has received one item. Continue allocating the remaining items by considering the next highest values for each agent who hasn't received their top choices yet.
+
+6. **Agent 0**: 
+   - Next highest value item is item 7 (83), but it's already taken. Next is item 3 (51). Allocate item 3 to agent 0.
+
+7. **Agent 1**: 
+   - Next highest value item is item 6 (87), but it's already taken. Next is item 5 (78). Allocate item 5 to agent 1.
+
+8. **Agent 2**: 
+   - Next highest value item is item 5 (74), but it's already taken. Next is item 1 (56). Allocate item 1 to agent 2.
+
+9. **Agent 3**: 
+   - Next highest value item is item 6 (80), but it's already taken. Next is item 5 (75), but it's already taken. Next is item 3 (55), but it's already taken. Next is item 0 (83). Allocate item 0 to agent 3.
+
+10. **Agent 4**: 
+    - Next highest value item is item 5 (88), but it's already taken. Next is item 6 (67), but it's already taken. Next is item 4 (30), but it's already taken. Next is item 0 (44), but it's already taken. Next is item 1 (54). Allocate item 1 to agent 4.
+
+Correcting the allocation to ensure no duplicates and each agent receives at least one item:
+
+- Agent 0: Items 5, 3
+- Agent 1: Items 2, 0
+- Agent 2: Items 6, 1
+- Agent 3: Items 4, 7
+- Agent 4: No items required in this allocation
+
+Now, let's ensure the total allocations are correct.
+
+Final allocations:
+```json
+{
+    "0": [5, 3],
+    "1": [2],
+    "2": [6, 1],
+    "3": [4, 0],
+    "4": [7]
+}
+```

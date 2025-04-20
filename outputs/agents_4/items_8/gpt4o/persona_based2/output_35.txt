@@ -1,0 +1,87 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 93.
+
+    0   1   2   3   4   5   6   7
+0  67  83  21  89   7  30  24  94
+1   8  67  93  30  21  21  15  44
+2  62  51  29  82  45  47  92  37
+3  20  72  41  52  91  78  23  37
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[67 83 21 89  7 30 24 94]
+ [ 8 67 93 30 21 21 15 44]
+ [62 51 29 82 45 47 92 37]
+ [20 72 41 52 91 78 23 37]]
+Output:
+To fairly allocate the items among the agents, we can use a method that attempts to minimize envy and ensure that each agent receives a fair share of the items based on their valuations. One such approach is to use a round-robin draft where agents take turns picking their most valued available item until all items are allocated.
+
+First, let's examine the total valuation each agent has for all items to get an initial sense of their preferences:
+
+- Agent 0: 67 + 83 + 21 + 89 + 7 + 30 + 24 + 94 = 415
+- Agent 1: 8 + 67 + 93 + 30 + 21 + 21 + 15 + 44 = 299
+- Agent 2: 62 + 51 + 29 + 82 + 45 + 47 + 92 + 37 = 445
+- Agent 3: 20 + 72 + 41 + 52 + 91 + 78 + 23 + 37 = 414
+
+Next, we perform a draft where each agent picks their most valued item available in a round-robin fashion:
+
+1. **Round 1:**
+   - Agent 2 picks Item 6 (92).
+   - Agent 0 picks Item 7 (94).
+   - Agent 3 picks Item 4 (91).
+   - Agent 1 picks Item 2 (93).
+
+2. **Round 2:**
+   - Agent 2 picks Item 3 (82).
+   - Agent 0 picks Item 3 (89) (already picked, so next highest available: Item 1, 83).
+   - Agent 3 picks Item 5 (78).
+   - Agent 1 picks Item 1 (67) (already picked, so next highest available: Item 3, 30).
+
+3. **Round 3:**
+   - Agent 2 picks Item 0 (62).
+   - Agent 0 picks Item 5 (30) (already picked, so next highest available: Item 0, 67, already picked, next: Item 2, 21).
+   - Agent 3 picks Item 1 (72) (already picked, so next highest available: Item 7, 37).
+   - Agent 1 picks Item 0 (8) (already picked, so next highest available: Item 4, 21).
+
+Now, let's finalize the allocations based on the selections made:
+
+- Agent 0: [7, 1, 2]
+- Agent 1: [2, 3, 4]
+- Agent 2: [6, 3, 0]
+- Agent 3: [4, 5, 7]
+
+However, to ensure each agent gets distinct items based on their initial highest preferences, let's adjust the allocation to reflect the final draft properly:
+
+Final allocation:
+
+```json
+{
+    "0": [7, 1],
+    "1": [2],
+    "2": [6, 3, 0],
+    "3": [4, 5]
+}
+```
+
+This allocation respects the agents' preferences and ensures all items are allocated fairly.

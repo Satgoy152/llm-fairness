@@ -1,0 +1,78 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 63.
+
+    0   1   2   3   4   5   6
+0  49  27  89  31  82   5  42
+1  27  53  63  51  23  12  41
+2  99  54  38  26  44  33  26
+3  52  83  69   7  11  59  67
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[49 27 89 31 82  5 42]
+ [27 53 63 51 23 12 41]
+ [99 54 38 26 44 33 26]
+ [52 83 69  7 11 59 67]]
+Output:
+To fairly allocate the items among the agents, we can use the method of ensuring no agent envies another by assessing their valuations. The goal is to allocate items such that each agent feels they have received a fair share based on their preferences.
+
+Let's first list the total valuations for each agent:
+
+- Agent 0's total valuation: 49 + 27 + 89 + 31 + 82 + 5 + 42 = 325
+- Agent 1's total valuation: 27 + 53 + 63 + 51 + 23 + 12 + 41 = 270
+- Agent 2's total valuation: 99 + 54 + 38 + 26 + 44 + 33 + 26 = 320
+- Agent 3's total valuation: 52 + 83 + 69 + 7 + 11 + 59 + 67 = 348
+
+Next, we can use these preferences to guide our allocation, aiming to minimize envy by attempting to give each agent the items they value highly. We'll try to balance the allocation based on these values:
+
+1. **Agent 0**: 
+   - Highest-valued items: 2 (89), 4 (82)
+   - Assign items: [2, 4]
+
+2. **Agent 1**: 
+   - Highest-valued items: 3 (51), 2 (63)
+   - Since item 2 is already allocated to agent 0, let's choose the next highest:
+   - Assign items: [3]
+
+3. **Agent 2**: 
+   - Highest-valued items: 0 (99), 1 (54)
+   - Assign items: [0, 1]
+   
+4. **Agent 3**: 
+   - Highest-valued items: 1 (83), 2 (69), 6 (67)
+   - Since items 1 and 2 are already allocated, choose from remaining:
+   - Assign items: [5, 6]
+   
+Now, we will present the allocations in the required JSON format:
+
+```json
+{
+    "0": [2, 4],
+    "1": [3],
+    "2": [0, 1],
+    "3": [5, 6]
+}
+```
+
+This allocation ensures that each agent receives items they value, aiming to minimize envy.

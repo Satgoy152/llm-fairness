@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 64.
+
+    0   1   2   3   4   5   6   7
+0  85  99  98  12   9  34  31  14
+1  90  31  64  62  45   7  51  36
+2  59  25  49  92  36  66  55  58
+3  30  22  57  90  25  21  59  90
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[85 99 98 12  9 34 31 14]
+ [90 31 64 62 45  7 51 36]
+ [59 25 49 92 36 66 55 58]
+ [30 22 57 90 25 21 59 90]]
+Output:
+To fairly allocate the items among the agents while considering their valuations, we should aim for an envy-free allocation where each agent perceives their allocation as at least as good as any other agent's allocation, based on their personal valuations.
+
+One method to achieve a fair division is the "round robin" or "sequential picking" method, which can be used when the number of items is divisible by the number of agents. In this case, 8 items for 4 agents means each agent should receive 2 items. 
+
+Here's a step-by-step approach to ensure a fair allocation:
+
+1. **Calculate the total valuation of each agent for all items:**
+    - Agent 0: 382
+    - Agent 1: 386
+    - Agent 2: 440
+    - Agent 3: 394
+
+2. **Select items based on descending individual valuations:** 
+    - We can rotate among agents, allowing each to pick their highest-valued remaining item until all items are allocated.
+
+3. **Allocate items:**
+    - **Round 1:** Highest valued item for each agent respectively, rotating in order:
+        - Agent 0 picks item 1 (value 99)
+        - Agent 1 picks item 0 (value 90)
+        - Agent 2 picks item 3 (value 92)
+        - Agent 3 picks item 7 (value 90)
+    - **Round 2:** Continue picking the next highest valued item:
+        - Agent 0 picks item 2 (value 98)
+        - Agent 1 picks item 4 (value 45)
+        - Agent 2 picks item 5 (value 66)
+        - Agent 3 picks item 6 (value 59)
+
+Now, let's present the allocations in the specified JSON format:
+
+```json
+{
+    "0": [1, 2],
+    "1": [0, 4],
+    "2": [3, 5],
+    "3": [7, 6]
+}
+```
+
+This allocation ensures that each agent receives two items, and the distribution is as fair as possible given the available valuations.

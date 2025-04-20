@@ -1,0 +1,104 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+    
+    0   1   2   3   4   5   6   7   8
+0  78  89  76  39  74  23  13  30  93
+1  66  38  34  48  22  31  72  75  30
+2  99  86  65  14  83  64  50  74  27
+3  95  83  57  59  70  12  76  48  61
+4   1  61   1  23  34   8  68  88  19
+5  85  90  91   9  91   8  94  37  10
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[78 89 76 39 74 23 13 30 93]
+ [66 38 34 48 22 31 72 75 30]
+ [99 86 65 14 83 64 50 74 27]
+ [95 83 57 59 70 12 76 48 61]
+ [ 1 61  1 23 34  8 68 88 19]
+ [85 90 91  9 91  8 94 37 10]]
+Output:
+To fairly allocate items among the agents, we can use the concept of maximizing social welfare while trying to ensure envy-freeness. A common approach is to use algorithms like the round-robin or the maximum Nash welfare solution. Here, we will attempt a balanced allocation based on the valuations to ensure each agent is satisfied as much as possible.
+
+Let's begin by analyzing the valuations matrix:
+
+```
+Agent Valuations:
+0: [78, 89, 76, 39, 74, 23, 13, 30, 93]
+1: [66, 38, 34, 48, 22, 31, 72, 75, 30]
+2: [99, 86, 65, 14, 83, 64, 50, 74, 27]
+3: [95, 83, 57, 59, 70, 12, 76, 48, 61]
+4: [1, 61, 1, 23, 34, 8, 68, 88, 19]
+5: [85, 90, 91, 9, 91, 8, 94, 37, 10]
+```
+
+The goal is to allocate each item to an agent such that the total value perceived by the agents is maximized, and the allocation is as envy-free as possible. 
+
+Let's proceed with a simple greedy allocation strategy:
+1. Assign each item to the agent who values it the most, ensuring each agent gets at least one item if possible.
+2. Adjust allocations to ensure no agent is left with zero items if possible.
+
+Here's one way to allocate the items:
+
+- Item 0: Agent 2 (99)
+- Item 1: Agent 5 (90)
+- Item 2: Agent 5 (91)
+- Item 3: Agent 3 (59)
+- Item 4: Agent 5 (91)
+- Item 5: Agent 2 (64)
+- Item 6: Agent 5 (94)
+- Item 7: Agent 0 (30)
+- Item 8: Agent 0 (93)
+
+Now check to ensure each agent receives at least one item:
+- Agent 0: Items [7, 8]
+- Agent 1: No items, reassign item 3 from Agent 3 to Agent 1 since Agent 3 has a lower valuation for item 3 than Agent 1 does for item 0.
+- Agent 2: Items [0, 5]
+- Agent 3: No items, reassign item 7 from Agent 0 to Agent 3
+- Agent 4: No items, reassign item 5 from Agent 2 to Agent 4
+- Agent 5: Items [1, 2, 4, 6]
+
+Adjustments:
+- Agent 0: [8]
+- Agent 1: [3]
+- Agent 2: [0]
+- Agent 3: [7]
+- Agent 4: [5]
+- Agent 5: [1, 2, 4, 6]
+
+Thus, the allocation can be presented as:
+
+```json
+{
+    "0": [8],
+    "1": [3],
+    "2": [0],
+    "3": [7],
+    "4": [5],
+    "5": [1, 2, 4, 6]
+}
+```
+
+This allocation ensures that all 9 items are distributed among the agents, and each agent receives at least one item.

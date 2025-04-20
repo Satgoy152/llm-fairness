@@ -1,0 +1,78 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 91.
+
+    0   1   2   3   4   5   6
+0  28  41  94  97  14  23  93
+1  45  98  91  56   2  61  99
+2  16  61  20  61  82  22  47
+3  68   2  41  27  23  13  27
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[28 41 94 97 14 23 93]
+ [45 98 91 56  2 61 99]
+ [16 61 20 61 82 22 47]
+ [68  2 41 27 23 13 27]]
+Output:
+To fairly allocate the items among the agents while considering their valuations, we can use an envy-free algorithm such as the "round-robin" method. This method involves agents taking turns to pick their most valued item that is still available. We'll assume that each agent picks sequentially based on their valuations, starting with the agent who has the highest overall valuation sum.
+
+First, we calculate the total valuation each agent has for all items:
+
+- Agent 0: 28 + 41 + 94 + 97 + 14 + 23 + 93 = 390
+- Agent 1: 45 + 98 + 91 + 56 + 2 + 61 + 99 = 452
+- Agent 2: 16 + 61 + 20 + 61 + 82 + 22 + 47 = 309
+- Agent 3: 68 + 2 + 41 + 27 + 23 + 13 + 27 = 201
+
+The order in which agents will pick items is based on their total valuation, starting from the highest:
+
+1. Agent 1
+2. Agent 0
+3. Agent 2
+4. Agent 3
+
+We'll proceed with the allocation:
+
+1. Agent 1 picks item 1 (value = 98).
+2. Agent 0 picks item 3 (value = 97).
+3. Agent 2 picks item 4 (value = 82).
+4. Agent 3 picks item 0 (value = 68).
+
+After the first round, the remaining items are 2, 5, and 6.
+
+5. Agent 1 picks item 6 (value = 99).
+6. Agent 0 picks item 2 (value = 94).
+7. Agent 2 picks item 5 (value = 22).
+
+Agent 3 does not get a second pick since all items are allocated.
+
+The final allocation is:
+
+```json
+{
+    "0": [3, 2],
+    "1": [1, 6],
+    "2": [4, 5],
+    "3": [0]
+}
+```

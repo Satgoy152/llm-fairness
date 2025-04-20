@@ -1,0 +1,72 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 50.
+
+    0   1   2   3   4   5
+0  86  32   6  77   6  19
+1  47  63  50  56  43  93
+2  47  41  93   2  22  62
+3  90  96  77  19  63  10
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[86 32  6 77  6 19]
+ [47 63 50 56 43 93]
+ [47 41 93  2 22 62]
+ [90 96 77 19 63 10]]
+Output:
+To fairly allocate the items among the agents, we should aim for an allocation that minimizes envy and maximizes each agent's satisfaction based on their valuations. We can start by calculating the total value each agent assigns to all items and then iteratively allocate items to balance individual satisfaction while maintaining envy-freeness as much as possible.
+
+Here are the total valuations for each agent:
+
+- Agent 0: \(86 + 32 + 6 + 77 + 6 + 19 = 226\)
+- Agent 1: \(47 + 63 + 50 + 56 + 43 + 93 = 352\)
+- Agent 2: \(47 + 41 + 93 + 2 + 22 + 62 = 267\)
+- Agent 3: \(90 + 96 + 77 + 19 + 63 + 10 = 355\)
+
+Next, we proceed to allocate the items:
+
+1. Agent 3 values item 1 the most with a valuation of 96. We assign item 1 to Agent 3.
+2. Agent 2 values item 2 the most with a valuation of 93. We assign item 2 to Agent 2.
+3. Agent 1 values item 5 the most with a valuation of 93. We assign item 5 to Agent 1.
+4. Agent 0 values item 0 the most with a valuation of 86. We assign item 0 to Agent 0.
+5. Agent 3 values item 3 next highest with a valuation of 19 (after item 1 is taken), so we assign item 3 to Agent 3.
+6. Agent 2 values item 4 next highest with a valuation of 22 (after item 2 is taken), so we assign item 4 to Agent 2.
+
+Now, each agent has the following allocations:
+
+- Agent 0: [0]
+- Agent 1: [5]
+- Agent 2: [2, 4]
+- Agent 3: [1, 3]
+
+This allocation ensures each agent receives an integer number of items and that the total allocation equals the number of available items (6).
+
+```json
+{
+    "0": [0],
+    "1": [5],
+    "2": [2, 4],
+    "3": [1, 3]
+}
+```

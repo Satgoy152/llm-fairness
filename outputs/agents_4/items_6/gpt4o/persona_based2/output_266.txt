@@ -1,0 +1,67 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 6 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 85.
+
+    0   1   2   3   4   5
+0  24  66  86  90  78  21
+1  71  16  85  96   6  64
+2  21  46  25   1   0  14
+3  51  47   6  46  87   0
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 6 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[24 66 86 90 78 21]
+ [71 16 85 96  6 64]
+ [21 46 25  1  0 14]
+ [51 47  6 46 87  0]]
+Output:
+To fairly allocate the items among the agents while considering envy-freeness and integer allocation, we need to consider the valuations each agent has for each item. The goal is to allocate the items such that no agent would prefer another agent's allocation over their own, based on their valuations.
+
+Using a heuristic approach to achieve a fair allocation, we can start by examining the valuations and attempting to allocate items to maximize each agent's satisfaction, while ensuring no agent is overly envious of another's allocation.
+
+Here's an allocation that attempts to minimize envy and ensure each agent is satisfied with their share:
+
+- Agent 0 values items 3 and 2 highly, so they can be allocated to Agent 0.
+- Agent 1 values item 4 the least, but item 3 the most, so item 3 is preferred but already allocated, hence items 0 and 5 can be allocated.
+- Agent 2 has relatively low valuations for most items, so item 1 can be allocated.
+- Agent 3 values item 4 the most, so it can be allocated to them, along with item 5.
+
+Let's finalize the allocation:
+
+- Agent 0: [2, 3]
+- Agent 1: [0]
+- Agent 2: [1]
+- Agent 3: [4, 5]
+
+Now, in JSON format:
+
+```json
+{
+    "0": [2, 3],
+    "1": [0],
+    "2": [1],
+    "3": [4, 5]
+}
+```
+
+This allocation attempts to respect the agents' preferences as much as possible while ensuring each agent receives at least one item and the total number of items allocated is six.

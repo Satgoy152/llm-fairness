@@ -1,0 +1,82 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 93.
+    0   1   2   3   4   5   6   7   8
+0  90  33  24  98  36  41  52  99  70
+1  31  58  93  52  22  34   0  70  64
+2  99  67  30  60  12  20  92  30   4
+3  76  99  23  80  76  54  63  26  86
+4  41  76  24  16  97  94  98  50  31
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[90 33 24 98 36 41 52 99 70]
+ [31 58 93 52 22 34  0 70 64]
+ [99 67 30 60 12 20 92 30  4]
+ [76 99 23 80 76 54 63 26 86]
+ [41 76 24 16 97 94 98 50 31]]
+Output:
+To achieve a fair allocation of items among the agents, we can use an approach that strives to minimize envy and ensure each agent receives a portion of the total value they perceive. The challenge is to allocate all 9 items such that each agent feels the allocation is fair according to their own valuations.
+
+One potential method to achieve this is to use a "round-robin" or "sequential" allocation process, which involves each agent choosing their most preferred available item in turns until all items are allocated. The order in which agents pick can be determined to minimize potential envy or maximize perceived fairness.
+
+Let's go through the allocation process:
+
+1. Calculate the total value each agent assigns to all items.
+2. Use these total values to determine an order for picking items, potentially favoring agents with lower overall valuations to promote fairness.
+3. Sequentially allocate items based on each agent's highest-valued available item.
+
+Agent total valuations:
+- Agent 0: 543
+- Agent 1: 424
+- Agent 2: 414
+- Agent 3: 583
+- Agent 4: 527
+
+Based on these valuations, a reasonable picking order might be: Agent 2, Agent 1, Agent 0, Agent 4, Agent 3.
+
+Allocation process:
+1. **Agent 2** picks item 0 (value 99).
+2. **Agent 1** picks item 2 (value 93).
+3. **Agent 0** picks item 7 (value 99).
+4. **Agent 4** picks item 6 (value 98).
+5. **Agent 3** picks item 1 (value 99).
+6. **Agent 2** picks item 3 (value 60).
+7. **Agent 1** picks item 8 (value 64).
+8. **Agent 0** picks item 4 (value 36).
+9. **Agent 4** picks item 5 (value 94).
+
+Final allocations:
+
+```json
+{
+    "0": [7, 4],
+    "1": [2, 8],
+    "2": [0, 3],
+    "3": [1],
+    "4": [6, 5]
+}
+```
+
+In this allocation, each agent is given items according to their preference order in the sequence, and all 9 items are distributed. This method attempts to balance fairness by taking total valuations into account for the picking order.

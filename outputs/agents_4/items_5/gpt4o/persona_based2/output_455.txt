@@ -1,0 +1,82 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 4.
+
+    0   1   2   3   4
+0  78   3   3  14  94
+1  95  47   4  34  15
+2  69  72  78  38  69
+3  12  73  64  21  87
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 5 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[78  3  3 14 94]
+ [95 47  4 34 15]
+ [69 72 78 38 69]
+ [12 73 64 21 87]]
+Output:
+To achieve a fair division that is envy-free, we can utilize an algorithm such as the maximum Nash welfare approach. This method aims to maximize the product of the agents' utilities, often leading to a more balanced allocation.
+
+Given the valuations:
+
+```
+Agent 0: [78, 3, 3, 14, 94]
+Agent 1: [95, 47, 4, 34, 15]
+Agent 2: [69, 72, 78, 38, 69]
+Agent 3: [12, 73, 64, 21, 87]
+```
+
+We need to allocate all five items among the four agents. Let's go through the valuations and allocate items to maximize fairness:
+
+1. **Item 4** (valued highest by Agent 0 and 3):
+   - Agent 0 values it at 94, Agent 3 at 87.
+   - Assign to Agent 0 because they value it the highest.
+
+2. **Item 0** (valued highest by Agent 1):
+   - Agent 1 values it at 95, followed by Agent 0 at 78.
+   - Assign to Agent 1.
+
+3. **Item 2** (valued highest by Agent 2):
+   - Agent 2 values it at 78, followed by Agent 3 at 64.
+   - Assign to Agent 2.
+
+4. **Item 1** (valued highest by Agent 3):
+   - Agent 3 values it at 73, followed by Agent 2 at 72.
+   - Assign to Agent 3.
+
+5. **Item 3** (valued by all agents):
+   - Agent 2 values it at 38, followed by Agent 1 at 34.
+   - Assign to Agent 2.
+
+By this distribution, each agent receives at least one item, and the allocation is as fair as possible given the constraints.
+
+The final allocation in JSON format is:
+
+```json
+{
+    "0": [4],
+    "1": [0],
+    "2": [2, 3],
+    "3": [1]
+}
+```

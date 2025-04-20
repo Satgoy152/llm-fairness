@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 51.
+
+    0   1   2   3   4   5   6   7   8
+0  93  92  65  46  48  72  20  89  35
+1  96  16  51  83  91   9  17  66  67
+2  94   6  97  78  93   2  20  69  49
+3  88  62  99  96  16  11  49  13  62
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[93 92 65 46 48 72 20 89 35]
+ [96 16 51 83 91  9 17 66 67]
+ [94  6 97 78 93  2 20 69 49]
+ [88 62 99 96 16 11 49 13 62]]
+Output:
+To achieve a fair division of items among the agents while ensuring envy-freeness, we should aim to allocate items such that each agent perceives their share to be at least as valuable as what any other agent receives. Given the valuations provided, one approach is to use an algorithm like the envy-free round-robin approach, where agents take turns picking the item they value most until all items are allocated.
+
+Let's proceed with the allocation:
+
+1. **Round 1**:
+   - Agent 0 picks item 0 (value 93).
+   - Agent 1 picks item 4 (value 91).
+   - Agent 2 picks item 2 (value 97).
+   - Agent 3 picks item 2 (value 99) - (since item 2 is already picked, agent 3 picks item 3 with value 96 as their highest remaining).
+
+2. **Round 2**:
+   - Agent 0 picks item 1 (value 92).
+   - Agent 1 picks item 8 (value 67).
+   - Agent 2 picks item 4 (value 93) - (since item 4 is already picked, agent 2 picks item 7 with value 69 as their highest remaining).
+   - Agent 3 picks item 1 (value 62) - (since item 1 is already picked, agent 3 picks item 8 with value 62 as their highest remaining).
+
+3. **Round 3**:
+   - Agent 0 picks item 5 (value 72).
+   - Agent 1 picks item 3 (value 83).
+   - Agent 2 picks item 6 (value 20).
+   - Agent 3 picks item 7 (value 13).
+
+Now, let's ensure that all items are allocated and each agent gets an integer number of items:
+
+- Agent 0: Items [0, 1, 5]
+- Agent 1: Items [3, 4, 8]
+- Agent 2: Items [2, 7]
+- Agent 3: Items [6]
+
+Finally, the allocation in the required JSON format is:
+
+```json
+{
+    "0": [0, 1, 5],
+    "1": [3, 4, 8],
+    "2": [2, 7],
+    "3": [6]
+}
+```

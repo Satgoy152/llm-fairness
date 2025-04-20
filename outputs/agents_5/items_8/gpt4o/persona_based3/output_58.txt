@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 46.
+    0   1   2   3   4   5   6   7
+0  60  96  82  14   1  64  84  53
+1  56  45  46  32   3  75  25  23
+2  96  24  36   3   3  93  40  91
+3  81  31  54  56  84   5  50  56
+4   0  67  63  78  98  21  16  32
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[60 96 82 14  1 64 84 53]
+ [56 45 46 32  3 75 25 23]
+ [96 24 36  3  3 93 40 91]
+ [81 31 54 56 84  5 50 56]
+ [ 0 67 63 78 98 21 16 32]]
+Output:
+To fairly allocate the items among the agents while considering their valuations, we can use the concept of envy-freeness. Envy-freeness means that no agent should prefer the allocation of another agent over their own, based on their valuations.
+
+To achieve a fair division, one common approach is to use the maximum weight matching algorithm in a bipartite graph, where one set of nodes represents agents and the other set represents items. The weights on the edges represent the valuations each agent has for each item. The goal is to find a matching that maximizes the total valuation while ensuring each agent receives at least one item (if possible), and all items are allocated.
+
+Here's a possible allocation based on the given valuations:
+
+1. Agent 0 values item 1 highly (96), so item 1 is allocated to agent 0.
+2. Agent 1 values item 5 highly (75), so item 5 is allocated to agent 1.
+3. Agent 2 values item 0 highly (96), so item 0 is allocated to agent 2.
+4. Agent 3 values item 4 highly (84), so item 4 is allocated to agent 3.
+5. Agent 4 values item 3 highly (78), so item 3 is allocated to agent 4.
+
+The remaining items (2, 6, 7) can be allocated to ensure that each agent receives at least one item:
+
+6. Agent 0 has a high valuation for item 2 (82), so item 2 is allocated to agent 0.
+7. Agent 2 can take item 7 (91) since it's highly valued by them.
+8. Item 6 can be allocated to agent 3 (50).
+
+Here's the final allocation:
+
+```json
+{
+    "0": [1, 2],
+    "1": [5],
+    "2": [0, 7],
+    "3": [4, 6],
+    "4": [3]
+}
+```
+
+This allocation ensures each agent receives at least one item, and the allocation seeks to maximize the perceived value for each agent based on their individual valuations.

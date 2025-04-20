@@ -1,0 +1,81 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 91.
+
+    0   1   2   3   4
+0  86  72  86  58  53
+1  69  78  91  21  48
+2  84  45  14  92  39
+3  30  65  54  72  40
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 5 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[86 72 86 58 53]
+ [69 78 91 21 48]
+ [84 45 14 92 39]
+ [30 65 54 72 40]]
+Output:
+To achieve a fair allocation of the items among the agents, we aim for an envy-free or as envy-free as possible allocation. Envy-freeness means that no agent prefers another agent's allocation over their own. With integer allocations and the valuations provided, this can be a challenging task, but we can try to minimize envy.
+
+Let's consider the valuations table provided:
+
+```
+    0   1   2   3   4
+0  86  72  86  58  53
+1  69  78  91  21  48
+2  84  45  14  92  39
+3  30  65  54  72  40
+```
+
+We will allocate the items based on maximizing the perceived value for each agent while attempting to minimize envy. The aim is to give each agent items they value highly.
+
+### Considerations for Allocation:
+
+1. **Agent 0** has high valuations on items 0 and 2 (both 86).
+2. **Agent 1** values item 2 the most (value 91) and item 1 next (78).
+3. **Agent 2** values item 3 the most (value 92).
+4. **Agent 3** values item 3 the most, but that's already highly valued by Agent 2.
+
+### Allocation Strategy:
+
+- **Agent 0** can be given item 0, which they value highly.
+- **Agent 1** can be given item 2, their highest valued item.
+- **Agent 2** can be given item 3, which they value the most.
+- **Agent 3** can be given item 1, which is a relatively high value for them.
+
+This leaves item 4, which should be allocated to minimize envy. Let's consider giving it to an agent who values it reasonably but hasn't received their top choice. Agent 1 could be a candidate since they didn't get item 1, which they valued highly.
+
+### Final Allocation:
+
+Here’s the allocation in JSON format:
+
+```json
+{
+    "0": [0],
+    "1": [2, 4],
+    "2": [3],
+    "3": [1]
+}
+```
+
+This allocation gives each agent at least one item they value reasonably highly, with an attempt to minimize envy given the constraints.

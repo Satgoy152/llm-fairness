@@ -1,0 +1,81 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 80.
+
+    0   1   2   3   4   5   6
+0  59  33  59  46  25  10  20
+1  99  54  80  60  45  74  76
+2  12  97  17  72  82   9  43
+3  93  86  77  24  50  33  22
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[59 33 59 46 25 10 20]
+ [99 54 80 60 45 74 76]
+ [12 97 17 72 82  9 43]
+ [93 86 77 24 50 33 22]]
+Output:
+To solve this fair division problem, we are looking for an allocation of 7 items among 4 agents such that the allocation is envy-free or as close to envy-free as possible given the constraints. Envy-freeness implies that no agent should prefer the bundle of another agent over their own, based on their valuations.
+
+First, let's outline the valuations:
+
+- Agent 0: [59, 33, 59, 46, 25, 10, 20]
+- Agent 1: [99, 54, 80, 60, 45, 74, 76]
+- Agent 2: [12, 97, 17, 72, 82, 9, 43]
+- Agent 3: [93, 86, 77, 24, 50, 33, 22]
+
+A reasonable approach is to allocate items based on maximizing each agent's total value while trying to maintain fairness. To achieve this, we can use a round-robin method of allocation where each agent, in turn, picks their most valued remaining item.
+
+### Step-by-step Allocation:
+
+1. **Agent 1** has the highest single valuation (99 for item 0) and will pick first.
+2. **Agent 2** values item 1 the most (97) and picks second.
+3. **Agent 3** values item 0 the second highest after agent 1 (93), and chooses third.
+4. **Agent 0** values item 0 the most after agents 1 and 3, but since it's taken, they choose item 2 (59).
+
+Continuing in this manner while considering the next highest values:
+
+1. **Agent 1** picks item 5 (74).
+2. **Agent 2** picks item 4 (82).
+3. **Agent 3** picks item 3 (24).
+4. **Agent 0** picks item 6 (20).
+
+### Final Allocation:
+
+- Agent 0: [2, 6]
+- Agent 1: [0, 5]
+- Agent 2: [1, 4]
+- Agent 3: [3]
+
+This allocation attempts to balance the total valuations while ensuring each agent receives at least one item. Let's present the allocation in the requested JSON format:
+
+```json
+{
+    "0": [2, 6],
+    "1": [0, 5],
+    "2": [1, 4],
+    "3": [3]
+}
+```
+
+This allocation gives each agent a share of the items that maximizes their individual valuations as much as possible under the given constraints.

@@ -1,0 +1,70 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 89.
+    0   1   2   3   4   5   6   7
+0  76  17  62   1  45   4  43  18
+1  74  88  89  34  90  98  27  59
+2  16  63  65  33  58  82  37  28
+3  54   1  89  78  66  54   1  78
+4  62  13   3   6  92  46  71  36
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[76 17 62  1 45  4 43 18]
+ [74 88 89 34 90 98 27 59]
+ [16 63 65 33 58 82 37 28]
+ [54  1 89 78 66 54  1 78]
+ [62 13  3  6 92 46 71 36]]
+Output:
+To fairly allocate the items among the agents while ensuring envy-freeness, we can use an approach like the "round-robin" method or "maximum envy-free" allocation. Given the valuations, we aim to distribute the items such that no agent prefers another agent's allocation over their own.
+
+Here's one way to allocate the items using a heuristic approach:
+
+1. Identify the items each agent values the most and distribute them accordingly, while ensuring no agent feels envious of another's allocation.
+2. Adjust allocations to make sure each agent has a fair share based on their preferences.
+
+Following these steps, we can derive an allocation that attempts to be as envy-free as possible given the constraints:
+
+- Allocate item 5 to agent 1, as they value it the most.
+- Allocate item 2 to agent 1, as they have the highest valuation for it.
+- Allocate item 3 to agent 3, as they value it the most.
+- Allocate item 4 to agent 4, as they value it the most.
+- Allocate item 0 to agent 0, as they have the highest valuation for it.
+- Allocate item 7 to agent 3, as they have a high valuation for it and already have item 3.
+- Allocate item 1 to agent 2, as they have a relatively high valuation for it.
+- Allocate item 6 to agent 0, as they have a relatively high valuation for it.
+
+Here is the allocation in the required JSON format:
+
+```json
+{
+    "0": [0, 6],
+    "1": [2, 5],
+    "2": [1],
+    "3": [3, 7],
+    "4": [4]
+}
+```
+
+This allocation attempts to ensure that each agent receives items they value highly, thus aiming to minimize envy among the agents.

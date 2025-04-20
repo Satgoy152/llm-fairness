@@ -1,0 +1,67 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 7.
+
+    0   1   2   3   4   5   6   7
+0   2  37  81   3  19  51   7  64
+1  98  22   7  96  83  40   0  77
+2  19  90  38  85  37  98  16  14
+3  86  77  52  90  33   3  17  75
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[ 2 37 81  3 19 51  7 64]
+ [98 22  7 96 83 40  0 77]
+ [19 90 38 85 37 98 16 14]
+ [86 77 52 90 33  3 17 75]]
+Output:
+To allocate the items fairly among the agents, we aim to achieve an envy-free distribution, where each agent should prefer their allocation over others or at least be indifferent. Given the valuations, a heuristic approach like the Maximum Nash Welfare (MNW) or Envy-Free Allocation can be used to distribute the items fairly. Here’s a possible allocation:
+
+1. **Agent 0**:
+   - Items: 1, 6
+   - Valuation: 37 + 7 = 44
+
+2. **Agent 1**:
+   - Items: 0, 3
+   - Valuation: 98 + 96 = 194
+
+3. **Agent 2**:
+   - Items: 5, 2
+   - Valuation: 98 + 38 = 136
+
+4. **Agent 3**:
+   - Items: 4, 7
+   - Valuation: 33 + 75 = 108
+
+Let's summarize this allocation in the requested JSON format:
+
+```json
+{
+    "0": [1, 6],
+    "1": [0, 3],
+    "2": [5, 2],
+    "3": [4, 7]
+}
+```
+
+This allocation ensures that each agent gets a fair share according to their valuations, with all items allocated and no agent left without items.

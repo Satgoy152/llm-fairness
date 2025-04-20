@@ -1,0 +1,91 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 48.
+
+    0   1   2   3   4
+0  13  82  32  40  98
+1   1  42  48  66  65
+2  12  67  25  54  27
+3  76  21  97  67   6
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 5 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[13 82 32 40 98]
+ [ 1 42 48 66 65]
+ [12 67 25 54 27]
+ [76 21 97 67  6]]
+Output:
+To fairly allocate the items among the agents while aiming for envy-freeness, we need to consider the valuations each agent has for each item. The goal is to distribute the items such that each agent feels they have received a fair share according to their own valuation. 
+
+Here's a step-by-step approach to determine an allocation:
+
+1. **Maximize Each Agent's Value**: Start by attempting to allocate items to the agents who value them the most. This is a greedy approach that might not always result in envy-freeness but is a good starting point.
+
+2. **Check for Envy**: After the initial allocation, check if any agent envies another agent's allocation. If so, consider redistributing some items to reduce envy.
+
+3. **Adjust Allocations if Needed**: To maintain balance, adjust allocations by swapping items between agents, aiming to keep the total valuation for each agent as high as possible while reducing envy.
+
+Based on the given valuation table, let's try to allocate items:
+
+- **Item 0**: Highest value is for Agent 3 (76).
+- **Item 1**: Highest value is for Agent 0 (82).
+- **Item 2**: Highest value is for Agent 3 (97).
+- **Item 3**: Highest value is for Agent 1 (66).
+- **Item 4**: Highest value is for Agent 0 (98).
+
+Now, let's check if this allocation causes envy:
+
+1. Agent 0 has items [1, 4] with values [82, 98] totaling 180.
+2. Agent 1 has item [3] with value 66.
+3. Agent 2 has no items, which means they would be envious.
+4. Agent 3 has items [0, 2] with values [76, 97] totaling 173.
+
+To adjust for envy-freeness:
+
+- Consider giving Agent 2 a relatively less valued item from others.
+- Swap items between agents such that each agent's perceived value is maximized.
+
+Reallocating to balance:
+
+- Give Agent 2 item 3 (they value it at 54).
+- Agent 1 can take item 4 instead (they value it at 65).
+
+Final allocations:
+
+- Agent 0: [1] (value = 82)
+- Agent 1: [4] (value = 65)
+- Agent 2: [3] (value = 54)
+- Agent 3: [0, 2] (value = 76 + 97 = 173)
+
+This allocation maintains a balance where no agent feels envious of another, considering the constraints and maximizing individual values.
+
+Here's the final allocation in JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [4],
+    "2": [3],
+    "3": [0, 2]
+}
+```

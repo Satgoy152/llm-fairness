@@ -1,0 +1,80 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 61.
+
+    0   1   2   3   4   5   6   7   8
+0  44  33  36  60  15  22  81   8  93
+1  55  36  61  62  93  25  37  56  86
+2   6  34  97  34  94   2  78  54   8
+3  18  83  56  77  14  72  93   6  52
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[44 33 36 60 15 22 81  8 93]
+ [55 36 61 62 93 25 37 56 86]
+ [ 6 34 97 34 94  2 78 54  8]
+ [18 83 56 77 14 72 93  6 52]]
+Output:
+To fairly allocate the items among the agents, we aim to achieve an envy-free allocation where each agent receives a bundle of items they value highly, while ensuring no agent envies another's allocation. Given the table of valuations, we can use a method like maximizing the Nash social welfare or using an algorithm like the round-robin to get as close to envy-freeness as possible.
+
+Let's start by reviewing each agent's preferences and then proceed to allocate items step by step.
+
+### Valuation Table Recap
+- **Agent 0** values item 8 the most (93), followed by item 6 (81).
+- **Agent 1** values item 4 the most (93), followed by item 8 (86).
+- **Agent 2** values item 2 the most (97), followed by item 4 (94).
+- **Agent 3** values item 6 the most (93), followed by item 3 (77).
+
+### Allocation Process
+1. **Agent 0**: We start by assigning item 8 to Agent 0 as it is their highest valued item.
+2. **Agent 1**: Assign item 4 to Agent 1 since it is their most valued item.
+3. **Agent 2**: Assign item 2 to Agent 2, which they value the highest.
+4. **Agent 3**: Assign item 6 to Agent 3, their most valued item.
+
+Now, each agent has received one item. We continue assigning the remaining items, taking into account the next highest preferences and ensuring as little envy as possible.
+
+5. **Agent 0**: Next highest valued item is 6 (already allocated), so we assign item 3 (60).
+6. **Agent 1**: Next highest valued item is 8 (already allocated), so we assign item 3 (already allocated), then item 7 (56).
+7. **Agent 2**: Agent 2's next highest is item 4 (already allocated), then item 6 (already allocated), so we assign item 7 (54).
+8. **Agent 3**: Agent 3's next highest is item 5 (72).
+
+Finally, we allocate the remaining items based on remaining preferences:
+
+9. **Agent 0**: Assign item 0 (44).
+10. **Agent 1**: Assign item 1 (36).
+11. **Agent 2**: Assign item 5 (2).
+12. **Agent 3**: Assign item 1 (already allocated), then item 8 (already allocated), then item 0 (already allocated), assign item 5 instead.
+
+### Final Allocations
+The allocations are as follows:
+
+```json
+{
+    "0": [8, 3, 0],
+    "1": [4, 7, 1],
+    "2": [2, 5],
+    "3": [6, 5]
+}
+```
+
+This distribution considers each agent's preferences and aims to minimize envy as much as reasonably possible within the constraints of the problem.

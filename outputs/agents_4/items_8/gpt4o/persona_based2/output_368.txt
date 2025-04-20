@@ -1,0 +1,75 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 89.
+
+    0   1   2   3   4   5   6   7
+0  44  21  75  82  60  40  78  31
+1  47  83  89  61  60  80   0  77
+2   9  42  27  93  95   1  30  52
+3  56  91  57  92  85  23  85  49
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[44 21 75 82 60 40 78 31]
+ [47 83 89 61 60 80  0 77]
+ [ 9 42 27 93 95  1 30 52]
+ [56 91 57 92 85 23 85 49]]
+Output:
+To address this problem, we aim to allocate items to agents such that the distribution is as fair as possible. We will strive for an envy-free allocation, where each agent believes they have received a fair share according to their valuations, but given the constraint of integer allocations, perfect envy-freeness may not be achievable. 
+
+We'll utilize a fair division method that attempts to minimize envy, such as a round-robin or a priority-based allocation strategy that considers agents' preferences. Here, we are assigning one item at a time based on agents' highest valuations, iterating through agents until all items are allocated.
+
+### Allocation Strategy:
+
+1. **Initialization**: Each agent begins without any items. All items are unallocated.
+2. **Priority Selection**: We will go through a round-robin process where each agent selects their most valued unallocated item.
+3. **Repeat**: Continue the process until all items are allocated.
+
+### Execution:
+
+- **Agent 0**: Highest value is 78 for item 6.
+- **Agent 1**: Highest value is 89 for item 2.
+- **Agent 2**: Highest value is 95 for item 4.
+- **Agent 3**: Highest value is 92 for item 3.
+
+Now, remove the allocated items and repeat the process with remaining items:
+
+- **Agent 0**: Next highest value is 82 for item 3 (already taken), so selects item 5 with value 40.
+- **Agent 1**: Next highest value is 83 for item 1.
+- **Agent 2**: Next highest value is 93 for item 3 (already taken), so selects item 7 with value 52.
+- **Agent 3**: Next highest value is 91 for item 1 (already taken), so selects item 0 with value 56.
+
+### Final Allocation:
+
+Based on the above process, the items are allocated as follows:
+
+```json
+{
+    "0": [6, 5],
+    "1": [2, 1],
+    "2": [4, 7],
+    "3": [3, 0]
+}
+```
+
+Each agent now has two items, and all items are allocated. This allocation attempts to assign items based on agents' preferences, while ensuring that each agent receives a fair share.

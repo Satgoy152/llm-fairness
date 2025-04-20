@@ -1,0 +1,87 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 4 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 21.
+
+    0   1   2   3   4   5   6   7   8
+0  65  68  20  31  68  58  32  95  59
+1  59  20  21  65   6  99  75  28  70
+2  60   9  53  94   3  85  68  86  73
+3  17  65  24  18  43  93  20  89  36
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based2
+Valuation Table:
+[[65 68 20 31 68 58 32 95 59]
+ [59 20 21 65  6 99 75 28 70]
+ [60  9 53 94  3 85 68 86 73]
+ [17 65 24 18 43 93 20 89 36]]
+Output:
+To fairly allocate the items among the agents while aiming for envy-freeness, we need to consider each agent's valuation of the items and attempt to allocate the items such that each agent feels they received a fair share based on their own valuations.
+
+One approach is to use the "round-robin" method, where each agent takes turns selecting their most valued item that is still available. This method tends to lead to a fairer distribution, especially when there are a limited number of items and we want to ensure each agent gets an integer number of items.
+
+Let's allocate the items using a round-robin approach based on the highest value each agent assigns to the remaining available items:
+
+1. First round of picks:
+   - Agent 0 picks item 7 (value: 95)
+   - Agent 1 picks item 5 (value: 99)
+   - Agent 2 picks item 3 (value: 94)
+   - Agent 3 picks item 5 (value: 93) — already taken, so next best is item 7 (value: 89) — already taken, so next best is item 1 (value: 65)
+
+2. Second round of picks:
+   - Agent 0 picks item 4 (value: 68)
+   - Agent 1 picks item 8 (value: 70)
+   - Agent 2 picks item 5 (value: 85)
+   - Agent 3 picks item 6 (value: 20)
+
+3. Third round of picks:
+   - Agent 0 picks item 1 (value: 68) — already taken, next best is item 0 (value: 65)
+   - Agent 1 picks item 6 (value: 75) — already taken, next best is item 6 (value: 75) — already taken, next best is item 2 (value: 21)
+   - Agent 2 picks item 8 (value: 73) — already taken, next best is item 6 (value: 68) — already taken, next best is item 0 (value: 60)
+   - Agent 3 picks item 2 (value: 24)
+
+Now, let's check if all items are allocated. We have allocated 9 items, but let's ensure the allocations are final:
+
+Final allocations:
+- Agent 0: [7, 4, 0]
+- Agent 1: [5, 8, 3]
+- Agent 2: [3, 5, 2]
+- Agent 3: [1, 6]
+
+Upon reviewing the allocations, there are some overlaps. Adjust the allocations to ensure 9 unique items are distributed:
+
+Final adjusted allocations:
+- Agent 0: [7, 4, 0]
+- Agent 1: [5, 8]
+- Agent 2: [3, 2]
+- Agent 3: [1, 6]
+
+Now, let's present this allocation in the required JSON format:
+
+```json
+{
+    "0": [7, 4, 0],
+    "1": [5, 8],
+    "2": [3, 2],
+    "3": [1, 6]
+}
+```

@@ -1,0 +1,89 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 5 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+    0   1   2   3   4   5   6   7
+0  72  67  89  82  97  90  34  82
+1  80  69  34  84  67  43  47  75
+2  57  18  37  90  10   2  13  92
+3  79  27  52  83  54  81  36  14
+4  56  24  53  80  44  94  38  27
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based3
+Valuation Table:
+[[72 67 89 82 97 90 34 82]
+ [80 69 34 84 67 43 47 75]
+ [57 18 37 90 10  2 13 92]
+ [79 27 52 83 54 81 36 14]
+ [56 24 53 80 44 94 38 27]]
+Output:
+To fairly allocate the items among the agents while considering the valuations and aiming for envy-freeness, we can use a heuristic approach. One common method is to use the "Maximum Nash Welfare" (MNW) approach, which attempts to maximize the product of the utilities of all agents. This is often associated with fairness and efficiency, though it may not always lead to perfect envy-freeness in every context.
+
+Given the valuations matrix:
+
+```
+    0   1   2   3   4   5   6   7
+0  72  67  89  82  97  90  34  82
+1  80  69  34  84  67  43  47  75
+2  57  18  37  90  10   2  13  92
+3  79  27  52  83  54  81  36  14
+4  56  24  53  80  44  94  38  27
+```
+
+We'll allocate items such that each agent receives a fair share according to their preferences:
+
+1. **Agent 0**: Values item 4 most highly at 97.
+2. **Agent 1**: Values item 0 most highly at 80.
+3. **Agent 2**: Values item 7 most highly at 92.
+4. **Agent 3**: Values item 5 most highly at 81.
+5. **Agent 4**: Values item 5 most highly at 94, but item 5 is already allocated to Agent 3. Agent 4's next best allocation could be item 3 at 80.
+
+Continuing this way, we attempt to allocate remaining items to maximize total satisfaction:
+
+- Allocate items to agents based on descending order of their highest valuations and ensure each agent gets at least one item if possible.
+
+Here's one possible allocation:
+
+- Agent 0 gets item 4.
+- Agent 1 gets item 0.
+- Agent 2 gets item 7.
+- Agent 3 gets item 5.
+- Agent 4 gets item 3.
+- Then, we allocate remaining items 1, 2, and 6 to balance out and maximize utility:
+  - Agent 0 takes item 1.
+  - Agent 3 takes item 2.
+  - Agent 1 takes item 6.
+
+This leads to the following allocation:
+
+```json
+{
+    "0": [4, 1],
+    "1": [0, 6],
+    "2": [7],
+    "3": [5, 2],
+    "4": [3]
+}
+```
+
+This allocation attempts to be as fair as possible given the constraints and the need for integer allocations.
