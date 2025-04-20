@@ -189,7 +189,6 @@ def evaluate_outputs(agents: int, items: int, distribution: str='uniform', model
     logging.info("Extracting and evaluating outputs...")
     
     envy_matrix_clipped, envy_matrix_unclipped, nash_welfare, utilitarian_welfare, egalitarian_welfare = calculate_envy(valuation_tables, allocation_matrices, agents, items)
-    envy_df = pd.read_csv(f"{path}/envy_output.csv")
     # logging.info("Envy calculated")
 
     evaluate_envy(envy_matrix_clipped, envy_matrix_unclipped, agents, items, distribution, f"{path}", num_outputs, number_of_possible_allocations, envy_free_count , max_nash_welfare, max_utilitarian_welfare, max_egalitarian_welfare, nash_welfare, utilitarian_welfare, egalitarian_welfare)
