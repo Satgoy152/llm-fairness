@@ -1,0 +1,73 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 78.
+    
+    0   1   2   3   4   5   6   7   8
+0  23   3  14  43  91  73  72  95  74
+1  38  36  78  97  86  17  63  90  32
+2  66   5  43  64  84   6  18   3  76
+3  87  97  24  20  58  37  81  31  38
+4  50  69  26  54  76  69  80  61  58
+5  53  60   0  96  54  81  89   1  41
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[23  3 14 43 91 73 72 95 74]
+ [38 36 78 97 86 17 63 90 32]
+ [66  5 43 64 84  6 18  3 76]
+ [87 97 24 20 58 37 81 31 38]
+ [50 69 26 54 76 69 80 61 58]
+ [53 60  0 96 54 81 89  1 41]]
+Output:
+To fairly allocate the items among the agents, we can aim to achieve an envy-free allocation. An envy-free allocation ensures that no agent prefers the bundle of items assigned to another agent over their own bundle. Given the valuations provided, a method we can use is the "round-robin" method, where agents take turns selecting their most preferred available item.
+
+Let's proceed with the allocation:
+
+1. **Agent 0**: Highest value is item 7 (95). Assign item 7.
+2. **Agent 1**: Highest value is item 3 (97). Assign item 3.
+3. **Agent 2**: Highest value is item 4 (84). Assign item 4.
+4. **Agent 3**: Highest value is item 1 (97). Assign item 1.
+5. **Agent 4**: Highest value is item 6 (80). Assign item 6.
+6. **Agent 5**: Highest value is item 5 (81). Assign item 5.
+
+Next round:
+
+1. **Agent 0**: Next highest value is item 4 (91) but taken. Next is item 2 (74). Assign item 8.
+2. **Agent 1**: Next highest value is item 7 (90) but taken. Next is item 4 (86) but taken. Next is item 0 (38). Assign item 0.
+3. **Agent 2**: Next highest value is item 3 (64) but taken. Next is item 8 (76) but taken. Next is item 2 (43). Assign item 2.
+
+Now, all items have been assigned. Let's present the allocation in the specified JSON format:
+
+```json
+{
+    "0": [7, 8],
+    "1": [3, 0],
+    "2": [4, 2],
+    "3": [1],
+    "4": [6],
+    "5": [5]
+}
+```
+
+In this allocation, every agent has been assigned items based on their highest available preference. Note that some agents may have more items, but the focus is on maximizing individual preferences while distributing all items.
