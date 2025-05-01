@@ -1,0 +1,96 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 81.
+    
+    0   1   2   3   4   5   6   7
+0   8  71  26  83  84  29  67  27
+1  46  80  81  52   1  38  83  19
+2  28   9   4  14   2  43  63  35
+3  29  39   4  90  36  24  75  96
+4  50  81  39  88  15  87  21  99
+5  43  77  43  37  55  49  64  49
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[ 8 71 26 83 84 29 67 27]
+ [46 80 81 52  1 38 83 19]
+ [28  9  4 14  2 43 63 35]
+ [29 39  4 90 36 24 75 96]
+ [50 81 39 88 15 87 21 99]
+ [43 77 43 37 55 49 64 49]]
+Output:
+To achieve a fair division of items among the agents, we aim to ensure that each agent receives a bundle of items such that no agent prefers another agent's allocation over their own. We will use the concept of envy-freeness to guide the allocation process.
+
+The table provided indicates the value each agent assigns to each item. Our goal is to allocate all 8 items such that each agent is satisfied with their allocation, given their own valuation, and no agent envies another's allocation.
+
+Let's go through the allocation:
+
+1. **Agent 0**: 
+   - High valuations: Item 4 (84), Item 3 (83)
+   - Allocate item 4 and item 3 to Agent 0.
+
+2. **Agent 1**:
+   - High valuations: Item 6 (83), Item 2 (81)
+   - Allocate item 6 to Agent 1.
+
+3. **Agent 2**:
+   - High valuations: Item 6 (63), Item 5 (43)
+   - Consider alternative allocations due to item 6 being allocated:
+   - Allocate item 5 to Agent 2.
+
+4. **Agent 3**:
+   - High valuations: Item 7 (96), Item 3 (90)
+   - Allocate item 7 to Agent 3.
+
+5. **Agent 4**:
+   - High valuations: Item 7 (99), Item 5 (87)
+   - Item 7 already allocated, consider alternatives:
+   - Allocate item 1 to Agent 4.
+
+6. **Agent 5**:
+   - High valuations: Item 1 (77), Item 6 (64)
+   - Allocate item 2 to Agent 5.
+
+Allocations:
+
+```json
+{
+    "0": [3, 4],
+    "1": [6],
+    "2": [5],
+    "3": [7],
+    "4": [1],
+    "5": [2, 0]
+}
+```
+
+Explanation:
+- Items 3 and 4 are allocated to Agent 0, as they represent high value for this agent.
+- Item 6 is allocated to Agent 1, which is one of the highest value for this agent.
+- Item 5 is given to Agent 2.
+- Item 7, the highest valued by Agent 3, is allocated to them.
+- Item 1 is allocated to Agent 4; they value it highly after their top choice.
+- Items 2 and 0 are allocated to Agent 5, as they offer a balanced allocation based on remaining values.
+
+This allocation attempts to maximize each agent's satisfaction based on their valuations while ensuring all items are distributed fairly across the agents.

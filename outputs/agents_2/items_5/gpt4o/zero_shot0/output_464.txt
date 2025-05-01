@@ -1,0 +1,56 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 68.
+
+    0   1   2   3   4
+0  17  84  37  61  13
+1  96  11  68  56  17
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[17 84 37 61 13]
+ [96 11 68 56 17]]
+Output:
+To fairly allocate the items between the two agents, we will try to maximize the total value each agent receives. A common method to achieve this is by using a greedy algorithm to assign each item to the agent who values it the most.
+
+Let's examine the valuations:
+
+- Agent 0's valuations: [17, 84, 37, 61, 13]
+- Agent 1's valuations: [96, 11, 68, 56, 17]
+
+We will allocate each item to the agent who has the higher valuation for that item:
+
+1. Item 0: Agent 1 values it at 96, whereas Agent 0 values it at 17. Assign to Agent 1.
+2. Item 1: Agent 0 values it at 84, whereas Agent 1 values it at 11. Assign to Agent 0.
+3. Item 2: Agent 1 values it at 68, whereas Agent 0 values it at 37. Assign to Agent 1.
+4. Item 3: Agent 0 values it at 61, whereas Agent 1 values it at 56. Assign to Agent 0.
+5. Item 4: Agent 0 values it at 13, whereas Agent 1 values it at 17. Assign to Agent 1.
+
+Based on this allocation approach, the agents receive the following items:
+
+- Agent 0: Items [1, 3]
+- Agent 1: Items [0, 2, 4]
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [1, 3],
+    "1": [0, 2, 4]
+}
+```

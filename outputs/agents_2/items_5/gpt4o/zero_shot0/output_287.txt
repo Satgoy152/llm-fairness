@@ -1,0 +1,60 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 65.
+
+    0   1   2   3   4
+0  99  88  22  37  68
+1   6  10  65  75  22
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[99 88 22 37 68]
+ [ 6 10 65 75 22]]
+Output:
+To achieve a fair allocation of items between the two agents, we can use an approach that maximizes the total value each agent receives. One common method is to use a greedy algorithm, where items are allocated based on the highest difference in valuations between the agents. This approach aims to prioritize allocations that maximize utility differences, thus optimizing the distribution for fairness.
+
+Here's how we might proceed with the given valuations:
+
+1. **Calculate the difference in valuations for each item**:  
+   - Item 0: |99 - 6| = 93
+   - Item 1: |88 - 10| = 78
+   - Item 2: |22 - 65| = 43
+   - Item 3: |37 - 75| = 38
+   - Item 4: |68 - 22| = 46
+
+2. **Sort the items by the absolute difference in valuations**:  
+   Items sorted by difference: [0, 1, 4, 2, 3]
+
+3. **Allocate items to maximize fairness**:  
+   - Allocate item 0 to agent 0 (99 vs. 6)
+   - Allocate item 1 to agent 0 (88 vs. 10)
+   - Allocate item 4 to agent 0 (68 vs. 22)
+   - Allocate item 2 to agent 1 (22 vs. 65)
+   - Allocate item 3 to agent 1 (37 vs. 75)
+
+4. **Final Allocation**:  
+   Agent 0 receives items [0, 1, 4], and agent 1 receives items [2, 3].
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [0, 1, 4],
+    "1": [2, 3]
+}
+```

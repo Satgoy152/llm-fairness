@@ -1,0 +1,56 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 60.
+
+    0   1   2   3   4
+0  60   9  78  11  84
+1  92  35  60  13  48
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[60  9 78 11 84]
+ [92 35 60 13 48]]
+Output:
+To fairly allocate the items to the agents, we should aim to maximize the total value for each agent while ensuring that each agent receives an integer number of items. This can often be achieved using a method called "Envy-Free Matching" or similar allocation algorithms. Here, we can apply a simple heuristic based on maximizing each agent's satisfaction consistently.
+
+Let's evaluate the values and make allocations:
+
+For Agent 0:
+- Highest value: Item 4 (84)
+- Second highest value: Item 2 (78)
+
+For Agent 1:
+- Highest value: Item 0 (92)
+- Second highest value: Item 2 (60)
+
+By observing these values, we can attempt to allocate items to maximize individual satisfaction while ensuring fairness as much as possible:
+
+1. Allocate Item 0 to Agent 1, as it provides the highest value (92) for Agent 1.
+2. Allocate Item 4 to Agent 0, as it provides the highest value (84) for Agent 0.
+3. Allocate Item 2 to Agent 0, as it provides the second highest value for Agent 0 (78) and is the third highest for Agent 1 (60).
+4. Allocate Item 1 to Agent 1, as it is the next best available item for Agent 1 (35).
+5. Allocate Item 3 to Agent 1, as it is the remaining item and the values for both agents are low, but Agent 1 has a slightly better valuation (13).
+
+Based on this heuristic allocation approach, here is the final allocation:
+
+```json
+{
+    "0": [2, 4],
+    "1": [0, 1, 3]
+}
+```

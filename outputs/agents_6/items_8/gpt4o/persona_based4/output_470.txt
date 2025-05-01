@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 77.
+    
+    0   1   2   3   4   5   6   7
+0  22  80  76  80  67  53  68  48
+1  32  74  77  93  90  37  98  30
+2  97  45  91  76  62   6  33  78
+3  28  50  62  96  58  36  93  19
+4  74   9   1  10  55  94   4  44
+5  96  93  31  75  35  99  91  69
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[22 80 76 80 67 53 68 48]
+ [32 74 77 93 90 37 98 30]
+ [97 45 91 76 62  6 33 78]
+ [28 50 62 96 58 36 93 19]
+ [74  9  1 10 55 94  4 44]
+ [96 93 31 75 35 99 91 69]]
+Output:
+To fairly allocate the items among the agents based on their valuations, we will aim for an envy-free distribution. This implies that each agent should be at least as happy with their allocation as they would be with anyone else's.
+
+Given the agents' valuations for the items, we can use a method like the "round-robin" or "sequential allocation" to ensure fairness, taking into account each agent's preference order. However, since the problem is computationally complex, achieving perfect envy-freeness might be challenging, but we can strive for a balanced distribution.
+
+Let's proceed with allocating the items:
+
+1. Rank each agent's preference for items based on their valuations.
+2. Apply a round-robin approach to assign items, going by the highest preference available for each agent in turn.
+
+Here's a possible allocation:
+
+- Agent 0 gets item 1 (value 80) and item 2 (value 76).
+- Agent 1 gets item 3 (value 93) and item 4 (value 90).
+- Agent 2 gets item 0 (value 97).
+- Agent 3 gets item 6 (value 93).
+- Agent 4 gets item 5 (value 94).
+- Agent 5 gets item 7 (value 69).
+
+This allocation attempts to maximize each agent's total satisfaction based on their highest-valued items, while ensuring each agent gets at least one item and no agent gets more than two.
+
+Now, let's present the allocation in the required JSON format:
+
+```json
+{
+    "0": [1, 2],
+    "1": [3, 4],
+    "2": [0],
+    "3": [6],
+    "4": [5],
+    "5": [7]
+}
+```
+
+This allocation ensures that each agent receives items, and all eight items are distributed among them.

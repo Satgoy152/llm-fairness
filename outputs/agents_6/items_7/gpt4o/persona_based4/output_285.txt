@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 85.
+    
+    0   1   2   3   4   5   6
+0  84  26  21  46  23   3  24
+1   7  25  85  88  14  54  53
+2  37  59   6  66  36  83  52
+3  53  64  98  71  26  80  34
+4   5  76  17  11   3  25  77
+5  22  93  69  82  30  61  63
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[84 26 21 46 23  3 24]
+ [ 7 25 85 88 14 54 53]
+ [37 59  6 66 36 83 52]
+ [53 64 98 71 26 80 34]
+ [ 5 76 17 11  3 25 77]
+ [22 93 69 82 30 61 63]]
+Output:
+To achieve a fair division and ensure envy-freeness, we need to allocate items such that each agent receives a bundle of items that maximizes their perceived value while trying to minimize envy among agents. The challenge here is to allocate exactly 7 items among 6 agents, which means one agent may not receive any items.
+
+First, let's analyze the valuations to find a fair allocation:
+
+1. **Agent 0**: Highest values are for item 0 (84) and item 3 (46).
+2. **Agent 1**: Highest values are for item 3 (88) and item 2 (85).
+3. **Agent 2**: Highest values are for item 5 (83) and item 3 (66).
+4. **Agent 3**: Highest values are for item 2 (98) and item 5 (80).
+5. **Agent 4**: Highest values are for item 1 (76) and item 6 (77).
+6. **Agent 5**: Highest values are for item 1 (93) and item 3 (82).
+
+Considering these valuations, we aim to allocate items such that each agent gets their highest valued items where possible:
+
+- **Agent 0**: Assign item 0 (84), maximizing their valuation.
+- **Agent 1**: Assign item 3 (88) and item 2 (85), which are their top two choices.
+- **Agent 2**: Assign item 5 (83), which is their highest valuation.
+- **Agent 3**: Assign item 2 (98), their highest value item, but since it is already assigned, assign item 5 (80), which is their next highest.
+- **Agent 4**: Assign item 6 (77), their highest available choice.
+- **Agent 5**: Assign item 1 (93), their highest value item.
+
+Agent 3 does not receive any items as their highest valued items are already allocated to other agents. This ensures that each agent receives their most valued available items, minimizing envy.
+
+Here's the final allocation in JSON format:
+
+```json
+{
+    "0": [0],
+    "1": [3, 2],
+    "2": [5],
+    "3": [],
+    "4": [6],
+    "5": [1]
+}
+```

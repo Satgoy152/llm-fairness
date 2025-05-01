@@ -1,0 +1,70 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 64.
+
+    0   1   2   3   4   5   6   7   8
+0   0  48  18   9  95  41   0  97  86
+1  47  98  64  76  90  65  73  43  18
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 0 48 18  9 95 41  0 97 86]
+ [47 98 64 76 90 65 73 43 18]]
+Output:
+To fairly allocate the items to the agents based on the valuations given, we aim to maximize the total valuation each agent gets from the items they receive. Here's one approach to achieve fairness:
+
+1. Calculate the total valuation each agent has for all items combined.
+2. Allocate items to agents prioritizing the highest valuation for each item.
+3. Ensure each agent gets an integer number of items.
+
+Let's perform these steps:
+
+- **Agent 0's Valuations:** [0, 48, 18, 9, 95, 41, 0, 97, 86]
+- **Agent 1's Valuations:** [47, 98, 64, 76, 90, 65, 73, 43, 18]
+
+**Step 1: Calculate total valuation for all items:**
+- **Agent 0 Total Valuation:** 0 + 48 + 18 + 9 + 95 + 41 + 0 + 97 + 86 = 394
+- **Agent 1 Total Valuation:** 47 + 98 + 64 + 76 + 90 + 65 + 73 + 43 + 18 = 574
+
+**Step 2: Allocate items based on highest valuation:**
+
+| Item | Agent 0 Valuation | Agent 1 Valuation | Allocated to |
+|------|-------------------|-------------------|--------------|
+| 0    | 0                 | 47                | 1            |
+| 1    | 48                | 98                | 1            |
+| 2    | 18                | 64                | 1            |
+| 3    | 9                 | 76                | 1            |
+| 4    | 95                | 90                | 0            |
+| 5    | 41                | 65                | 1            |
+| 6    | 0                 | 73                | 1            |
+| 7    | 97                | 43                | 0            |
+| 8    | 86                | 18                | 0            |
+
+**Step 3: Ensure each agent receives an integer number of items:**
+
+- **Agent 0 receives items:** 4, 7, 8
+- **Agent 1 receives items:** 0, 1, 2, 3, 5, 6
+
+The allocations would be:
+
+```json
+{
+    "0": [4, 7, 8],
+    "1": [0, 1, 2, 3, 5, 6]
+}
+```

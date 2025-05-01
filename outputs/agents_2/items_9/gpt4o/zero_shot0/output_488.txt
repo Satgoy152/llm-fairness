@@ -1,0 +1,77 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 61.
+
+    0   1   2   3   4   5   6   7   8
+0  82  13  34  11  30  55  20   4  64
+1  51  21  61  79  13  50  95  11  53
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[82 13 34 11 30 55 20  4 64]
+ [51 21 61 79 13 50 95 11 53]]
+Output:
+To fairly allocate the items between the two agents, we aim to maximize the total value each agent receives while ensuring that both get a fair share of the items. Here's one way to allocate the items:
+
+1. Calculate the total value for each agent.
+2. Use a method to balance the distribution of items and maximize the value for each agent.
+
+Let's proceed with the allocation:
+
+Agent 0 valuations: [82, 13, 34, 11, 30, 55, 20, 4, 64]  
+Agent 1 valuations: [51, 21, 61, 79, 13, 50, 95, 11, 53]
+
+To allocate the items fairly, we can use a greedy method to allocate each item to the agent who values it more, then adjust to ensure each agent has an integer number of items.
+
+Initial allocation based on higher valuation:
+
+- Item 0: Agent 0 (82 vs 51)
+- Item 1: Agent 0 (13 vs 21)
+- Item 2: Agent 1 (34 vs 61)
+- Item 3: Agent 1 (11 vs 79)
+- Item 4: Agent 0 (30 vs 13)
+- Item 5: Agent 0 (55 vs 50)
+- Item 6: Agent 1 (20 vs 95)
+- Item 7: Agent 0 (4 vs 11)
+- Item 8: Agent 0 (64 vs 53)
+
+Now, count the number of items each agent has:
+- Agent 0: 6 items [0, 1, 4, 5, 7, 8]
+- Agent 1: 3 items [2, 3, 6]
+
+To ensure a fair split, we need to adjust the allocation so each agent gets a fair number of items. Let's swap items to balance the allocations:
+
+Swap item 1 with item 3:
+- Agent 0: [0, 4, 5, 7, 8, 3]
+- Agent 1: [2, 6, 1]
+
+Swap item 7 with item 6:
+- Agent 0: [0, 4, 5, 3, 8]
+- Agent 1: [2, 6, 1, 7]
+
+Now each agent has 5 and 4 items respectively, and the allocation is more balanced.
+
+Final allocation:
+```json
+{
+    "0": [0, 4, 5, 3, 8],
+    "1": [2, 6, 1, 7]
+}
+```
+
+This allocation aims to maximize fairness while ensuring each agent receives an integer number of items.

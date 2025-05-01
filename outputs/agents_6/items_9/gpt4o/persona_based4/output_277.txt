@@ -1,0 +1,92 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 34.
+    
+    0   1   2   3   4   5   6   7   8
+0  77  98   8  66   6   3  21  65  60
+1  21  28  34  51  24  31  12  93  81
+2  90  95  71  24  71  63  33  74  34
+3  69   8  62  12  53  11  85  82  68
+4  57  33  81  27  84  33  63  58  28
+5  21  61  41  70  28  41  34  12  15
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[77 98  8 66  6  3 21 65 60]
+ [21 28 34 51 24 31 12 93 81]
+ [90 95 71 24 71 63 33 74 34]
+ [69  8 62 12 53 11 85 82 68]
+ [57 33 81 27 84 33 63 58 28]
+ [21 61 41 70 28 41 34 12 15]]
+Output:
+To achieve a fair allocation of the items among the agents, we aim for an envy-free distribution, where each agent receives a bundle of items that they value at least as much as any other agent's bundle. Given the structure of the problem, we should focus on maximizing each agent's satisfaction according to their valuation of the items.
+
+We'll use a round-robin allocation method, which is a simple and effective way to ensure a fair distribution while respecting the integer constraint on item allocation. 
+
+Here's a step-by-step allocation process:
+
+1. Calculate the total value each agent assigns to all items.
+2. Determine the order of agent selection based on these total values, starting with the highest.
+3. Allocate items to each agent in turn, respecting their highest individual valuations.
+
+Let's go through these steps:
+
+1. **Total Value Calculation:**
+   - Agent 0: 77 + 98 + 8 + 66 + 6 + 3 + 21 + 65 + 60 = 404
+   - Agent 1: 21 + 28 + 34 + 51 + 24 + 31 + 12 + 93 + 81 = 375
+   - Agent 2: 90 + 95 + 71 + 24 + 71 + 63 + 33 + 74 + 34 = 555
+   - Agent 3: 69 + 8 + 62 + 12 + 53 + 11 + 85 + 82 + 68 = 450
+   - Agent 4: 57 + 33 + 81 + 27 + 84 + 33 + 63 + 58 + 28 = 464
+   - Agent 5: 21 + 61 + 41 + 70 + 28 + 41 + 34 + 12 + 15 = 323
+
+2. **Order of Selection:**
+   - Agent 2 (555)
+   - Agent 4 (464)
+   - Agent 3 (450)
+   - Agent 0 (404)
+   - Agent 1 (375)
+   - Agent 5 (323)
+
+3. **Round-Robin Allocation:**
+   - **Agent 2** allocates their highest valued items: 0, 1 (90, 95)
+   - **Agent 4** allocates: 4, 2 (84, 81)
+   - **Agent 3** allocates: 6, 7 (85, 82)
+   - **Agent 0** allocates: 1, 0 (98, 77)
+   - **Agent 1** allocates: 7, 8 (93, 81)
+   - **Agent 5** allocates: 3, 5 (70, 41)
+
+To ensure 9 items are allocated, we adjust the allocations to reflect unique allocation while optimizing each agent's satisfaction. Here's the final allocation:
+
+```json
+{
+    "0": [1],
+    "1": [7],
+    "2": [0, 1],
+    "3": [6],
+    "4": [2, 4],
+    "5": [3, 5]
+}
+```
+
+This allocation ensures each agent receives a selection of items based on their preferences, aiming for fairness and minimizing envy among agents.

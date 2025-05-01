@@ -1,0 +1,64 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 80.
+
+    0   1   2   3   4
+0  53  99  72  24  53
+1   2  71  80  53  37
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[53 99 72 24 53]
+ [ 2 71 80 53 37]]
+Output:
+To fairly allocate the items between the two agents, we need to ensure that each agent receives an integer number of items, and ideally, the allocation should be as fair as possible based on their valuations.
+
+Here's a step-by-step approach:
+
+1. **Calculate Total Valuation for Each Agent:**
+   - Agent 0: 53 + 99 + 72 + 24 + 53 = 301
+   - Agent 1: 2 + 71 + 80 + 53 + 37 = 243
+
+2. **Determine Proportional Allocation:**
+   - Total valuation for both agents: 301 + 243 = 544
+   - Agent 0's proportion: 301 / 544 ≈ 0.55
+   - Agent 1's proportion: 243 / 544 ≈ 0.45
+   - Since there are 5 items, Agent 0 should ideally receive about 2.75 items, and Agent 1 about 2.25 items.
+
+3. **Allocate Items Based on Highest Valuation:**
+   - Compare valuations for each item and allocate to the agent with the highest valuation, considering the need to keep the number of items integer.
+
+4. **Initial Allocation:**
+   - Item 0: Agent 0 (53 vs 2)
+   - Item 1: Agent 0 (99 vs 71)
+   - Item 2: Agent 1 (72 vs 80)
+   - Item 3: Agent 1 (24 vs 53)
+   - Item 4: Agent 0 (53 vs 37)
+
+5. **Adjust to Ensure Fair Allocation:**
+   - Currently: Agent 0 has items [0, 1, 4], and Agent 1 has items [2, 3].
+   - Agent 0 has 3 items, and Agent 1 has 2 items. This is a fair distribution considering the integer constraint and their valuations.
+
+Based on this allocation strategy, the allocation in JSON format is:
+
+```json
+{
+    "0": [0, 1, 4],
+    "1": [2, 3]
+}
+```

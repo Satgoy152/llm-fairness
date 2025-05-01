@@ -1,0 +1,93 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 6.
+    
+    0   1   2   3   4   5   6   7   8
+0  17  63  85  47  41  56  60  74  49
+1  96  75   6  48  55  97  19  82   1
+2  85  84  46  27  93  30  17  45   3
+3  10  45  99  81  29  30  31   7  77
+4  16   5  81  12  20  80  45  61  23
+5   5  46  97  20   5  71  52  50  68
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[17 63 85 47 41 56 60 74 49]
+ [96 75  6 48 55 97 19 82  1]
+ [85 84 46 27 93 30 17 45  3]
+ [10 45 99 81 29 30 31  7 77]
+ [16  5 81 12 20 80 45 61 23]
+ [ 5 46 97 20  5 71 52 50 68]]
+Output:
+To allocate the items fairly among the agents, we aim to ensure that the allocation is as envy-free as possible, given the constraints. Envy-freeness means that each agent should prefer their own allocation over that of any other agent. Here, we'll use a strategy that attempts to maximize the total value each agent receives based on their valuations, while ensuring all items are allocated.
+
+### Steps for Allocation:
+
+1. **Identify Highest Valuation Per Item**: For each item, identify which agent values it the most. This will help in deciding the initial allocation based on individual preferences.
+
+2. **Initial Allocation Based on Maximum Valuation**:
+   - Assign each item to the agent who values it the most.
+
+3. **Adjust for Fairness**:
+   - After the initial allocation, check if any agent has an excessive number of items. If so, redistribute some items to agents with fewer items, while trying to maintain high valuations.
+
+### Allocation Process:
+
+1. **Item 0**: Agent 1 values it the most (96). Assign Item 0 to Agent 1.
+2. **Item 1**: Agent 0 values it the most (63). Assign Item 1 to Agent 0.
+3. **Item 2**: Agent 3 values it the most (99). Assign Item 2 to Agent 3.
+4. **Item 3**: Agent 3 values it the most (81). Assign Item 3 to Agent 3.
+5. **Item 4**: Agent 2 values it the most (93). Assign Item 4 to Agent 2.
+6. **Item 5**: Agent 1 values it the most (97). Assign Item 5 to Agent 1.
+7. **Item 6**: Agent 0 values it the most (60). Assign Item 6 to Agent 0.
+8. **Item 7**: Agent 1 values it the most (82). Assign Item 7 to Agent 1.
+9. **Item 8**: Agent 3 values it the most (77). Assign Item 8 to Agent 3.
+
+### Final Allocation:
+
+After the initial allocation, ensure each agent has at least one item where possible, and no agent is allocated more than necessary. Adjustments may be needed if an agent has no items or if the distribution is too uneven.
+
+### Adjusted Distribution:
+
+1. **Agent 0**: Items [1, 6]
+2. **Agent 1**: Items [0, 5, 7]
+3. **Agent 2**: Item [4]
+4. **Agent 3**: Items [2, 3, 8]
+5. **Agent 4**: []
+6. **Agent 5**: []
+
+### JSON Output:
+
+```json
+{
+    "0": [1, 6],
+    "1": [0, 5, 7],
+    "2": [4],
+    "3": [2, 3, 8],
+    "4": [],
+    "5": []
+}
+```
+
+Note: In this allocation, Agent 4 and Agent 5 do not receive any items, which might be unavoidable given the specific valuations. If required, further adjustments could be made to provide at least one item to every agent, potentially at the cost of some efficiency.

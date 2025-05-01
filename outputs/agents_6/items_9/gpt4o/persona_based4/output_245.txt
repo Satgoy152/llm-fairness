@@ -1,0 +1,96 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 76.
+    
+    0   1   2   3   4   5   6   7   8
+0   6  91  84  87  69   8  26   3   0
+1  27  76  76  39  31  31  18   1  57
+2  75  84  20  94  71  31   5  46  38
+3  79  46  82  26  29  80  56  59  28
+4  44   6  51  87  53  59  93  70  12
+5   1   2  69  77  98  46  81  29  46
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[ 6 91 84 87 69  8 26  3  0]
+ [27 76 76 39 31 31 18  1 57]
+ [75 84 20 94 71 31  5 46 38]
+ [79 46 82 26 29 80 56 59 28]
+ [44  6 51 87 53 59 93 70 12]
+ [ 1  2 69 77 98 46 81 29 46]]
+Output:
+To fairly allocate the items among the agents, we will use an approach that attempts to maximize fairness, specifically aiming for envy-freeness, where no agent should prefer another agent's allocation over their own.
+
+To achieve this, we will calculate each agent's total valuation for all items and then attempt to distribute the items so that the total value each agent receives is as balanced as possible. We'll start by considering each agent's highest valued items and try to ensure that no agent feels left out or undervalued.
+
+Let's go through the allocation process:
+
+1. **Calculate the total valuation for each agent:**
+
+   - Agent 0: 6 + 91 + 84 + 87 + 69 + 8 + 26 + 3 + 0 = 374
+   - Agent 1: 27 + 76 + 76 + 39 + 31 + 31 + 18 + 1 + 57 = 356
+   - Agent 2: 75 + 84 + 20 + 94 + 71 + 31 + 5 + 46 + 38 = 464
+   - Agent 3: 79 + 46 + 82 + 26 + 29 + 80 + 56 + 59 + 28 = 485
+   - Agent 4: 44 + 6 + 51 + 87 + 53 + 59 + 93 + 70 + 12 = 475
+   - Agent 5: 1 + 2 + 69 + 77 + 98 + 46 + 81 + 29 + 46 = 449
+
+2. **Assign items based on highest value for each agent, trying to balance total valuation:**
+
+   - Agent 0 has the highest valuation for item 1 (91) and item 3 (87). Assign these.
+   - Agent 1 values item 2 (76) and item 8 (57) highly, and they are available. Assign these.
+   - Agent 2 has the highest valuation for item 0 (75) and item 3 (94, but already allocated), so assign item 4 (71).
+   - Agent 3 values item 0 (79, but already allocated) and item 5 (80) highly. Assign item 5.
+   - Agent 4 has the highest valuation for item 6 (93). Assign item 6.
+   - Agent 5 has the highest valuation for item 4 (98, but already allocated) and item 3 (77, but already allocated), so assign item 7 (29).
+
+3. **Adjust allocations to ensure each agent gets a roughly fair share:**
+
+   - Agent 0: Already has items 1 and 3. Total value: 178.
+   - Agent 1: Already has items 2 and 8. Total value: 133.
+   - Agent 2: Already has item 4. Total value: 71.
+   - Agent 3: Already has item 5. Total value: 80.
+   - Agent 4: Already has item 6. Total value: 93.
+   - Agent 5: Already has item 7. Total value: 29.
+
+4. **Adjust to ensure all items are allocated fairly:**
+
+   We have already allocated 7 items, and we need to allocate a total of 9 items. Let's adjust:
+
+   - Assign item 0 to Agent 2, increasing their total value to 146.
+   - Assign item 3 to Agent 5, increasing their total value to 106.
+
+5. **Final Allocation:**
+
+```json
+{
+    "0": [1],
+    "1": [2, 8],
+    "2": [0, 4],
+    "3": [5],
+    "4": [6],
+    "5": [7, 3]
+}
+```
+
+This allocation attempts to balance the total value each agent receives while ensuring all items are allocated according to their preferences.

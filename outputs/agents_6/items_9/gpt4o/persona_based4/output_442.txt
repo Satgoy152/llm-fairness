@@ -1,0 +1,71 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 61.
+    
+    0   1   2   3   4   5   6   7   8
+0   2  56  36  99  17  12   7  26  70
+1  17   6  61  99  63  75  47  12  68
+2  69  29   2  58   2  99  26  67  90
+3  61  15  15  25   6  30  73  28  16
+4  12  82  97  68  79  61  89  61  57
+5  56  23  71  90  67  87  45  15  35
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[ 2 56 36 99 17 12  7 26 70]
+ [17  6 61 99 63 75 47 12 68]
+ [69 29  2 58  2 99 26 67 90]
+ [61 15 15 25  6 30 73 28 16]
+ [12 82 97 68 79 61 89 61 57]
+ [56 23 71 90 67 87 45 15 35]]
+Output:
+To achieve a fair division that minimizes envy among agents, we'll aim to distribute the items based on the valuations provided in the table. We must ensure each agent receives at least one item to avoid envy as much as possible. We'll use a greedy algorithm that assigns the highest valued available item to each agent in a round-robin fashion until all items are allocated. 
+
+Here's a step-by-step allocation:
+
+1. **Agent 0:** Highest value for them is item 3 (99). Assign item 3 to Agent 0.
+2. **Agent 1:** Highest value is also item 3 (99), but it's taken, so assign the next highest, item 5 (75), to Agent 1.
+3. **Agent 2:** Highest value is item 5 (99), but it's taken, so assign the next highest, item 8 (90), to Agent 2.
+4. **Agent 3:** Highest value is item 6 (73). Assign item 6 to Agent 3.
+5. **Agent 4:** Highest value is item 2 (97). Assign item 2 to Agent 4.
+6. **Agent 5:** Highest value is item 5 (87), but it's taken, so assign the next highest, item 3 (90), but it's also taken, assign item 7 (15), due to availability to Agent 5.
+
+Now, continue assigning the remaining items to balance the allocation:
+
+7. **Agent 0:** Next highest available is item 8 (70), but it's taken, so assign the next highest, item 1 (56), to Agent 0.
+8. **Agent 1:** Next highest available is item 0 (17), assign this to Agent 1.
+9. **Agent 3:** Next highest available is item 4 (6), assign this to Agent 3.
+
+After these steps, all items are allocated, and each agent has at least one item. The final allocation in JSON format is:
+
+```json
+{
+    "0": [3, 1],
+    "1": [5, 0],
+    "2": [8],
+    "3": [6, 4],
+    "4": [2],
+    "5": [7]
+}
+```

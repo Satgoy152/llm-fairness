@@ -1,0 +1,90 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 88.
+    
+    0   1   2   3   4   5   6   7   8
+0  76  44  15  79  37  35  30  22  84
+1  37  90  88  11  27  42  99  45  39
+2  96  84  38  63  92  62  81  71  30
+3  53  33  62  74  74  98  85  83  68
+4  82  19  71  96  57  68  88  87   6
+5  48  26  15  12  30  26  43  51  61
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[76 44 15 79 37 35 30 22 84]
+ [37 90 88 11 27 42 99 45 39]
+ [96 84 38 63 92 62 81 71 30]
+ [53 33 62 74 74 98 85 83 68]
+ [82 19 71 96 57 68 88 87  6]
+ [48 26 15 12 30 26 43 51 61]]
+Output:
+To achieve a fair division of items among the agents, we will aim for a distribution that ensures envy-freeness as much as possible, given the constraints of integer allocations. An envy-free allocation is one where no agent prefers someone else's allocation to their own. 
+
+Let's proceed with the allocation while attempting to maximize each agent's satisfaction based on their valuations:
+
+1. **Agent 0**: 
+   - Highest value items: 3 (79), 8 (84)
+   - Allocate items 3 and 8 to Agent 0.
+   
+2. **Agent 1**: 
+   - Highest value items: 1 (90), 2 (88)
+   - Allocate items 1 and 2 to Agent 1.
+   
+3. **Agent 2**: 
+   - Highest value items: 0 (96), 4 (92)
+   - Allocate items 0 and 4 to Agent 2.
+   
+4. **Agent 3**: 
+   - Highest value items: 5 (98), 6 (85)
+   - Allocate item 5 to Agent 3 (since item 6 has already been chosen for higher preference by others).
+   
+5. **Agent 4**: 
+   - Highest value items: 3 (96), 6 (88)
+   - Allocate item 6 to Agent 4 (item 3 is already allocated to Agent 0).
+   
+6. **Agent 5**: 
+   - The remaining items are 7 and 6. Item 6 is already allocated, so allocate item 7 to Agent 5.
+
+Based on the above allocation, let's check the assignments:
+
+- Agent 0: [3, 8]
+- Agent 1: [1, 2]
+- Agent 2: [0, 4]
+- Agent 3: [5]
+- Agent 4: [6]
+- Agent 5: [7]
+
+All 9 items are allocated, and the allocations are:
+
+```json
+{
+    "0": [3, 8],
+    "1": [1, 2],
+    "2": [0, 4],
+    "3": [5],
+    "4": [6],
+    "5": [7]
+}
+```

@@ -1,0 +1,59 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 56.
+
+    0   1   2   3   4   5   6   7   8
+0   6  26  11  40  88  13  70  81  13
+1  99  34  56  95  32  51  91  78  18
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 6 26 11 40 88 13 70 81 13]
+ [99 34 56 95 32 51 91 78 18]]
+Output:
+To fairly allocate the items between the two agents, we can aim to maximize the total value each agent receives while ensuring that the allocation is as balanced as possible given the integer constraints.
+
+Here's how we can allocate the items:
+
+1. Calculate the total value each agent assigns to all items.
+2. Sort the items by the difference in valuations between the two agents.
+3. Allocate items to maximize each agent's perceived value while ensuring an approximately equal distribution of items.
+
+Let's calculate:
+
+- Agent 0's total valuation: 6 + 26 + 11 + 40 + 88 + 13 + 70 + 81 + 13 = 348
+- Agent 1's total valuation: 99 + 34 + 56 + 95 + 32 + 51 + 91 + 78 + 18 = 554
+
+Now, we'll allocate the items:
+
+1. Start with the item that has the greatest valuation difference between the two agents.
+2. Allocate items one by one, considering balancing the number of items.
+
+Here is the allocation:
+
+- Agent 0 receives items: [4, 6, 7, 3]
+- Agent 1 receives items: [0, 1, 2, 5, 8]
+
+This allocation gives each agent a fair share based on their valuations.
+
+```json
+{
+    "0": [4, 6, 7, 3],
+    "1": [0, 1, 2, 5, 8]
+}
+```

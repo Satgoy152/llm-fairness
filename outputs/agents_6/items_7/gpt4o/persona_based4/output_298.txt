@@ -1,0 +1,86 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 87.
+    
+    0   1   2   3   4   5   6
+0  46   9  67  73  49  60  11
+1  24  35  87  77   7  55  93
+2  65  42   0  87  39  98  17
+3   0   1  84  41  38  31  82
+4  60  11  57  43  70  96  80
+5  32  77   3  17  93  10  93
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[46  9 67 73 49 60 11]
+ [24 35 87 77  7 55 93]
+ [65 42  0 87 39 98 17]
+ [ 0  1 84 41 38 31 82]
+ [60 11 57 43 70 96 80]
+ [32 77  3 17 93 10 93]]
+Output:
+To fairly allocate items among agents while ensuring envy-freeness, we can use the Maximum Nash Welfare (MNW) criterion, which is often considered a compromise between efficiency and fairness. The idea is to maximize the product of the utilities of the agents, which often results in a fair distribution of goods. Here's a step-by-step approach to how we can allocate the items:
+
+1. **List the Agents and Items:**
+   - Agents: 0, 1, 2, 3, 4, 5
+   - Items: 0, 1, 2, 3, 4, 5, 6
+
+2. **Agent Valuations:**
+   - Agent 0: [46, 9, 67, 73, 49, 60, 11]
+   - Agent 1: [24, 35, 87, 77, 7, 55, 93]
+   - Agent 2: [65, 42, 0, 87, 39, 98, 17]
+   - Agent 3: [0, 1, 84, 41, 38, 31, 82]
+   - Agent 4: [60, 11, 57, 43, 70, 96, 80]
+   - Agent 5: [32, 77, 3, 17, 93, 10, 93]
+
+3. **Allocation Strategy:**
+   - We aim to allocate items to maximize the product of the utilities for each agent.
+   - Consider the highest valued items for each agent and attempt to distribute them such that no agent envies another.
+
+4. **Allocation Process:**
+   - Allocate items based on descending order of valuations for each agent, ensuring each agent gets at least one item if possible.
+   - Adjust allocations to ensure each agent's envy is minimized.
+
+5. **Resulting Allocation:**
+   - Agent 0: [2] (Value = 67)
+   - Agent 1: [6] (Value = 93)
+   - Agent 2: [5] (Value = 98)
+   - Agent 3: [3] (Value = 41)
+   - Agent 4: [4] (Value = 70)
+   - Agent 5: [1, 0] (Value = 77 + 32 = 109)
+
+The allocation ensures that all 7 items are distributed among the agents, with each agent receiving at least one item. This allocation aims to balance maximizing each agent's utility while minimizing envy.
+
+Here's the allocation in the requested JSON format:
+
+```json
+{
+    "0": [2],
+    "1": [6],
+    "2": [5],
+    "3": [3],
+    "4": [4],
+    "5": [1, 0]
+}
+```

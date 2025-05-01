@@ -1,0 +1,63 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 4.
+
+    0   1   2   3   4   5   6   7   8
+0  86  35  27  69  85  46   1  75  29
+1  54   2   4  96  13  13  44  71  96
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[86 35 27 69 85 46  1 75 29]
+ [54  2  4 96 13 13 44 71 96]]
+Output:
+To allocate the items fairly between the two agents, we can use the concept of maximizing the total value each agent receives, ensuring that each agent gets an integer number of items. Here's one way to do this:
+
+1. Calculate the total value each agent assigns to all items and check if any items have a significantly higher value for one agent over the other.
+2. Allocate items by alternating between giving high-value items to each agent, ensuring that the distribution remains fair in terms of total value.
+
+Let's calculate the total value for each agent and allocate the items to balance the total value:
+
+Agent 0's total value:  
+\( 86 + 35 + 27 + 69 + 85 + 46 + 1 + 75 + 29 = 453 \)
+
+Agent 1's total value:  
+\( 54 + 2 + 4 + 96 + 13 + 13 + 44 + 71 + 96 = 393 \)
+
+Now, let's allocate items based on the values:
+
+- Agent 0 values item 0 (value 86) very highly, while Agent 1 values it at 54. Allocate item 0 to Agent 0.
+- Agent 1 values item 3 (value 96) very highly, and Agent 0 values it at 69. Allocate item 3 to Agent 1.
+- Agent 0 values item 4 (value 85) highly, and Agent 1 values it at 13. Allocate item 4 to Agent 0.
+- Agent 1 values item 8 (value 96) very highly, and Agent 0 values it at 29. Allocate item 8 to Agent 1.
+- Agent 0 values item 7 (value 75) more than Agent 1 who values it at 71. Allocate item 7 to Agent 0.
+- Agent 0 values item 1 (value 35), while Agent 1 values it at 2. Allocate item 1 to Agent 0.
+- Agent 1 values item 6 (value 44) more than Agent 0 who values it at 1. Allocate item 6 to Agent 1.
+- Agent 0 values item 5 (value 46), while Agent 1 values it at 13. Allocate item 5 to Agent 0.
+- Agent 1 values item 2 (value 4), while Agent 0 values it at 27, but since Agent 1 has fewer items, allocate item 2 to Agent 1.
+
+Now we can present the allocations in the required JSON format:
+
+```json
+{
+    "0": [0, 4, 7, 1, 5],
+    "1": [3, 8, 6, 2]
+}
+```
+
+This allocation attempts to fairly distribute the total value between the agents while ensuring each agent receives an integer number of items.

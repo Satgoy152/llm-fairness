@@ -1,0 +1,78 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 7 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 48.
+    
+    0   1   2   3   4   5   6
+0  33  96  31  79  24  53   4
+1  89  79  48  20  82  27  87
+2  51   5  72  26   7  82  92
+3  26  84  73  82  47  53  22
+4  70   6  22  38   0  79   5
+5  11  86   2   5  95  46  53
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 7 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[33 96 31 79 24 53  4]
+ [89 79 48 20 82 27 87]
+ [51  5 72 26  7 82 92]
+ [26 84 73 82 47 53 22]
+ [70  6 22 38  0 79  5]
+ [11 86  2  5 95 46 53]]
+Output:
+To allocate the items to the agents in a fair manner, we aim to achieve envy-freeness, ensuring each agent feels they are receiving at least as much value as they could by swapping with another agent. However, given the constraints of integer allocations and the need to allocate exactly 7 items among 6 agents, this is a challenging task.
+
+One common approach is to use the "maximum Nash welfare" solution, which seeks to maximize the product of the agents' utilities. Given the valuations, I'll attempt a fair allocation:
+
+1. Calculate each agent's total valuation for each item.
+2. Begin by allocating items to agents with the highest relative value (importance) for those items.
+3. Ensure each agent has at least one item, if possible, to maintain fairness.
+4. Adjust allocations to maximize the perceived fairness and minimize envy.
+
+Let's execute this allocation:
+
+- Agent 0 values item 1 the most, so assign item 1 to agent 0.
+- Agent 1 values item 0 the most, so assign item 0 to agent 1.
+- Agent 2 values item 6 the most, so assign item 6 to agent 2.
+- Agent 3 values item 3 the most, so assign item 3 to agent 3.
+- Agent 4 values item 5 the most, so assign item 5 to agent 4.
+- Agent 5 values item 4 the most, so assign item 4 to agent 5.
+
+This covers all agents and uses 6 items. We have one more item (item 2) to allocate. We will assign item 2 to the agent that gains the most additional utility from it, without making any other agent envious.
+
+- Assign item 2 to agent 3, who has a reasonably high valuation for it.
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [1],
+    "1": [0],
+    "2": [6],
+    "3": [3, 2],
+    "4": [5],
+    "5": [4]
+}
+```
+
+This allocation ensures all items are distributed while attempting to maintain a balance in each agent's perceived value of their allocation.

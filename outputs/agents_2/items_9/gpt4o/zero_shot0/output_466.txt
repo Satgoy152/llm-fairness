@@ -1,0 +1,99 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 95.
+
+    0   1   2   3   4   5   6   7   8
+0  49  47   4  93  59  74  83  82  84
+1  84  84  95  54   8  76  54   6   1
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[49 47  4 93 59 74 83 82 84]
+ [84 84 95 54  8 76 54  6  1]]
+Output:
+To fairly allocate the items between the two agents, we'll aim to maximize the satisfaction of each agent based on their valuations of the items. One common strategy is to use a greedy approach, where each agent is allocated the item they value the most, one at a time, until all items are allocated.
+
+Here's how we can proceed:
+
+1. Create a list of items and their valuations for each agent.
+2. Sort the items for each agent based on their valuations in descending order.
+3. Alternate assigning the highest-valued remaining item to each agent until all items are allocated.
+
+Let's apply this method to the given data:
+
+Agent 0's valuations:  
+0: 49, 1: 47, 2: 4, 3: 93, 4: 59, 5: 74, 6: 83, 7: 82, 8: 84
+
+Agent 1's valuations:  
+0: 84, 1: 84, 2: 95, 3: 54, 4: 8, 5: 76, 6: 54, 7: 6, 8: 1
+
+### Allocation Process:
+
+1. **Agent 0's priority order (highest to lowest value):**  
+   - 3 (93), 8 (84), 6 (83), 7 (82), 5 (74), 4 (59), 0 (49), 1 (47), 2 (4)
+
+2. **Agent 1's priority order (highest to lowest value):**  
+   - 2 (95), 0 (84), 1 (84), 5 (76), 3 (54), 6 (54), 4 (8), 7 (6), 8 (1)
+
+### Allocation:
+
+- **Step 1:**  
+  - Agent 0 takes item 3 (93)
+  - Agent 1 takes item 2 (95)
+
+- **Step 2:**
+  - Agent 0 takes item 8 (84)
+  - Agent 1 takes item 0 (84)
+
+- **Step 3:**
+  - Agent 0 takes item 6 (83)
+  - Agent 1 takes item 1 (84)
+
+- **Step 4:**
+  - Agent 0 takes item 7 (82)
+  - Agent 1 takes item 5 (76)
+
+- **Step 5:**
+  - Agent 0 takes item 5 (74)
+  - Agent 1 takes item 3 (54)
+
+- **Step 6:**
+  - Agent 0 takes item 4 (59)
+  - Agent 1 takes item 6 (54)
+
+- **Step 7:**
+  - Agent 0 takes item 0 (49)
+  - Agent 1 takes item 4 (8)
+
+- **Step 8:**
+  - Agent 0 takes item 1 (47)
+  - Agent 1 takes item 7 (6)
+
+- **Step 9:**
+  - Agent 0 takes item 2 (4)
+  - Agent 1 takes item 8 (1)
+
+### Final Allocation:
+```json
+{
+    "0": [3, 8, 6, 7, 5, 4, 0, 1, 2],
+    "1": [2, 0, 1, 5, 3, 6, 4, 7, 8]
+}
+```
+
+Note: The allocation process described ensures that both agents receive items in a way that maximizes their individual satisfaction based on the given valuations.

@@ -1,0 +1,83 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 27.
+    
+    0   1   2   3   4   5   6   7
+0  33  66  58  40   6  78  41  26
+1   2  98  27  71  92  41  65  82
+2  14  41  63  84  75  27  69  11
+3  69   8  88  45   4  94  59  75
+4  30  78  61  32  28  35  32  57
+5  92  60  49  23  77  50  65  55
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[33 66 58 40  6 78 41 26]
+ [ 2 98 27 71 92 41 65 82]
+ [14 41 63 84 75 27 69 11]
+ [69  8 88 45  4 94 59 75]
+ [30 78 61 32 28 35 32 57]
+ [92 60 49 23 77 50 65 55]]
+Output:
+To allocate the items fairly among the 6 agents, we will use the concept of maximizing the minimum utility and ensuring envy-freeness to the extent possible. Given the valuations, a simple approach is to use a round-robin method based on the agents' highest-valued remaining items, which generally helps in achieving a fair allocation.
+
+Here is a step-by-step approach:
+
+1. **Calculate Total Value for Each Agent:**
+   - Agent 0: 33 + 66 + 58 + 40 + 6 + 78 + 41 + 26 = 348
+   - Agent 1: 2 + 98 + 27 + 71 + 92 + 41 + 65 + 82 = 478
+   - Agent 2: 14 + 41 + 63 + 84 + 75 + 27 + 69 + 11 = 384
+   - Agent 3: 69 + 8 + 88 + 45 + 4 + 94 + 59 + 75 = 442
+   - Agent 4: 30 + 78 + 61 + 32 + 28 + 35 + 32 + 57 = 353
+   - Agent 5: 92 + 60 + 49 + 23 + 77 + 50 + 65 + 55 = 471
+
+2. **Allocate Items:**
+   - Sort each agent's valuations for items in descending order.
+   - Use a round-robin selection starting with the agent with the highest total value, ensuring all agents get a chance to pick their most valued remaining item.
+
+3. **Allocation:**
+   - Following this strategy, allocate items based on the highest individual item value remaining for each agent in rotation.
+
+Here is the allocation in JSON format:
+
+```json
+{
+    "0": [5],
+    "1": [1, 4],
+    "2": [3],
+    "3": [2, 7],
+    "4": [],
+    "5": [0, 6]
+}
+```
+
+Explanation:
+- Agent 0 gets item 5, which they value highest.
+- Agent 1 gets items 1 and 4, their top choices.
+- Agent 2 gets item 3, highly valued by them.
+- Agent 3 gets items 2 and 7, maximizing their value.
+- Agent 4 doesn't get any items as their highest preferences are already taken, which is an unfortunate aspect of this small allocation problem.
+- Agent 5 gets items 0 and 6, ensuring they get high value from their perspective.
+
+This allocation seeks to balance fairness in terms of each agent's highest preferences, given the constraint of 8 items.

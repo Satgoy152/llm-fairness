@@ -1,0 +1,57 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 72.
+
+    0   1   2   3   4
+0  18  95  53  53  58
+1  91  70  72  36  22
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[18 95 53 53 58]
+ [91 70 72 36 22]]
+Output:
+To fairly allocate the items between the two agents, we can aim to maximize the overall satisfaction of both agents by selecting the items that each agent values the most. Let's evaluate the valuations:
+
+- Agent 0's valuations: [18, 95, 53, 53, 58]
+- Agent 1's valuations: [91, 70, 72, 36, 22]
+
+One approach is to allocate items by maximizing the total value each agent receives. First, let's sort the items based on the difference in valuations between the two agents:
+
+1. Item 0: Agent 1 values it more (91 vs. 18).
+2. Item 1: Agent 0 values it more (95 vs. 70).
+3. Item 2: Agent 1 values it more (72 vs. 53).
+4. Item 3: Both agents have the same valuation (53 vs. 36).
+5. Item 4: Agent 0 values it more (58 vs. 22).
+
+Based on these valuations, a potential fair allocation could be:
+
+- Allocate Item 1 and Item 4 to Agent 0 because they value these items significantly more.
+- Allocate Item 0 and Item 2 to Agent 1 because they value these items significantly more.
+- Allocate Item 3 to Agent 0 or Agent 1, as it has a neutral impact since both agents have relatively similar valuations.
+
+To balance the number of items, let's allocate Item 3 to Agent 1. This would result in the following allocation:
+
+```json
+{
+    "0": [1, 4],
+    "1": [0, 2, 3]
+}
+```
+
+This allocation gives Agent 0 two items (1 and 4) that they value highly and Agent 1 three items (0, 2, and 3) that they value more than Agent 0.

@@ -1,0 +1,55 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 97.
+
+    0   1   2   3   4
+0  56  89  78  94  54
+1   1  88  97  71  87
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[56 89 78 94 54]
+ [ 1 88 97 71 87]]
+Output:
+To fairly allocate the items between the two agents based on their valuations, we can use a method that maximizes the total valuation for each agent while ensuring that each agent receives an integer number of items. One approach is to use the "maximizing total valuation" method, where we allocate items based on the highest valuation difference between the two agents for each item.
+
+First, let's calculate the difference in valuations for each item between the two agents:
+
+- Item 0: Agent 0 values it at 56, and Agent 1 values it at 1. Difference = 56 - 1 = 55
+- Item 1: Agent 0 values it at 89, and Agent 1 values it at 88. Difference = 89 - 88 = 1
+- Item 2: Agent 0 values it at 78, and Agent 1 values it at 97. Difference = 97 - 78 = 19 (favor Agent 1)
+- Item 3: Agent 0 values it at 94, and Agent 1 values it at 71. Difference = 94 - 71 = 23
+- Item 4: Agent 0 values it at 54, and Agent 1 values it at 87. Difference = 87 - 54 = 33 (favor Agent 1)
+
+Now, allocate the items based on which agent has the highest valuation difference:
+
+1. Agent 0 should receive items where they have a higher valuation than Agent 1, which are items 0, 1, and 3.
+2. Agent 1 should receive items where they have a higher valuation, which are items 2 and 4.
+
+This allocation ensures that each agent receives an integer number of items and maximizes the total valuation each agent can get based on their preferences.
+
+Here's the allocation in JSON format:
+
+```json
+{
+    "0": [0, 1, 3],
+    "1": [2, 4]
+}
+```
+
+This allocation gives each agent the items that maximize their total valuation based on their individual preferences.

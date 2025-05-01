@@ -1,0 +1,70 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 11.
+
+    0   1   2   3   4   5   6   7   8
+0  35   7   5  77  60   6  21  11  93
+1  75  98  11  85  92  85  52  50  32
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[35  7  5 77 60  6 21 11 93]
+ [75 98 11 85 92 85 52 50 32]]
+Output:
+To fairly allocate the items between the two agents based on their valuations, we can use a method such as the envy-free allocation or maximizing the total valuation. Given the valuations:
+
+```
+Agent 0: [35, 7, 5, 77, 60, 6, 21, 11, 93]
+Agent 1: [75, 98, 11, 85, 92, 85, 52, 50, 32]
+```
+
+We'll aim to allocate the items so that each agent gets a fair share based on their valuations. A simple way to do this is by ensuring that the total value each agent receives is as high as possible given their preferences.
+
+Let's proceed with the allocation:
+
+1. Compare the valuations of each item for both agents.
+2. Allocate each item to the agent who values it more.
+3. Ensure that both agents receive approximately half of the items (since there are 9 items, one agent will receive 5 items and the other 4).
+
+### Allocation:
+
+- **Item 0:** Agent 1 values it more (75 vs. 35).
+- **Item 1:** Agent 1 values it more (98 vs. 7).
+- **Item 2:** Agent 1 values it more (11 vs. 5).
+- **Item 3:** Agent 0 values it more (77 vs. 85).
+- **Item 4:** Agent 1 values it more (92 vs. 60).
+- **Item 5:** Agent 1 values it more (85 vs. 6).
+- **Item 6:** Agent 1 values it more (52 vs. 21).
+- **Item 7:** Agent 1 values it more (50 vs. 11).
+- **Item 8:** Agent 0 values it more (93 vs. 32).
+
+Agent 1 would receive more items based on valuation alone, so we need to adjust to ensure fairness in number of items:
+
+- Allocate items 0, 1, 2, 4, 5 to Agent 1.
+- Allocate items 3, 6, 7, 8 to Agent 0.
+
+### Final Allocation:
+
+```json
+{
+    "0": [3, 6, 7, 8],
+    "1": [0, 1, 2, 4, 5]
+}
+```
+
+This allocation ensures that each agent gets a fair number of items, with Agent 0 receiving 4 items and Agent 1 receiving 5 items.

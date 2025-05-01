@@ -1,0 +1,91 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 67.
+    
+    0   1   2   3   4   5   6   7   8
+0  71  20  92  81  60  57  36  53  24
+1  41  98  67  41  48  43  71  66  76
+2  20  52  43  29  45  50  56  86  29
+3  97  14  72  84  22  81  29  72   5
+4  38  78   6  16  26  37  48  27  66
+5  25  94  77  19  56  45  96  90  73
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 9 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[71 20 92 81 60 57 36 53 24]
+ [41 98 67 41 48 43 71 66 76]
+ [20 52 43 29 45 50 56 86 29]
+ [97 14 72 84 22 81 29 72  5]
+ [38 78  6 16 26 37 48 27 66]
+ [25 94 77 19 56 45 96 90 73]]
+Output:
+To fairly allocate the items among the agents while aiming for envy-freeness, we can consider each agent's preferences and attempt to balance the total value received by each agent. Given the constraint that there are 9 items and 6 agents, some agents will inevitably receive more items than others. However, we can ensure that the distribution is as fair as possible according to the agents' valuations.
+
+Here is a step-by-step approach to achieve this:
+
+1. **Calculate Total Valuations**: First, calculate the total valuation each agent has for all the items combined. This will help us understand each agent's preferences and guide the allocation.
+
+2. **Greedy Allocation Based on Highest Value**:
+   - Start by allocating items to agents based on their highest valuation for any remaining unallocated item.
+   - After each allocation, recalculate the unallocated items and reassess which agent values the remaining items the most.
+
+3. **Check for Envy-Freeness**:
+   - After an initial allocation, check if any agent envies another agent's allocation based on their valuations. If so, perform adjustments to minimize envy by considering swaps or reallocations that improve the fairness.
+
+4. **Final Adjustments**:
+   - Ensure that each agent gets at least one item or the allocation is as balanced as possible when envy cannot be entirely eliminated due to discrete allocations.
+
+Let's proceed with this allocation strategy.
+
+### Initial Allocation Steps:
+- **Agent 0**: Highest valued item is 2 (value 92).
+- **Agent 1**: Highest valued item is 1 (value 98).
+- **Agent 2**: Highest valued item is 7 (value 86).
+- **Agent 3**: Highest valued item is 0 (value 97).
+- **Agent 4**: Highest valued item is 8 (value 66).
+- **Agent 5**: Highest valued item is 6 (value 96).
+
+### Review Remaining Items:
+The remaining items are 3, 4, and 5. Allocate these based on maximizing total value for agents who currently have fewer items.
+
+- **Agent 0**: Item 3 (value 81).
+- **Agent 1**: Item 4 (value 48).
+- **Agent 2**: Item 5 (value 50).
+
+### Final Allocations:
+Review to ensure all items are allocated and attempt to balance based on total valuation received.
+
+### Final JSON Allocation:
+```json
+{
+    "0": [2, 3],
+    "1": [1, 4],
+    "2": [5, 7],
+    "3": [0],
+    "4": [8],
+    "5": [6]
+}
+```
+
+This allocation attempts to distribute items so that each agent receives a reasonable share based on their valuations, although perfect envy-freeness is challenging with discrete items and differing preferences.

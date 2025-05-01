@@ -1,0 +1,51 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 19.
+
+    0   1   2   3   4
+0  20  39  79  15  22
+1  96  85  19  93  53
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[20 39 79 15 22]
+ [96 85 19 93 53]]
+Output:
+To fairly allocate the items to the agents, we can use a method called "maximum sum allocation." This method involves assigning items to agents in a way that maximizes the total value each agent receives. Here's how we can approach this problem:
+
+1. List all items and their values for each agent.
+2. Assign items to agents based on who values them the most, ensuring each agent gets an integer number of items.
+
+Let's go through the allocation process:
+
+- Item 0: Agent 1 values it at 96, while Agent 0 values it at 20. Allocate to Agent 1.
+- Item 1: Agent 1 values it at 85, while Agent 0 values it at 39. Allocate to Agent 1.
+- Item 2: Agent 0 values it at 79, while Agent 1 values it at 19. Allocate to Agent 0.
+- Item 3: Agent 1 values it at 93, while Agent 0 values it at 15. Allocate to Agent 1.
+- Item 4: Agent 1 values it at 53, while Agent 0 values it at 22. Allocate to Agent 1.
+
+Now, let's allocate the items:
+
+```json
+{
+    "0": [2],
+    "1": [0, 1, 3, 4]
+}
+```
+
+In this allocation, Agent 0 receives item 2, which they value the most, and Agent 1 receives the remaining items, which they value more highly overall.

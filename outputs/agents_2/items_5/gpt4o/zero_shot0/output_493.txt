@@ -1,0 +1,73 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 41.
+
+    0   1   2   3   4
+0  87  79  21  56  96
+1  79  40  41  62  82
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[87 79 21 56 96]
+ [79 40 41 62 82]]
+Output:
+To fairly allocate the items between the two agents, one common method is to maximize the total valuation for each agent so that the distribution is equitable. Here's how we can approach this problem:
+
+First, let's list the total valuation each agent has for all items:
+
+- Agent 0: 87 + 79 + 21 + 56 + 96 = 339
+- Agent 1: 79 + 40 + 41 + 62 + 82 = 304
+
+Now, we want to distribute the items so that both agents have similar total valuations for the items they receive. We can use a greedy algorithm to allocate items based on the highest valuation difference between the two agents.
+
+1. Calculate the difference in valuation for each item:
+   - Item 0: 87 - 79 = 8
+   - Item 1: 79 - 40 = 39
+   - Item 2: 21 - 41 = -20
+   - Item 3: 56 - 62 = -6
+   - Item 4: 96 - 82 = 14
+
+2. Sort the items by the absolute value of these differences (to allocate items that have the most significant impact on fairness first):
+   - Item 1: 39
+   - Item 4: 14
+   - Item 2: 20
+   - Item 3: 6
+   - Item 0: 8
+
+3. Allocate items to balance the total valuations:
+   - Start by allocating item 1 to Agent 0 (higher valuation difference)
+   - Allocate item 4 to Agent 0 (higher valuation difference)
+   - Allocate item 2 to Agent 1 (higher valuation difference in favor of Agent 1)
+   - Allocate item 3 to Agent 1 (higher valuation difference in favor of Agent 1)
+   - Allocate item 0 to Agent 1 (remaining item)
+
+Now, let's calculate the total valuation for each agent after this allocation:
+
+- Agent 0: Items 1 and 4 -> 79 + 96 = 175
+- Agent 1: Items 0, 2, and 3 -> 79 + 41 + 62 = 182
+
+This allocation is reasonably fair given the constraints.
+
+Final allocation in JSON format:
+
+```json
+{
+    "0": [1, 4],
+    "1": [0, 2, 3]
+}
+```

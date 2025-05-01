@@ -1,0 +1,68 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 75.
+
+    0   1   2   3   4
+0  95  59  25  89  26
+1  37  88  75  91  66
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[95 59 25 89 26]
+ [37 88 75 91 66]]
+Output:
+To fairly allocate the items between the two agents, we can use a method that aims to maximize the sum of valuations for each agent while ensuring that each agent receives an integer number of items. One common approach for such a problem is using a "greedy" algorithm to allocate items based on the highest valuation differences between agents.
+
+Let's proceed with this approach:
+
+1. **Calculate the Difference**: Compute the difference in valuation for each item between the two agents.
+2. **Sort and Allocate Based on Differences**: For each item, determine which agent values it more and allocate it to that agent. If the differences are equal or the allocation becomes unfair, ensure a balanced distribution.
+
+Let's perform these steps:
+
+| Item | Agent 0 Valuation | Agent 1 Valuation | Difference (Agent 0 - Agent 1) |
+|------|-------------------|-------------------|--------------------------------|
+|  0   |        95         |        37         |               58               |
+|  1   |        59         |        88         |              -29               |
+|  2   |        25         |        75         |              -50               |
+|  3   |        89         |        91         |               -2               |
+|  4   |        26         |        66         |              -40               |
+
+Now, sort items by the absolute value of differences in descending order:
+
+1. Item 2: Difference = 50
+2. Item 4: Difference = 40
+3. Item 1: Difference = 29
+4. Item 0: Difference = 58
+5. Item 3: Difference = 2
+
+Allocate items based on these differences:
+
+- **Agent 0** benefits more from item 0, so allocate item 0 to Agent 0.
+- **Agent 1** benefits more from items 1, 2, 3, and 4, so allocate these items to Agent 1.
+
+Final allocation:
+
+```json
+{
+    "0": [0],
+    "1": [1, 2, 3, 4]
+}
+```
+
+This allocation ensures that each agent receives an integer number of items, and it is balanced based on the valuation differences.

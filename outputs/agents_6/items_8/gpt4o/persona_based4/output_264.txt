@@ -1,0 +1,76 @@
+Input:
+
+        You are a computational economist with deep expertise in fair division and envy-freeness.
+
+        The following table represents the valuations of 6 agents numbered 0,1,2, and so on for 8 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 97.
+    
+    0   1   2   3   4   5   6   7
+0  54  52  88  53  91  97  10  99
+1  93  24  97  29  66  63  21  53
+2   3  74  53   5  26  48  83   7
+3  88  38  15  35  40  83  39  41
+4  43  10  20  43   0  14  68  55
+5  71  77  21   0  43  34  80  21
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.  Only give allocations for agents and items in the table above.
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...],
+        "2": [5,6,...],
+        "3": [7,8,...],
+        "4": [9,10,...],
+        "5": [11,12,...]
+    }
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent.
+    Even if an agent is assigned no items, include them in the json with an empty list.
+    Make sure only and atleast 8 items are allocated in total.
+    The last thing you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: persona_based4
+Valuation Table:
+[[54 52 88 53 91 97 10 99]
+ [93 24 97 29 66 63 21 53]
+ [ 3 74 53  5 26 48 83  7]
+ [88 38 15 35 40 83 39 41]
+ [43 10 20 43  0 14 68 55]
+ [71 77 21  0 43 34 80 21]]
+Output:
+To fairly allocate the items among the agents, we should aim for an allocation that minimizes envy, ensuring that each agent feels they have received a fair share based on their valuations. Given the valuations matrix, we can start by looking at each agent’s highest-valued items and attempt to distribute these items in a way that maximizes each agent's satisfaction.
+
+Here's one possible allocation strategy:
+
+1. **Agent 0**: Has the highest value for item 7. Let's allocate item 7 to Agent 0.
+2. **Agent 1**: Values item 2 highly. Allocate item 2 to Agent 1.
+3. **Agent 2**: Values item 6 highly. Allocate item 6 to Agent 2.
+4. **Agent 3**: Values item 0 highly. Allocate item 0 to Agent 3.
+5. **Agent 4**: Values item 3 highly (ties with item 0, but item 0 is already taken). Allocate item 3 to Agent 4.
+6. **Agent 5**: Values item 1 highly. Allocate item 1 to Agent 5.
+
+At this point, we have allocated 6 items. We need to allocate two more items. Let's consider the remaining items:
+
+- Items 4 and 5 are still unallocated.
+
+Continuing with the distribution:
+
+7. **Agent 0**: Also values item 5 highly. Allocate item 5 to Agent 0.
+8. **Agent 1**: Values item 4 next after item 2. Allocate item 4 to Agent 1.
+
+Now, each agent has received at least one item, and all items have been distributed. Here's the final allocation in the specified JSON format:
+
+```json
+{
+    "0": [7, 5],
+    "1": [2, 4],
+    "2": [6],
+    "3": [0],
+    "4": [3],
+    "5": [1]
+}
+```
+
+This allocation attempts to ensure that each agent receives some of their highest-valued items, reducing overall envy.

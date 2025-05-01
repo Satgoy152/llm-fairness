@@ -1,0 +1,51 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 94.
+
+    0   1   2   3   4
+0  40  53  50  55  98
+1  51  97  94  20  55
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[40 53 50 55 98]
+ [51 97 94 20 55]]
+Output:
+To fairly allocate the items between the two agents based on their valuations, we can use a method that attempts to maximize each agent's total value while ensuring that each agent receives an integer number of items. One simple way to do this is to use a greedy algorithm, where we assign each item to the agent that values it the most, while ensuring that each agent receives a fair share of the items.
+
+Let's allocate the items based on the given valuations:
+
+1. Compare the valuations for each item:
+   - Item 0: Agent 0 values it at 40, Agent 1 values it at 51. Allocate to Agent 1.
+   - Item 1: Agent 0 values it at 53, Agent 1 values it at 97. Allocate to Agent 1.
+   - Item 2: Agent 0 values it at 50, Agent 1 values it at 94. Allocate to Agent 1.
+   - Item 3: Agent 0 values it at 55, Agent 1 values it at 20. Allocate to Agent 0.
+   - Item 4: Agent 0 values it at 98, Agent 1 values it at 55. Allocate to Agent 0.
+
+2. Check the allocation:
+   - Agent 0 receives items 3 and 4.
+   - Agent 1 receives items 0, 1, and 2.
+
+The allocations can be represented in the specified JSON format as follows:
+
+```json
+{
+    "0": [3, 4],
+    "1": [0, 1, 2]
+}
+```

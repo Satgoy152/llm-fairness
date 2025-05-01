@@ -1,0 +1,59 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 9 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 62.
+
+    0   1   2   3   4   5   6   7   8
+0  29  31  37  27  62  40  21  95  91
+1  64  12  62  25  18   1  64  47  52
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[29 31 37 27 62 40 21 95 91]
+ [64 12 62 25 18  1 64 47 52]]
+Output:
+To fairly allocate the items between the two agents, we can use the method of "envy-free" allocation, where each agent should feel that their allocation is at least as good as the allocation of the other agent.
+
+Let's calculate the total value each agent assigns to all items:
+
+- Agent 0 total value: 29 + 31 + 37 + 27 + 62 + 40 + 21 + 95 + 91 = 433
+- Agent 1 total value: 64 + 12 + 62 + 25 + 18 + 1 + 64 + 47 + 52 = 345
+
+Now, let's try to allocate the items such that each agent gets items with roughly equal value according to their own valuations.
+
+One simple approach is to sort the items based on each agent's valuation and then alternate picking items:
+
+1. For Agent 0:
+   - Sorted items by Agent 0's valuation: 7, 8, 4, 2, 5, 1, 0, 3, 6
+2. For Agent 1:
+   - Sorted items by Agent 1's valuation: 0, 6, 2, 8, 7, 3, 4, 1, 5
+
+Let's allocate items alternatively based on the sorted order:
+
+- Agent 0 picks: 7, 4, 5, 3
+- Agent 1 picks: 8, 2, 0, 6, 1
+
+Now let's present the allocations in the requested JSON format:
+
+```json
+{
+    "0": [7, 4, 5, 3],
+    "1": [8, 2, 0, 6, 1]
+}
+```
+
+This allocation ensures that each agent gets a fair share based on their own valuations without envy.

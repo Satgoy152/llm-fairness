@@ -1,0 +1,71 @@
+Input:
+
+    The following table represents the valuations of 2 agents numbered 0,1,2, and so on for 5 items numbered 0,1,2, and so on. For example, the value agent 1 has of item 2 is 64.
+
+    0   1   2   3   4
+0   8  49  88  32  86
+1  84  63  64  99  34
+
+    Fairly allocate all the items to the agents so that each agent gets an integer number of items.
+
+    Present your allocations at the end in the following json format:
+    {
+        "0": [0,1,2,...],
+        "1": [3,4,...]
+    }
+    Only give allocations for agents andi items in the table above.
+
+    Where the keys are the agent numbers and the values are lists of the items allocated to that agent. 
+    The last think you give should be the allocations.
+    
+Model: GPT4o
+Type of distribution: uniform
+Temperature: 0.7
+Prompt type: zero_shot0
+Valuation Table:
+[[ 8 49 88 32 86]
+ [84 63 64 99 34]]
+Output:
+To fairly allocate the items between the two agents based on their valuations, we can use the concept of maximizing the total value each agent receives from their allocated items. One approach to achieve this is to use a greedy algorithm in which each item is allocated to the agent who values it the most, ensuring that each agent receives an integer number of items.
+
+Let's analyze each item, assign it to the agent with the higher valuation, and ensure both agents receive an integer number of items:
+
+1. Item 0:
+   - Agent 0 values it at 8.
+   - Agent 1 values it at 84.
+   - Allocate to Agent 1.
+
+2. Item 1:
+   - Agent 0 values it at 49.
+   - Agent 1 values it at 63.
+   - Allocate to Agent 1.
+
+3. Item 2:
+   - Agent 0 values it at 88.
+   - Agent 1 values it at 64.
+   - Allocate to Agent 0.
+
+4. Item 3:
+   - Agent 0 values it at 32.
+   - Agent 1 values it at 99.
+   - Allocate to Agent 1.
+
+5. Item 4:
+   - Agent 0 values it at 86.
+   - Agent 1 values it at 34.
+   - Allocate to Agent 0.
+
+Now, let's ensure both agents receive an integer number of items. We have:
+- Agent 0 has items [2, 4].
+- Agent 1 has items [0, 1, 3].
+
+Both agents have received an integer number of items (2 for Agent 0 and 3 for Agent 1). The allocations ensure that each agent receives as much value as possible from their items.
+
+Here is the allocation in the requested JSON format:
+
+```json
+{
+    "0": [2, 4],
+    "1": [0, 1, 3]
+}
+```
